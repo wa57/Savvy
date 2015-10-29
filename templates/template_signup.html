@@ -1,0 +1,45 @@
+<div class="col-lg-4 col-lg-offset-4">
+    <h1>Sign Up</h1>
+    <form name="userForm" class="input-group">
+        <input type="text"
+                ng-model="user.first_name"
+                ng-required="required"
+                placeholder="First Name"
+                class="form-control">
+
+        <input type="text"
+                ng-model="user.last_name"
+                ng-required="required"
+                placeholder="Last Name"
+                class="form-control">
+
+        <input type="text"
+                ng-model="user.email"
+                ng-required="required"
+                placeholder="Email Address"
+                class="form-control">
+
+        <input type="password"
+                ng-model="user.password"
+                ng-required="required"
+                placeholder="Password"
+                class="form-control">
+
+        <input type="password"
+                ng-required="required"
+                ng-model="user.confirmed_password"
+                placeholder="Confirm Password"
+                class="form-control">
+        <div>
+            <span class="input-group-btn">
+                <button type="submit"
+                    ng-click="saveNewUser();"
+                    ng-disabled="userForm.$invalid"
+                    class="btn btn-primary btn-lg form-control">
+                    Sign Up
+                </button>
+            </span>
+        </div>
+    </form>
+</div>
+{{user}}

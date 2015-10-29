@@ -1,0 +1,21 @@
+.form-input {
+    display: block;
+    margin-bottom: 15px;
+}
+
+.navbar-right {
+    margin-right: 0;
+}
+
+form input[type='text'], input[type='password'] {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.btn-danger {
+    border-color: #ff5a5f;
+    border-bottom-color: #e00007;
+    background-color: #ff5a5f;
+    color: #fff;
+    border-radius:0.3em;
+}

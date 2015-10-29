@@ -1,0 +1,10 @@
+<div class="navbar-header">
+    <a class="navbar-brand" ui-sref="/">Savvy</a>
+</div>
+<ul class="nav navbar-nav navbar-left">
+    <li ng-show="user.logged_in"><a ui-sref="search">Search</a></li>
+</ul>
+<ul class="nav navbar-nav navbar-right">
+    <li ng-show="user.logged_in"><a ui-sref="signup">Sign Up</a></li>
+    <li ng-show="user.logged_in"><a ui-sref="login">Login</a></li>
+</ul>
