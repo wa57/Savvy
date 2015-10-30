@@ -1,5 +1,5 @@
-<div class="col-lg-4 col-lg-offset-4">
-    <h1>Sign Up</h1>
+<div class="signup col-lg-4 col-lg-offset-4">
+    <h2 class="heading center">Sign Up</h2>
     <form name="userForm" class="input-group">
         <input type="text"
                 ng-model="user.first_name"
@@ -31,15 +31,18 @@
                 placeholder="Confirm Password"
                 class="form-control">
         <div>
-            <span class="input-group-btn">
-                <button type="submit"
-                    ng-click="saveNewUser();"
-                    ng-disabled="userForm.$invalid"
-                    class="btn btn-primary btn-lg form-control">
-                    Sign Up
-                </button>
-            </span>
+            <button type="button"
+                ng-click="saveNewUser();"
+                ng-disabled="userForm.$invalid"
+                id="signup-btn"
+                class="btn btn-warning btn-lg btn-block">
+                Sign Up
+            </button>
         </div>
+        <p class="signup-login center">
+            Already have an account?
+            <a ui-sref="login">Log In</a>
+        </p>
     </form>
+    {{user}}
 </div>
-{{user}}

@@ -1,48 +1,18 @@
-var app = angular.module('savvy', ['ui.router']);
-
-app.config(function($stateProvider, $urlRouterProvider) {
-
-    $urlRouterProvider.otherwise('/');
-
-    $stateProvider
-
-        // HOME STATES AND NESTED VIEWS ========================================
-        .state('/', {
-            url: '/',
-            templateUrl: 'templates/template_home.html',
-            controller: 'homeController'
-        })
-
-        // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-        .state('signup', {
-            url: '/signup',
-            templateUrl: 'templates/template_signup.html',
-            controller: 'signUpController'
-        })
-
-        .state('login', {
-            url: '/login',
-            templateUrl: 'templates/template_login.html',
-            controller: 'loginController'
-        })
-
-        .state('search', {
-            url: '/search',
-            templateUrl: 'templates/template_search.html',
-            controller: 'searchController'
-        })
-
-});
-
-app.controller('homeController', function($scope) {
+app.controller('homeController', function($scope, $state) {
     $scope.initialize = function() {
         $scope.user = {};
     }
 
+    $scope.search = function() {
+        //ajax call to api
+        $state.go('product', {product: $scope.search_term});
+    };
+
     $scope.initialize();
 });
 
-app.controller('signUpController', function($scope) {
+app.controller('signUpController', function($scope, $state) {
+    console.log($state.includes);
     $scope.saveNewUser = function() {
         console.log($scope.user);
         //ajax post new user to api
@@ -76,7 +46,15 @@ app.controller('loginController', function($scope) {
 });
 
 app.controller('searchController', function($scope) {
-    
+
+});
+
+app.controller('productController', function($scope, $stateParams) {
+    var formatted_product = $stateParams.product[0].toUpperCase() + $stateParams.product.substr(1);
+    $scope.product = {
+        name: formatted_product,
+        avg_price: "$2.67",
+    };
 });
 
 app.controller('navController', function($scope) {
