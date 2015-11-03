@@ -2,14 +2,17 @@
 
 Savvy is a web-based service that provides location centric price information of goods and services.
 
-### What is this repository for? ###
+### Details ###
 
-* Version: v0.1
-* Documentation: <url here>
+|               |                                            |
+| ------------- | ------------------------------------------ |
+| Version       | v0.1                                       |
+| Documentation | http://example.com                         |
+| Source Code   | https://bitbucket.org/wjashman/savvy/      |
 
 ### Installation ###
 
-* N/a
+* No Information
 
 ### Contribution guidelines ###
 
