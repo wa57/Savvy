@@ -1,10 +1,101 @@
+body {
+    color: grey;
+    margin: auto;
+}
+
+/* NAV */
+.active-nav a {
+    background-color: grey;
+    color: #fff;
+}
+.navigation {
+    background-color: #ebebeb;
+    box-shadow: 0 0 3px 0 #888888;
+}
+.navigation li a {
+    color: grey;
+}
+.navigation li a:hover {
+    color: #fff;
+}
+.brand-logo {
+    color: grey;
+    font-weight: bold;
+    font-size: 36px;
+    letter-spacing: 2px;
+}
+.brand-logo:hover {
+    text-decoration: none;
+    color: grey;
+}
+.navigation li a:hover {
+    background-color: grey;
+    color: #fff;
+}
+.navbar-right {
+    margin-right: 0;
+}
+.navigation .dark {
+    background: #000;
+    background: rgba(0, 0, 0, 0.1);
+}
+.navigation .dark li a{
+    padding: 15px;
+}
+.navbar {
+    margin-bottom: 0;
+}
+
+
+/* BUTTONS */
+
+.btn-danger {
+    border-color: #ff5a5f;
+    border-bottom-color: #e00007;
+    background-color: #ff5a5f;
+    color: #fff;
+    border-radius:0.3em;
+}
+
+.btn-primary:hover {
+    background-color: #5f3598;
+    border-color: #5f3598 #5f3598 #3b215f;
+    border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+}
+
+/* HOMEPAGE */
+ .top-block {
+    /*background-color: grey;*/
+    height: 400px;
+}
+#search-box {
+    width: 500px;
+    padding: 10px;
+    margin: 0 15px 50px 0;
+    border-radius: 3px;
+}
+.middle-block {
+    display: block;
+    background-color: #5f3598;
+    height: 600px;
+}
+
+#sign-up-button {
+    margin-top: 50px;
+}
+
+.tagline {
+    padding-top: 50px;
+    margin-bottom: 50px;
+    font-size: 32px;
+    font-weight: 500;
+    color: #000;
+    letter-spacing: 2px;
+}
+
 .form-input {
     display: block;
     margin-bottom: 15px;
-}
-
-.navbar-right {
-    margin-right: 0;
 }
 
 .footer {
@@ -20,29 +111,17 @@ form input[type='text'], input[type='password'] {
     margin-bottom: 10px;
 }
 
-.btn-danger {
-    border-color: #ff5a5f;
-    border-bottom-color: #e00007;
-    background-color: #ff5a5f;
-    color: #fff;
-    border-radius:0.3em;
-}
-.active-nav {
-    color: #000;
-    font-weight: bold;
-}
-
 .center {
     text-align: center;
+    horizontal-align: center;
 }
 /* SIGNUP */
 
 input[type="text"], input[type="password"] {
     border-color: #dfe0e6;
-    display: block;
     height: 3em;
-    margin-bottom: 1em !important;
-    border-radius: .2em !important;
+    margin-bottom: 1em;
+    border-radius: .2em;
 }
 .signup .signup-btn {
     width: 100%;
@@ -52,4 +131,14 @@ input[type="text"], input[type="password"] {
 }
 .heading {
     margin: .5em 0 1em 0;
+}
+
+/* RESULTS */
+
+.product-image {
+    width: 100%;
+}
+.search-result {
+    border-bottom: 1px solid #ebebeb;
+    padding: 15px;
 }
