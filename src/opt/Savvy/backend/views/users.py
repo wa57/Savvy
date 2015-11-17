@@ -75,6 +75,3 @@ def api_delete_user():
 @user_blueprint.route("/reset_password", methods=["POST"])
 def api_reset_password():
     pass
-
-
-def api_l
