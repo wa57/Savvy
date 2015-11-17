@@ -1,9 +1,12 @@
+<div class="content-header">
+    <h2>Welcome to Savvy</h2>
+</div>
 <div class="homepage row">
-    <section class="col-md-12 top-block center">
+    <form ng-submit='search()' class="col-md-12 top-block center">
         <p class="tagline">Tagline</p>
         <input type="text"
                ng-model="search_term"
-               id="search-box"
+               class="search-box"
                placeholder="Search Thousands of Products and Services">
         <button class="btn btn-default" ng-click="search()">Go!</button>
         <div>
@@ -14,7 +17,7 @@
               Submit a Price
            </a>
        </div>
-   </section>
+   </form>
     <section class="middle-block col-md-12 center">
         <button id="sign-up-button" class="btn btn-default">Sign Up</button>
         <p>Already signed up? <a ui-sref="login">Login</a></p>

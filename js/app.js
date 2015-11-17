@@ -1,9 +1,10 @@
 var app = angular.module('savvy', ['ui.router']);
 
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
 
     $urlRouterProvider.otherwise('/');
     //$locationProvider.html5Mode(true);
+    $urlMatcherFactoryProvider.strictMode(false)
 
     $stateProvider
         // HOME STATES AND NESTED VIEWS ========================================
@@ -27,21 +28,24 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider) {
         })
 
         .state('search', {
-            url: '/search/:search',
+            url: '/search/:search_term',
             templateUrl: 'templates/template_search.html',
             controller: 'searchController',
-        })
-
-        .state('results', {
-            url: '/results/:search_term',
-            templateUrl: 'templates/template_results.html',
-            controller: 'searchController'
+            params: {
+                search_term: {
+                    value: null,
+                    squash: true
+                }
+            }
         })
 
         .state('submit', {
             url: '/submit',
             templateUrl: 'templates/template_submit.html',
-            controller: 'submitController'
+            controller: 'submitController',
+            data: {
+                requireLogin: true
+            }
         })
         .state('product', {
             url: '/product/:product',

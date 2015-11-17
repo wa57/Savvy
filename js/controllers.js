@@ -1,18 +1,36 @@
-app.controller('app', function($scope){
+app.controller('app', function($scope) {
+    $scope.theme = 1;
     $scope.user = {
         "logged_in": true
     };
 });
 
+app.controller('submitController', function($scope, $state, $http) {
+    $scope.submitPrice = function() {
+        $http.post("js/submitPriceFactory.json", {
+            product: $scope.product
+        })
+        .success(function(data, status, headers, config) {
+            $scope.data = data;
+            console.log("hi");
+        }).error(function(data, status, headers, config) {
+            $scope.status = status;
+            console.log("error");
+        });
+    }
+
+    $scope.message = "success";
+});
+
 app.controller('homeController', function($scope, $state) {
     $scope.initialize = function() {
         $scope.user = {};
+        $scope.search_term = "";
     }
 
     $scope.search = function() {
-        //ajax call to api
         if($scope.search_term !== "") {
-            $state.go('results', {search_term: $scope.search_term});
+            $state.go('search', {search_term: $scope.search_term});
         }
     };
 
@@ -53,7 +71,7 @@ app.controller('loginController', function($scope) {
     }
 });
 
-app.controller('searchController', function($scope, $stateParams, $http) {
+app.controller('searchController', function($scope, $stateParams, $http, $state) {
     $scope.search_term = $stateParams.search_term;
     $http.get("includes/factory.json",
     {
@@ -62,9 +80,33 @@ app.controller('searchController', function($scope, $stateParams, $http) {
     .success(function(data, status, headers, config) {
         console.log(data);
         $scope.products = data;
+        if(!$stateParams.search_term) {
+            console.log('load in no results');
+            $scope.products = "";
+        }
     }).error(function(data, status, headers, config) {
         $scope.status = status;
     });
+
+    $scope.updateUrl = function() {
+        /*$state.go('results',
+        {
+            search_term: $scope.search_term
+        },
+        {
+            notify: false
+        }).then(function() {
+            $scope.performSearch()
+        });*/
+        $state.go('search',
+        {
+            search_term: $scope.search_term
+        })
+    }
+
+    $scope.performSearch = function() {
+
+    }
 });
 
 app.controller('productController', function($scope, $stateParams) {
@@ -87,7 +129,9 @@ app.controller('productController', function($scope, $stateParams) {
     };
 });
 
-app.controller('navController', function($scope) {
+app.controller('navController', function($scope, $state) {
+    $scope.state = $state;
+    console.log($scope.state);
     $scope.nav_links = {
         "home": {
             "name": "Home",
@@ -121,3 +165,6 @@ app.controller('navController', function($scope) {
 function mockObjects() {
 
 }
+
+
+//make directive for search form + button

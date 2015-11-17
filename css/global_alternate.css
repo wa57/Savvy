@@ -1,5 +1,59 @@
 body {
-    background: #000000 url('../images/footer_lodyas.png') repeat scroll top center;
+    background: #ebebeb;
+    /*background: #000000 url('../images/footer_lodyas.png') repeat scroll top center;*/
+}
+
+h1, h2, h3, h4 {
+    margin: 0;
+}
+
+#nav {
+    background-color: rgb(35, 47, 62);
+}
+
+#nav-body ul {
+    padding: 0;
+}
+
+#nav-header {
+    margin-top: 10px;
+}
+
+#brand-logo {
+    color: #00A079;
+}
+
+ul li {
+    display: inline-block;
+    font-size: 14px;
+    margin-top: 12px;
+}
+
+#nav ul {
+    margin: 0;
+}
+
+#content {
+    background: none repeat scroll 0 0 #fff;
+}
+
+.content-border {
+    background-color: #32CD32;
+    height: 15px;
+    display: block;
+}
+
+#footer {
+    background-color: grey;
+    height: 50px;
+    border-radius: 3px;
+    box-shadow: 0 2px 10px 0 rgba(0,0,0,.16);
+}
+
+#logo img {
+    margin-top: 10px;
+    width: 125px;
+    height: auto;
 }
 
 input[type=text], select {
@@ -54,23 +108,10 @@ input[type=text], select {
 #logo {
 
 }
-
-#content {
-    background: none repeat scroll 0 0 #f2f2f2;
-    margin-right: 0;
-    margin-top: -70px;
-    position: relative;
-    min-height: 500px;
-    -webkit-background-clip: padding-box;
-    border-bottom-left-radius: 5px;
-    border-top-left-radius: 5px;
-}
 .content-header {
     background-color: #e5e5e5;
     min-height: 75px;
     border-top-left-radius: 5px;
-    margin-left: -15px;
-    margin-right: -15px;
     margin-bottom: 15px;
     padding: 15px;
 }

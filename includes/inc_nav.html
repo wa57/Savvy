@@ -1,13 +1,12 @@
-<nav ng-controller="navController" class="row navigation navbar navbar-static-top">
-    <div class="col-md-2">
-        <a class="navbar-brand" ui-sref="/">Savvy</a>
-    </div>
-    <div class="col-md-10">
-        <ul class="nav navbar-nav navbar-right">
-            <li ng-repeat="link in nav_links"
-             ui-sref-active="active-nav">
-                <a ui-sref="{{link.route}}">{{link.name}}</a>
-            </li>
-        </ul>
-    </div>
- </nav>
+<ul>
+    <li><a ui-sref="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    <li ng-repeat="link in nav_links"
+        ui-sref-active="active-nav">
+        <a ui-sref="{{link.route}}">{{link.name}}</a>
+    </li>
+</ul>
+
+<!--<ol class="breadcrumb">
+    <li><a ui-sref="/">Home</a></li>
+    <li><a class="active" ui-sref="'{{state.current.url}}'">{{state.current.name}}</a></li>
+</ol>-->
