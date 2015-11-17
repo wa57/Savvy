@@ -111,9 +111,9 @@ input[type=text], select {
 .content-header {
     background-color: #e5e5e5;
     min-height: 75px;
-    border-top-left-radius: 5px;
     margin-bottom: 15px;
     padding: 15px;
+    margin: 0 -15px 0 -15px;
 }
 
 .content-header h3 {
