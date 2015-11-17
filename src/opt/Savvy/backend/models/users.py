@@ -2,9 +2,7 @@ from flask.ext.security import UserMixin
 from flask.ext.security.datastore import UserDatastore
 from pymongo import MongoClient
 
-from backend.src.opt.Savvy import hash_password
-
-__author__ = 'Colin'
+from backend.views.users import hash_password
 
 
 class User(UserMixin):
