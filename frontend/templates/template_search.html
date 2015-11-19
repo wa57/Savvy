@@ -1,0 +1,69 @@
+<header class="content-header">
+    <h4>Search</h4>
+</header>
+
+<!--Filters:<label class="checkbox-inline">
+    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Price
+</label>
+<label class="checkbox-inline">
+    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Average Price
+</label>
+<label class="checkbox-inline">
+    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Product Name
+</label>
+<label class="checkbox-inline">
+    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Price
+</label>-->
+
+
+<div id="search-result-list">
+    <div class="row">
+        <div class="col-md-6">
+            <p>
+                Showing <strong>404</strong> results for: <strong>"{{search_term}}"</strong>
+            </p>
+        </div>
+        <div class="col-md-6">
+            Sorting Options:
+            <select>
+                <option>
+                    Price
+                </option>
+                <option>
+                    Name
+                </option>
+            </select>
+        </div>
+    </div>
+    <div ng-repeat="product in products" class="row search-result">
+        <div class="col-md-2">
+            <a ui-sref="product({product: '{{product.path}}'})">
+                <img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">
+            </a>
+        </div>
+        <div class="col-md-3">
+            <h4><a ui-sref="product({product: '{{product.path}}'})">{{product.name}}</a></h4>
+            <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
+            <p>Average Price: <strong>{{product.avg_price}}</strong></p>
+        </div>
+        <div class="col-md-3">
+            <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
+            <p>Average Price: <strong>{{product.avg_price}}</strong></p>
+            <p>Average Price: <strong>{{product.avg_price}}</strong></p>
+        </div>
+        <div class="col-md-3">
+            <h4>Tags</h4>
+            <span class="label label-success"><a ui-sref="search({search_term: 'coffee'})">Coffee</a></span>
+            <span class="label label-success"><a ui-sref="search({search_term: 'coffee'})">Coffee</a></span>
+        </div>
+        <!--<div class="col-md-3">
+            <h4>Business Information</h4>
+            <address>
+                <strong>Twitter, Inc.</strong><br>
+                1355 Market Street, Suite 900<br>
+                San Francisco, CA 94103<br>
+                <abbr title="Phone">P:</abbr> (123) 456-7890
+            </address>
+        </div>-->
+    </div>
+</div>

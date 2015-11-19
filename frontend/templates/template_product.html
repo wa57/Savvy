@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-sm-6">
+        <h3>{{product.name}}</h3>
+        <h4>${{product.avg_price}}</h4>
+        <h4>${{product.highest_price}}</h4>
+    </div>
+    <div class="col-sm-6">
+        <img src="http://www.greekshares.com/uploads/image/stock_market_quotes.jpg">
+        <div>
+            <span>Tags:</span>
+            <span ng-repeat="tag in product.tags" class="badge">
+                <a ui-sref="results({search_term: '{{tag.name}}'})">{{tag.name}}</a>
+            </span>
+            <input type="text"
+                   placeholder="Add tags, comma seperated">
+            <button type="button" class="btn btn-primary btn-sm">Submit</button>
+
+        </div>
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-8 col-sm-offset-3">
+        <h2>Price Over Time</h2>
+        <img src="http://image.tutorvista.com/content/feed/u881/T8_8.GIF">
+    </div>
+</div>
+<hr>
+<div class="row">
+    <div class="col-sm-6">
+        <h2>Best Prices</h2>
+        <table>
+            <tr>
+                <th>Brand</th>
+                <th>Avg Price</th>
+                <th>Low Price</th>
+            </tr>
+            <tr>
+                <td>Folgers</td>
+                <td>$1.65</td>
+                <td>$1.20</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-sm-6">
+        <h2>Latest Prices</h2>
+        <table>
+            <tr>
+                <th>Brand</th>
+                <th>Avg Price</th>
+                <th>Low Price</th>
+            </tr>
+            <tr>
+                <td>Folgers</td>
+                <td>$1.65</td>
+                <td>$1.20</td>
+            </tr>
+        </table>
+    </div>
+</div>
