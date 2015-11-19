@@ -1,8 +1,5 @@
-app.controller('app', function($scope) {
+app.controller('app', function($scope, $state) {
     $scope.theme = 1;
-    $scope.user = {
-        "logged_in": true
-    };
 });
 
 app.controller('submitController', function($scope, $state, $http) {
@@ -159,6 +156,12 @@ app.controller('navController', function($scope, $state) {
             case "Search":
                 return
         }*/
+    }
+
+    $scope.search = function() {
+        if($scope.search_term !== "") {
+            $state.go('search', {search_term: $scope.search_term});
+        }
     }
 });
 
