@@ -2,6 +2,7 @@
 <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link href='https://fonts.googleapis.com/css?family=Work+Sans' rel='stylesheet' type='text/css'>
     <base href="/">
 </head>
 <body>
@@ -27,19 +28,25 @@
 
 <div ng-if="theme === 1">
     <link rel="stylesheet" href="css/global_alternate.css">
-    <nav id="nav">
+    <nav id="nav" ng-controller="navController">
         <div class="container">
             <div id="nav-header">
                 <div class="row">
                     <div class="col-md-2">
-                        <h2 id="brand-logo">Savvy</h2>
+                        <div id="brand-logo">
+                            <a ui-sref="/"><img src="images/savvy.png"></a>
+                        </div>
                     </div>
-                    <div class="col-md-8">
-                        <input type="text" size="75">
-                        <button ng-click="updateUrl()" class="search-box-button">
+                    <form ng-submit="search()" class="col-md-8">
+                        <input type="text"
+                               ng-model="search_term"
+                               id="search-box"
+                               placeholder="Search an infinite number of products...">
+                        <button ng-click="search()" id="search-box-button">
                             <i class="fa fa-search"></i>
                         </button>
-                    </div>
+                        <i class="fa fa-question-circle"></i>
+                    </form>
                 </div>
             </div>
             <div id="nav-body">
@@ -47,31 +54,57 @@
                     <div class="col-md-9">
                         <ul>
                             <li>
-                                <a>link</a>
+                                <a ui-sref="/">Home</a>
                             </li>
                             <li>
-                                <a>link</a>
+                                <a ui-sref="submit">Submit Price</a>
                             </li>
                             <li>
-                                <a>link</a>
+                                <a ui-sref="about">About</a>
                             </li>
                         </ul>
                     </div>
                     <div class="col-md-3">
-                        <ul style="float:right;">
+                        <ul id="nav-right">
                             <li>
-                                <a>Login</a>
+                                <a ui-sref="login">Login</a>
                             </li>
                             <li>
-                                <a>Sign Up</a>
+                                <a ui-sref="signup">Sign Up</a>
+                            </li>
+                            <li>
+                                <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
                             </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
+        <div id="nav-footer">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <ol class="breadcrumb">
+                            <li><a href="#">Home</a></li>
+                            <li><a href="#">Library</a></li>
+                            <li class="active">Data</li>
+                        </ol>
+                    </div>
+                    <div class="col-md-6">
+
+                    </div>
+                </div>
+            </div>
+        </div>
     </nav>
     <section id="content" class="container" ui-view></section>
+    <div id="footer" class="container">
+        <ul>
+            <li>
+                sitemap
+            </li>
+        </ul>
+    </div>
 </div>
 
 
