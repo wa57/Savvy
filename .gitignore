@@ -106,3 +106,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Mac OS X Bullshit
+.DS_Store
