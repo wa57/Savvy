@@ -1,8 +1,9 @@
 {
     "Folger's Coffee": {
-        "name": "folger's coffee",
-        "avg_price": "2.43",
-        "highest_price": "3.09",
+        "name": "Folger's coffee",
+        "avg_price": 1.43,
+        "highest_price": 3.09,
+        "lowest_price": 1.83,
         "path": "folgers-coffee",
         "tags": {
             "coffee": {
@@ -18,8 +19,9 @@
     },
     "Starbuck's Coffee": {
         "name": "Starbuck's Coffee",
-        "avg_price": "3.50",
-        "highest_price": "3.76",
+        "avg_price": 3.50,
+        "highest_price": 3.76,
+        "lowest_price": 1.20,
         "path": "starbucks-coffee",
         "tags": {
             "coffee": {
@@ -35,8 +37,27 @@
     },
     "Saxby's Coffee": {
         "name": "Saxby's Coffee",
-        "avg_price": "2.43",
-        "highest_price": "3.09",
+        "avg_price": 2.43,
+        "highest_price": 3.09,
+        "lowest_price": 1.90,
+        "path": "saxbys-coffee",
+        "tags": {
+            "coffee": {
+                "name": "coffee"
+            },
+            "drink": {
+                "name": "drink"
+            },
+            "tasty": {
+                "name": "tasty"
+            }
+        }
+    },
+    "Aaxby's Coffee": {
+        "name": "Aaxby's Coffee",
+        "avg_price": 2.43,
+        "highest_price": 3.09,
+        "lowest_price": 2.30,
         "path": "saxbys-coffee",
         "tags": {
             "coffee": {

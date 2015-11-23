@@ -1,14 +1,8 @@
-<div class="content-header">
-    <h2>Welcome to Savvy</h2>
-</div>
 <div class="homepage row">
+    <div id="home-banner">
+        <img id="home-info" src="images/home-info.png">
+    </div>
     <form ng-submit='search()' class="col-md-12 top-block center">
-        <p class="tagline">Tagline</p>
-        <input type="text"
-               ng-model="search_term"
-               class="search-box"
-               placeholder="Search Thousands of Products and Services">
-        <button class="btn btn-default" ng-click="search()">Go!</button>
         <div>
            <a ng-show="$parent.user.logged_in"
               ui-sref="submit"

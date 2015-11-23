@@ -1,41 +1,23 @@
 <header class="content-header">
-    <h4>Search</h4>
+    <h5><i class="fa fa-search"></i> Search</h5>
 </header>
 
-<!--Filters:<label class="checkbox-inline">
-    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Price
-</label>
-<label class="checkbox-inline">
-    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Average Price
-</label>
-<label class="checkbox-inline">
-    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Product Name
-</label>
-<label class="checkbox-inline">
-    <input type="checkbox" id="inlineCheckbox1" value="option1" /> Price
-</label>-->
-
-
 <div id="search-result-list">
-    <div class="row">
-        <div class="col-md-6">
+    <header class="row">
+        <div class="col-md-8">
             <p>
-                Showing <strong>404</strong> results for: <strong>"{{search_term}}"</strong>
+                Showing <strong>{{returned_results_length}}</strong> results for: <strong>"{{search_term}}"</strong>
             </p>
         </div>
-        <div class="col-md-6">
-            Sorting Options:
-            <select>
-                <option>
-                    Price
-                </option>
-                <option>
-                    Name
-                </option>
+        <div id="search-sort-list" class="col-md-4">
+            <span>Sort by:</span>
+            <select ng-model="chosen_order_item"
+                    ng-change="orderBy()"
+                    ng-options="option.display_name for option in order_options">
             </select>
         </div>
-    </div>
-    <div ng-repeat="product in products" class="row search-result">
+    </header>
+    <div ng-repeat="product in products | orderObjectBy:order_item:order_reverse" class="row search-result">
         <div class="col-md-2">
             <a ui-sref="product({product: '{{product.path}}'})">
                 <img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">
@@ -53,17 +35,9 @@
         </div>
         <div class="col-md-3">
             <h4>Tags</h4>
-            <span class="label label-success"><a ui-sref="search({search_term: 'coffee'})">Coffee</a></span>
-            <span class="label label-success"><a ui-sref="search({search_term: 'coffee'})">Coffee</a></span>
+            <span ng-repeat="tag in product.tags" class="tag label label-success">
+                <a ui-sref="search({search_term: '{{tag.name}}' })">{{tag.name}}</a>
+            </span>
         </div>
-        <!--<div class="col-md-3">
-            <h4>Business Information</h4>
-            <address>
-                <strong>Twitter, Inc.</strong><br>
-                1355 Market Street, Suite 900<br>
-                San Francisco, CA 94103<br>
-                <abbr title="Phone">P:</abbr> (123) 456-7890
-            </address>
-        </div>-->
     </div>
 </div>

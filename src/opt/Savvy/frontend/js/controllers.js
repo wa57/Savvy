@@ -1,10 +1,22 @@
 app.controller('app', function($scope, $state) {
-    $scope.theme = 1;
+
 });
 
 app.controller('submitController', function($scope, $state, $http) {
+    $scope.initialize = function() {
+        $scope.product = {};
+        $scope.receipt = {};
+    }
     $scope.submitPrice = function() {
-        $http.post("js/submitPriceFactory.json", {
+        console.log($scope.product.image);
+        $scope.receipt = $scope.product; //mock code
+        $scope.receipt.id = 432126;
+
+        //this should go in callback after ajax success
+        $scope.message = "success";
+
+
+        /*$http.post("js/submitPriceFactory.json", {
             product: $scope.product
         })
         .success(function(data, status, headers, config) {
@@ -13,10 +25,10 @@ app.controller('submitController', function($scope, $state, $http) {
         }).error(function(data, status, headers, config) {
             $scope.status = status;
             console.log("error");
-        });
+        });*/
     }
 
-    $scope.message = "success";
+    $scope.initialize(); //can put this in ng-init
 });
 
 app.controller('homeController', function($scope, $state) {
@@ -24,12 +36,6 @@ app.controller('homeController', function($scope, $state) {
         $scope.user = {};
         $scope.search_term = "";
     }
-
-    $scope.search = function() {
-        if($scope.search_term !== "") {
-            $state.go('search', {search_term: $scope.search_term});
-        }
-    };
 
     $scope.initialize();
 });
@@ -70,13 +76,53 @@ app.controller('loginController', function($scope) {
 
 app.controller('searchController', function($scope, $stateParams, $http, $state) {
     $scope.search_term = $stateParams.search_term;
-    $http.get("includes/factory.json",
-    {
+    $scope.initialize = function() {
+        $scope.initializeOptions();
+    }
+    $scope.initializeOptions = function() {
+        $scope.order_options = [
+            {
+                "name": "avg_price",
+                "display_name": "Average Price: Low to High",
+                "order_reverse": false
+            },
+            {
+                "name": "avg_price",
+                "display_name": "Average Price: High to Low",
+                "order_reverse": true
+            },
+            {
+                "name": "low_price",
+                "display_name": "Lowest Price (Descending)",
+                "order_reverse": false
+            },
+            {
+                "name": "name",
+                "display_name": "Product Name: A to Z",
+                "order_reverse": false
+            },
+            {
+                "name": "name",
+                "display_name": "Product Name: Z to A",
+                "order_reverse": true
+            }
+        ];
+        $scope.chosen_order_item = $scope.order_options[0];
+        $scope.orderBy();
+    }
+    $scope.orderBy = function() {
+        //console.log($scope.sort_item);
+        console.log($scope.chosen_order_item);
+        $scope.order_item = $scope.chosen_order_item.name;
+        $scope.order_reverse = $scope.chosen_order_item.order_reverse;
+        console.log($scope.order_reverse);
+    }
+    $http.get("includes/factory.json", {
         "foo":"bar"
     })
     .success(function(data, status, headers, config) {
-        console.log(data);
         $scope.products = data;
+        $scope.returned_results_length = Object.keys($scope.products).length;
         if(!$stateParams.search_term) {
             console.log('load in no results');
             $scope.products = "";
@@ -85,25 +131,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $scope.status = status;
     });
 
-    $scope.updateUrl = function() {
-        /*$state.go('results',
-        {
-            search_term: $scope.search_term
-        },
-        {
-            notify: false
-        }).then(function() {
-            $scope.performSearch()
-        });*/
-        $state.go('search',
-        {
-            search_term: $scope.search_term
-        })
-    }
-
-    $scope.performSearch = function() {
-
-    }
+    $scope.initialize();
 });
 
 app.controller('productController', function($scope, $stateParams) {
@@ -165,9 +193,16 @@ app.controller('navController', function($scope, $state) {
     }
 });
 
-function mockObjects() {
-
-}
-
-
-//make directive for search form + button
+app.filter('orderObjectBy', function() {
+    return function(items, field, reverse) {
+        var filtered = [];
+        angular.forEach(items, function(item) {
+            filtered.push(item);
+        });
+        filtered.sort(function (a, b) {
+            return (a[field] > b[field] ? 1 : -1);
+        });
+        if(reverse) filtered.reverse();
+        return filtered;
+    };
+});

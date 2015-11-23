@@ -1,54 +1,65 @@
-<div class="content-header">
-    <h4>Submit a Price</h4>
-</div>
-<div class="widget-box">
-    <div class="widget-header">
-        <i class="fa fa-info-circle widget-icon"></i>
-        <span class="widget-title">Instructions</span>
+<div id="submit-price">
+    <div class="content-header">
+        <h5><i class="fa fa-share-square-o"></i> Submit a Price</h5>
     </div>
-    <section class="widget-body">
-        <p>This page allows you to submit the details of a product you recently purchased</p>
-    </section>
-</div>
-<form id="submit-product-form" class="widget-box col-md-6" role="form">
-    <div class="widget-header">
-        <i class="fa fa-camera-retro widget-icon"></i>
-        <span class="widget-title">Product Submission</span>
-    </div>
-    <section class="widget-body">
-        <div class="form-group">
-        	<label for="exampleInputEmail1">Brand</label>
-        	<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter brand name">
-        </div>
-        <div class="form-group">
-        	<label for="exampleInputPassword1">Product Name</label>
-        	<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter the name of the product">
-        </div>
-        <div class="form-group">
-        	<label for="exampleInputPassword1">Type of Good</label>
-        	<input type="text" class="form-control" id="exampleInputPassword1" placeholder="e.g. Coffee or Television">
-        </div>
-        <div class="form-group">
-        	<label for="exampleInputPassword1">Place of Purchase</label>
-        	<input type="text" class="form-control" id="exampleInputPassword1" placeholder="e.g. Walmart or McDonald's">
-        </div>
-        <div class="form-group">
-        	<label for="exampleInputPassword1">Price Paid</label>
-        	<input type="text" class="form-control" id="exampleInputPassword1" placeholder="Enter the price you paid">
-        </div>
-        <div class="form-group">
-        	<label for="exampleInputFile">Upload a picture of the product</label>
-        	<input type="file" id="exampleInputFile" />
-        </div>
-        <div class="checkbox">
-        	<label><input type="checkbox" /> Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-success btn-lg btn-block">Submit</button>
-        <span ng-show="message === 'processing'"><img src="images/spinner.gif"></span>
-        <span ng-show="message === 'success'" class="text-success">Product Saved!</span>
-    </section>
-</form>
+    <form ng-submit="submitPrice()" ng-hide="message === 'success'" id="submit-product-form" role="form">
+        <section class="">
+            <label>
+                <span>Brand</span>
+                <input type="text"
+                        ng-model="product.brand"
+                        placeholder="Enter brand name">
+            </label>
+            <label>
+                <span>Product Name</span>
+                <input type="text"
+                        ng-model="product.name"
+                        placeholder="Enter the name of the product">
+            </label>
+            <label>
+            	<span>Type of Good</span>
+            	<input type="text"
+                        ng-model="product.product_type"
+                        placeholder="e.g. Coffee or Television">
+            </label>
+            <label>
+            	<span>Place of Purchase</span>
+            	<input type="text"
+                        ng-model="product.place_of_purchase"
+                        placeholder="e.g. Walmart or McDonald's">
+            </label>
+            <label>
+            	<span>Price Paid (without $ sign)</span>
+            	<input type="text"
+                        ng-model="product.price"
+                        placeholder="Enter the price you paid">
+            </label>
+            <label>
+            	<span>Upload a picture of the product</span>
+            	<input type="file" fileread="product.image">
+            </label>
+            <button type="submit" class="btn btn-success btn-md">Submit</button>
+            <span ng-show="message === 'processing'"><img src="images/spinner.gif"></span>
+            <span ng-show="message === 'success'" class="text-success">Product Saved!</span>
+        </section>
+    </form>
 
-<div class="col-md-6">
-    <h
+    <div ng-show="message === 'success'">
+        <div class="alert alert-success">
+            <i class="fa fa-check-circle primary-color"></i>
+            Price successfully added!
+        </div>
+        <h4><i class="fa fa-paste primary-color"></i> Receipt For Your Records</h4>
+        <span class="note">You can view this receipt and all of your submissions in <a ui-sref="account_settings">Account Settings</a></span>
+        <hr>
+        <p>ID: <strong>{{receipt.id}}</strong></p>
+        <p>Brand: <strong>{{receipt.brand}}</strong></p>
+        <p>Product Name: <strong>{{receipt.name}}</strong></p>
+        <p>Product Type: <strong>{{receipt.product_type}}</strong></p>
+        <p>Place of Purchase: <strong>{{receipt.place_of_purchase}}</strong></p>
+        <p>Price Paid: <strong>{{receipt.price_paid}}</strong></p>
+        <div>
+            <button ng-click="message = ''" class="btn btn-primary">Submit Another Price</button>
+        </div>
+    </div>
 </div>
