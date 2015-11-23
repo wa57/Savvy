@@ -211,20 +211,44 @@ input[type=text], select {
 }
 
 /* HOMEPAGE */
+#homepage-logo-block {
+    background-image: url(http://previews.123rf.com/images/coffmancmu/coffmancmu1410/coffmancmu141000641/32835485-Coffee-shop-blur-background-with-bokeh-image--Stock-Photo-restaurant.jpg);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    border-bottom: 1px solid #ebebeb;
+    border-radius: 3px;
+    margin-bottom: 40px;
+}
+
+#homepage-info img {
+    margin: auto;
+    display: block;
+    padding-top: 25px;
+}
+
+#homepage-info h3 {
+    color: #fff;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+
+#homepage-info p {
+    margin: auto;
+    margin-top: 20px;
+    font-size: 14px;
+    width: 50%;
+}
+
 #home-banner {
     background-image: url(../images/home-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
-    height: 50%;
-}
-
-#home-info {
-    background-color: #fff;
-    width: 50%;
-    display: block;
-    margin: auto;
-    display: table-cell; vertical-align: middle;
+    height: 220px;
+    margin-bottom: -15px;
+    margin-top: 50px;
+    border-top: 1px solid #ebebeb;
 }
 
 #search-box {
