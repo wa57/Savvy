@@ -43,7 +43,7 @@ def create_products():
 
     for product_id in range(0, 100):
 
-        name = random.choice(_sample1) + random.choice(_sample2)
+        name = random.choice(_sample1) + " " + random.choice(_sample2)
 
         new_product = {"product_id": product_id,
                        "description": name}
@@ -119,13 +119,13 @@ def upload_fake_data():
         db.users.insert(user)
     for product in json.load(open("products.json")):
         print("Inserting {}".format(product["description"]))
-        db.users.insert(product)
+        db.products.insert(product)
     for business in json.load(open("businesses.json")):
         print("Inserting {}".format(business["name"]))
-        db.users.insert(business)
+        db.businesses.insert(business)
     for price in json.load(open("prices.json")):
         print("Inserting {}".format(price["price"]))
-        db.users.insert(price)
+        db.prices.insert(price)
 
 
 if __name__ == '__main__':
