@@ -1,5 +1,7 @@
 import json
+import os
 import random
+import sys
 from faker import Factory
 
 
@@ -108,5 +110,27 @@ def main():
     create_businesses()
     create_prices()
 
+
+def upload_fake_data():
+    sys.path.append(os.path.abspath(".."))
+    from backend.database import db
+    for user in json.load(open("users.json")):
+        print("Inserting {}".format(user["username"]))
+        db.users.insert(user)
+    for product in json.load(open("products.json")):
+        print("Inserting {}".format(product["description"]))
+        db.users.insert(product)
+    for business in json.load(open("businesses.json")):
+        print("Inserting {}".format(business["name"]))
+        db.users.insert(business)
+    for price in json.load(open("prices.json")):
+        print("Inserting {}".format(price["price"]))
+        db.users.insert(price)
+
+
 if __name__ == '__main__':
-    main()
+    if "create" in sys.argv:
+        main()
+    if "upload" in sys.argv:
+        upload_fake_data()
+
