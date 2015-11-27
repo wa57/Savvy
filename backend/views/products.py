@@ -9,8 +9,8 @@ from backend.utils import json_error
 product_blueprint = Blueprint("products", __name__, url_prefix="/api/v1/products")
 
 
-@product_blueprint.route("/", methods=["GET"])
-def api_products():
+@product_blueprint.route("/search", methods=["GET"])
+def api_search():
     """Returns details about products.
 
     Input Parameters:
