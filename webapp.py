@@ -5,6 +5,7 @@ from flask import Flask
 
 from backend.views.users import user_blueprint
 from backend.views.products import product_blueprint
+from backend.views.prices import price_blueprint
 
 
 app = Flask(__name__)
@@ -26,6 +27,7 @@ def api_docs():
 # Register all of the blueprints
 app.register_blueprint(user_blueprint)
 app.register_blueprint(product_blueprint)
+app.register_blueprint(price_blueprint)
 
 
 if __name__ == '__main__':
