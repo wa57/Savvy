@@ -22,7 +22,3 @@ class ProductDB(object):
         from backend.database import db
         results = db.products.find({"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}, {"_id": 0})
         return [dict(result) for result in results]
-
-    def add_price(self):
-        """Adds a price record to the database."""
-        pass
