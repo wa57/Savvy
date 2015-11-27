@@ -4,12 +4,13 @@ from flask import Blueprint
 from flask import request
 
 from backend.models.products import ProductDB
-from backend.utils import json_error
+from backend.utils import json_error, crossdomain
 
 product_blueprint = Blueprint("products", __name__, url_prefix="/api/v1/products")
 
 
 @product_blueprint.route("/search", methods=["GET"])
+@crossdomain(origin="*")
 def api_search():
     """Returns details about products.
 
