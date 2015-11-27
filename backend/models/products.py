@@ -19,7 +19,7 @@ class ProductDB(object):
     def search(self, query):
         """Returns a list of matching products."""
         from backend.database import db
-        results = db.products.find_many({"description": {"$regex": ".*{}.*".format(query)}})
+        results = db.products.find({"description": {"$regex": ".*{}.*".format(query)}})
         return results
 
     def add_price(self):
