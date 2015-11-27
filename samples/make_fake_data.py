@@ -92,8 +92,8 @@ def create_prices():
         business = random.choice(businesses)
         product = random.choice(products)
 
-        new_price = {"product": product["product_id"],
-                     "business": business["business_id"],
+        new_price = {"product": product["description"],
+                     "business": business["name"],
                      "user": user["username"],
                      "price": random.randint(1000, 2000)}
 
