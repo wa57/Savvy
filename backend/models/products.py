@@ -14,8 +14,6 @@ class Product(object):
 class ProductDB(object):
     """Class to connect to the Products Datastore."""
 
-    _products = []
-
     def search(self, query):
         """Returns a list of matching products."""
         import re
