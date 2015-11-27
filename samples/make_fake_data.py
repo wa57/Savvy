@@ -114,15 +114,19 @@ def main():
 def upload_fake_data():
     sys.path.append(os.path.abspath(".."))
     from backend.database import db
+    db.users.drop()
     for user in json.load(open("users.json")):
         print("Inserting {}".format(user["username"]))
         db.users.insert(user)
+    db.products.drop()
     for product in json.load(open("products.json")):
         print("Inserting {}".format(product["description"]))
         db.products.insert(product)
+    db.businesses.drop()
     for business in json.load(open("businesses.json")):
         print("Inserting {}".format(business["name"]))
         db.businesses.insert(business)
+    db.prices.drop()
     for price in json.load(open("prices.json")):
         print("Inserting {}".format(price["price"]))
         db.prices.insert(price)
