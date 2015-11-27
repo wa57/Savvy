@@ -4,12 +4,13 @@ from flask import Blueprint
 from flask import request
 
 from backend.models.prices import PriceDB
-from backend.utils import json_error
+from backend.utils import json_error, crossdomain
 
 price_blueprint = Blueprint("prices", __name__, url_prefix="/api/v1/prices")
 
 
 @price_blueprint.route("/get", methods=["GET"])
+@crossdomain(origin="*")
 def api_get_prices():
     """Returns details about products.
 
