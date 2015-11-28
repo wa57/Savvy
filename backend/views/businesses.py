@@ -6,10 +6,10 @@ from flask import request
 from backend.models.businesses import BusinessDB
 from backend.utils import json_error, crossdomain
 
-product_blueprint = Blueprint("businesses", __name__, url_prefix="/api/v1/businesses")
+business_blueprint = Blueprint("businesses", __name__, url_prefix="/api/v1/businesses")
 
 
-@product_blueprint.route("/search", methods=["GET"])
+@business_blueprint.route("/search", methods=["GET"])
 @crossdomain(origin="*")
 def api_search():
     """Returns details about businesses.
