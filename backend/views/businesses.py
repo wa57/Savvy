@@ -41,6 +41,6 @@ def api_search():
     query = request.args.get("query", None)
     if not query:
         return json_error("Query can not be empty")
-    business_db = ProductDB()
+    business_db = BusinessDB()
     results = business_db.search(query)
     return json.dumps(results)
