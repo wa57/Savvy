@@ -3,14 +3,18 @@ from flask import make_response, request, current_app
 from functools import update_wrapper
 
 
-def json_error(msg):
+def json_error(msg, **data):
     import json
-    return json.dumps({"error": msg})
+    response = {"error": msg}
+    response.update(data)
+    return json.dumps(response)
 
 
-def json_success(msg):
+def json_success(msg, **data):
     import json
-    return json.dumps({"success": msg})
+    response = {"success": msg}
+    response.update(data)
+    return json.dumps(response)
 
 
 def hash_password(passwd, salt=None):
