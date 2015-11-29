@@ -1,8 +1,8 @@
 <header class="content-header">
     <h5><i class="fa fa-search"></i> Search</h5>
 </header>
-
-<div id="search-result-list">
+<div ng-show="message === 'processing'"><img src="images/loader.GIF"></div>
+<div ng-show="message === 'success'" id="search-result-list">
     <header class="row">
         <div class="col-md-8">
             <p>
@@ -17,27 +17,31 @@
             </select>
         </div>
     </header>
-    <div ng-repeat="product in products | orderObjectBy:order_item:order_reverse" class="row search-result">
-        <div class="col-md-2">
-            <a ui-sref="product({product: '{{product.path}}'})">
-                <img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">
-            </a>
+    <div ng-repeat="product in products | orderObjectBy:order_item:order_reverse" class="search-result">
+        <div class="row">
+            <h4 class="col-md-12"><a ui-sref="product({product: '{{product.path}}'})">{{product.description}}</a></h4>
         </div>
-        <div class="col-md-3">
-            <h4><a ui-sref="product({product: '{{product.path}}'})">{{product.name}}</a></h4>
-            <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
-            <p>Average Price: <strong>{{product.avg_price}}</strong></p>
-        </div>
-        <div class="col-md-3">
-            <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
-            <p>Average Price: <strong>{{product.avg_price}}</strong></p>
-            <p>Average Price: <strong>{{product.avg_price}}</strong></p>
-        </div>
-        <div class="col-md-3">
-            <h4>Tags</h4>
-            <span ng-repeat="tag in product.tags" class="tag label label-success">
-                <a ui-sref="search({search_term: '{{tag.name}}' })">{{tag.name}}</a>
-            </span>
+        <div class="row">
+            <div class="col-md-2">
+                <a ui-sref="product({product: '{{product.path}}'})">
+                    <img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">
+                </a>
+            </div>
+            <div class="col-md-3">
+                <p>Product ID: <strong>{{product.product_id}}</strong></p>
+                <p>Description: <strong>{{product.description}}</strong></p>
+            </div>
+            <!--<div class="col-md-3">
+                <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
+                <p>Average Price: <strong>{{product.avg_price}}</strong></p>
+                <p>Average Price: <strong>{{product.avg_price}}</strong></p>
+            </div>-->
+            <div class="col-md-3">
+                <h4>Tags</h4>
+                <span ng-repeat="tag in product.tags" class="tag label label-success">
+                    <a ui-sref="search({search_term: '{{tag.name}}' })">{{tag.name}}</a>
+                </span>
+            </div>
         </div>
     </div>
 </div>

@@ -34,7 +34,7 @@ app.directive("fileread", [function () {
     }
 }]);*/
 
-app.directive('handleSubmit', function () {
+app.directive('handleSubmit', function () { //Addresses usability problem on phones where keyboard does not dismiss after form submit
     return function (scope, element, attr) {
         var textFields = element.find('input');
 
