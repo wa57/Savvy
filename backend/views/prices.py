@@ -34,7 +34,29 @@ def api_get_prices():
 @price_blueprint.route("/add", methods=["POST"])
 @crossdomain(origin="*")
 def api_add_price():
-    """Adds a price to the database."""
+    """Adds a price to the database.
+
+    POST http://besavvy.xyz/api/v1/prices/add
+
+    Input Parameters:
+        product     (string)    : The product description.
+        business    (string)    : The business name.
+        user        (string)    : The username of the price submitter.
+        price       (integer)   : The price in USD cents.
+
+    Returns HTTP 200:
+        {
+            success: "Price added successfully."
+        }
+        OR
+        {
+            error: "Unable to add price."
+        }
+        OR
+        {
+            error: "Missing s required field."
+        }
+    """
     data = request.get_json()
     product = data.get("product", None)
     business = data.get("business", None)
