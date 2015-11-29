@@ -16,6 +16,13 @@ class PriceDB(object):
         results = db.prices.find(query, {"_id": 0})
         return [dict(result) for result in results]
 
-    def add_price(self):
+    def add_price(self, product, business, price, user):
         """Adds a price record to the database."""
-        pass
+        from backend.database import db
+        new_price = {"product": product,
+                     "business": business,
+                     "price": int(price),
+                     "user": user}
+        result = db.prices.insert_one(new_price)
+        return result.inserted_id or None
+
