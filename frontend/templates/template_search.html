@@ -23,7 +23,7 @@
             </select>
         </div>
     </header>
-    <div ng-show="message !== 'no-results'" class="col-md-9">
+    <div ng-show="message !== 'no-results'">
         <div ng-repeat="product in products | orderObjectBy:order_item:order_reverse" class="search-result">
             <div class="row">
                 <h4 class="col-md-12"><a ui-sref="product({product: '{{product.path}}'})">{{product.description}}</a></h4>
@@ -35,7 +35,7 @@
                         No Image Available
                     </a>
                 </div>
-                <div class="col-md-3">
+                <div class="col-md-6">
                     <p>Product ID: <strong>{{product.product_id}}</strong></p>
                     <p>Average Price: <strong>${{product.average_price / 100}}</strong></p>
                 </div>
@@ -44,7 +44,7 @@
                     <p>Average Price: <strong>{{product.avg_price}}</strong></p>
                     <p>Average Price: <strong>{{product.avg_price}}</strong></p>
                 </div>-->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h4>Tags</h4>
                     <span ng-repeat="tag in product.tags" class="tag label label-success">
                         <a ui-sref="search({search_term: '{{tag.name}}' })">{{tag.name}}</a>
@@ -53,7 +53,7 @@
             </div>
         </div>
     </div>
-    <div class="col-md-3">
+    <!--<div class="col-md-3">
         <div class="filter-box">
             <header>
                 <h5>Narrow by related tags</h5>
@@ -73,5 +73,5 @@
                 </li>
             </ul>
         </div>
-    </div>
+    </div>-->
 </div>
