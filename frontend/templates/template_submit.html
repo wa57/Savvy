@@ -16,6 +16,8 @@
                 <input type="text"
                         ng-model="product.business"
                         ng-required="true"
+                        ng-change="searchPlaces()"
+                        id="places"
                         placeholder="Enter where you bought the product">
             </label>
             <!--<label>
