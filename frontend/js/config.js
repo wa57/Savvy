@@ -1,3 +1,3 @@
 var savvy = {
-    api_root: "http://besavvy.xyz/api/v1/"
+    api_root: "http://savvyapp-dev.azurewebsites.net/"
 }
