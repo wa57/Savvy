@@ -1,0 +1,12 @@
+<ul>
+    <li><a ui-sref="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+    <li ng-repeat="link in nav_links"
+        ui-sref-active="active-nav">
+        <a ui-sref="{{link.route}}">{{link.name}}</a>
+    </li>
+</ul>
+
+<!--<ol class="breadcrumb">
+    <li><a ui-sref="/">Home</a></li>
+    <li><a class="active" ui-sref="'{{state.current.url}}'">{{state.current.name}}</a></li>
+</ol>-->
