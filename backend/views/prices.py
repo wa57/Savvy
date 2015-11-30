@@ -31,7 +31,7 @@ def api_get_prices():
     return json.dumps(results)
 
 
-@price_blueprint.route("/add", methods=["POST"])
+@price_blueprint.route("/add", methods=["POST", "OPTIONS"])
 @crossdomain(origin="*")
 def api_add_price():
     """Adds a price to the database.
