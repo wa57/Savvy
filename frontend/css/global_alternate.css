@@ -23,6 +23,10 @@ h1, h2, h3, h4, h5 {
     margin: 0;
 }
 
+ul {
+
+}
+
 .breadcrumb {
     margin: 0;
     padding: 0;
@@ -225,7 +229,7 @@ input, select {
 
 /* HOMEPAGE */
 #homepage-logo-block {
-    background-image: url(http://previews.123rf.com/images/coffmancmu/coffmancmu1410/coffmancmu141000641/32835485-Coffee-shop-blur-background-with-bokeh-image--Stock-Photo-restaurant.jpg);
+    background-image: url(../images/main-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -277,7 +281,7 @@ input, select {
 }
 
 #home-banner {
-    background-image: url(../images/home-banner.png);
+    background-image: url(../images/savvy-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -384,6 +388,28 @@ input, select {
 
 .search-result h4 {
     margin-bottom: 10px;
+}
+
+.filter-box {
+    border: 1px solid #ebebeb;
+    border-radius: 2px;
+}
+
+.filter-box header {
+    background-color: #00A079;
+}
+
+.filter-box h5 {
+    color: #fff;
+}
+
+.filter-box ul {
+    margin: 0;
+    padding: 0;
+}
+
+.filter-box li {
+    display: block;
 }
 
 
