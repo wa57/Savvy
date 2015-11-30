@@ -1,0 +1,31 @@
+<div class="homepage row">
+    <div id="homepage-info" class="center">
+        <div id="homepage-logo-block">
+            <img src="images/dollar-logo.png">
+            <h3>Crowdsourced Price Data</h3>
+        </div>
+        <h4>Welcome to Savvy</h4>
+        <p>
+            Savvy is all about saving you money by letting you compare prices of products
+            and services submitted by people around you.
+        </p>
+        <p>
+            Using Savvy is like having a personal army of ninjas whose job it is to find you
+            the best prices on anything.
+        </p>
+    </div>
+    <div id="home-banner" class="center">
+        <a ng-show="$parent.user.logged_in"
+           ui-sref="submit"
+           class="btn btn-default btn-lg"
+           type="button">
+           Submit a Price
+        </a>
+        <div id="signup-block">
+            <p>
+                Wanna be Savvy?
+            </p>
+            <a ui-sref="signup" class="btn btn-signup">Sign Up</a>
+        </div>
+    </div>
+</div>
