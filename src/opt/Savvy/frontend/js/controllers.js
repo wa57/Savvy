@@ -2,35 +2,61 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     $scope.initialize = function() {
         $scope.product = {};
         $scope.receipt = {};
-        $scope.product.price = 2;
-        $scope.product.place_of_purchase = "walmart";
-        $scope.product.name = "12 oz coffee";
-        $scope.product.brand = "folger folger";
-        $scope.product.product_type = "coffee";
     }
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
-        var id = Math.floor(Math.random() * (100 - 1));
-        var url = "http://echo.jsontest.com/id/" + id + "/";
+        /*var id = Math.floor(Math.random() * (100 - 1));
         for (var key in $scope.product) {
             url += key + "/" + $scope.product[key] + "/"
-        }
-        $http.post(url, {
-            product: $scope.product
+        }*/
+        var price = $scope.product.price.toFixed(2);
+        var user = makeid();
+        console.log(user);
+
+        /*$http({
+           url:'http://besavvy.xyz/api/v1/prices/add',
+           method:"POST",
+           headers: {
+               'Content-Type': 'application/x-www-form-urlencoded'
+           },
+           data: {
+                  "product": $scope.product.description,
+                  "business": $scope.product.business,
+                  "user": user,
+                  "price": price
+           }
+       });*/
+
+        $http.post("http://besavvy.xyz/api/v1/prices/add", {
+            product: $scope.product.description,
+            business: $scope.product.business,
+            user: user,
+            price: price
         })
         .success(function(data, status, headers, config) {
             console.log(data);
-            $scope.receipt = {};
+            /*$scope.receipt = {};
             for (var key in data) {
                 $scope.receipt[key] = stringReplace.replaceAll(data[key], "%20", " ");
             }
             $scope.product = {};
-            $scope.message = "success";
+            $scope.message = "success";*/
         }).error(function(data, status, headers, config) {
             $scope.status = status;
             $scope.message = "error";
         });
+    }
+
+    function makeid() {
+        var text = "testuser";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
+        for( var i=0; i < 5; i++ ) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+        }
+
+        return text;
     }
 });
 
