@@ -10,8 +10,8 @@ from backend.views.businesses import business_blueprint
 
 
 app = Flask(__name__)
-file_handler = RotatingFileHandler("web.log", maxBytes=25, backupCount=2)
-file_handler.setLevel(logging.INFO)
+file_handler = RotatingFileHandler("web.log", maxBytes=10000, backupCount=2)
+file_handler.setLevel(logging.DEBUG)
 app.logger.addHandler(file_handler)
 
 
