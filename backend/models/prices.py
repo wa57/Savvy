@@ -23,7 +23,6 @@ class PriceDB(DB):
         ])
         return int(next(result)["average"])
 
-
     def search(self, product=None, business=None):
         """Returns a list of matching prices."""
         import re
@@ -37,10 +36,13 @@ class PriceDB(DB):
 
     def add_price(self, product, business, price, user):
         """Adds a price record to the database."""
+        from bson.timestamp import Timestamp
+        from datetime import datetime
         new_price = {"product": product,
                      "business": business,
                      "price": int(price),
-                     "user": user}
+                     "user": user,
+                     "submitted_timestamp": Timestamp(datetime.now())}
         result = self.db.prices.insert_one(new_price)
         return result.inserted_id or None
 
