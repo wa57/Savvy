@@ -1,110 +1,119 @@
-app.controller('app', function($scope, $state) {
-    $scope.theme = 1;
-});
+app.controller('submitController', function($scope, $state, $http, stringReplace) {
+    $scope.initialize = function() {
+        $scope.product = {};
+        $scope.receipt = {};
+    }
 
-app.controller('submitController', function($scope, $state, $http) {
     $scope.submitPrice = function() {
-        $http.post("js/submitPriceFactory.json", {
-            product: $scope.product
+        $scope.message = "processing";
+        var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
+        var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
+        var user = makeid();
+
+        $http.post("http://besavvy.xyz/api/v1/prices/add", {
+            product: $scope.product.description,
+            business: $scope.product.business,
+            user: user,
+            price: price
         })
         .success(function(data, status, headers, config) {
-            $scope.data = data;
-            console.log("hi");
+            $scope.receipt = JSON.parse(JSON.stringify($scope.product));
+            $scope.receipt.id = data.id;
+            $scope.product = {};
+            $scope.message = "success";
         }).error(function(data, status, headers, config) {
             $scope.status = status;
-            console.log("error");
+            $scope.message = "error";
         });
     }
 
-    $scope.message = "success";
-});
+    function makeid() {
+        var text = "testuser";
+        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-app.controller('homeController', function($scope, $state) {
-    $scope.initialize = function() {
-        $scope.user = {};
-        $scope.search_term = "";
-    }
-
-    $scope.search = function() {
-        if($scope.search_term !== "") {
-            $state.go('search', {search_term: $scope.search_term});
+        for( var i=0; i < 5; i++ ) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
-    };
 
-    $scope.initialize();
-});
-
-app.controller('signUpController', function($scope, $state) {
-    console.log($state.includes);
-    $scope.saveNewUser = function() {
-        console.log($scope.user);
-        //ajax post new user to api
-        /*$http.post("http://example.appspot.com/rest/app", {
-            "foo":"bar"
-        })
-        .success(function(data, status, headers, config) {
-            $scope.data = data;
-        }).error(function(data, status, headers, config) {
-            $scope.status = status;
-        });*/
-    }
-
-    $scope.initialize = function() {
-        $scope.user = {};
+        return text;
     }
 
     $scope.initialize();
-});
-
-app.controller('loginController', function($scope) {
-    $scope.data = {};
-
-    $scope.login = function() {
-        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
-            $state.go('tab.dash');
-        }).error(function(data) {
-            console.log('hi');
-        });
-    }
 });
 
 app.controller('searchController', function($scope, $stateParams, $http, $state) {
-    $scope.search_term = $stateParams.search_term;
-    $http.get("includes/factory.json",
-    {
-        "foo":"bar"
-    })
-    .success(function(data, status, headers, config) {
-        console.log(data);
-        $scope.products = data;
-        if(!$stateParams.search_term) {
-            console.log('load in no results');
-            $scope.products = "";
-        }
-    }).error(function(data, status, headers, config) {
-        $scope.status = status;
-    });
-
-    $scope.updateUrl = function() {
-        /*$state.go('results',
-        {
-            search_term: $scope.search_term
-        },
-        {
-            notify: false
-        }).then(function() {
-            $scope.performSearch()
-        });*/
-        $state.go('search',
-        {
-            search_term: $scope.search_term
-        })
+    $scope.initialize = function() {
+        $scope.initializeData();
+        $scope.initializeOptions();
     }
 
-    $scope.performSearch = function() {
+    $scope.initializeData = function() {
+        $scope.search_term = $stateParams.search_term;
+        $scope.message = "processing";
 
+        $http.get("http://besavvy.xyz/api/v1/products/search?query=" + $scope.search_term)
+            .success(function(data, status, headers, config) {
+                $scope.products = data;
+                $scope.returned_results_length = $scope.products.length;
+                $scope.message = "success";
+            })
+            .error(function(data, status, headers, config) {
+                $scope.status = status;
+            });
+
+            console.log($scope.message);
+    }
+
+    $scope.initializeOptions = function() {
+        $scope.order_options = [
+            {
+                name: "average_price",
+                display_name: "Average Price: Low to High",
+                order_reverse: false
+            },
+            {
+                name: "average_price",
+                display_name: "Average Price: High to Low",
+                order_reverse: true
+            },
+            {
+                name: "name",
+                display_name: "Product Name: A to Z",
+                order_reverse: false
+            },
+            {
+                name: "name",
+                display_name: "Product Name: Z to A",
+                order_reverse: true
+            },
+            {
+                name: "description",
+                display_name: "Description: A to Z",
+                order_reverse: false
+            }
+
+        ];
+        $scope.chosen_order_item = $scope.order_options[0];
+        $scope.orderBy();
+    }
+    $scope.orderBy = function() {
+        $scope.order_item = $scope.chosen_order_item.name;
+        $scope.order_reverse = $scope.chosen_order_item.order_reverse;
+    }
+
+    $scope.initialize();
+});
+
+app.controller('navController', function($scope, $state) {
+    $scope.state = $state;
+    $scope.search = function() {
+        if($scope.search_term !== "" && $scope.search_term) {
+            $state.go('search', {search_term: $scope.search_term});
+        }
     }
 });
+
+//WIP CONTROLLERS
 
 app.controller('productController', function($scope, $stateParams) {
     var formatted_product = $stateParams.product[0].toUpperCase() + $stateParams.product.substr(1);
@@ -126,48 +135,23 @@ app.controller('productController', function($scope, $stateParams) {
     };
 });
 
-app.controller('navController', function($scope, $state) {
-    $scope.state = $state;
-    console.log($scope.state);
-    $scope.nav_links = {
-        "home": {
-            "name": "Home",
-            "route": "/",
-        },
-        "search": {
-            "name": "Search",
-            "route": "search",
-        },
-        "signup": {
-            "name": "Sign Up Free",
-            "route": "signup",
-        },
-        "login": {
-            "name": "Login",
-            "route": "login",
-        }
-    };
+app.controller('loginController', function($scope) {
+    $scope.data = {};
 
-    $scope.displayLink = function(link) {
-        /*switch(link.name) {
-            case "Home":
-                return true;
-            break;
-            case "Search":
-                return
-        }*/
-    }
-
-    $scope.search = function() {
-        if($scope.search_term !== "") {
-            $state.go('search', {search_term: $scope.search_term});
-        }
+    $scope.login = function() {
+        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
+            $state.go('tab.dash');
+        }).error(function(data) {
+            console.log('hi');
+        });
     }
 });
 
-function mockObjects() {
+app.controller('app', function($scope, $state) {
+    console.log($state);
+    $scope.title = $state.current.display_name;
+    console.log($state.current);
+});
 
-}
-
-
-//make directive for search form + button
+app.controller('homeController', function($scope, $state) {});
+app.controller('signUpController', function($scope, $state) {});
