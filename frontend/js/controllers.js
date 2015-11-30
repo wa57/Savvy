@@ -9,24 +9,29 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         $scope.message = "processing";
         var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
-        console.log(price);
-        var user = $scope.makeid();
-
-        $http.post(savvy.api_root + "prices/add", {
+        var post_data = {
             product: $scope.product.description,
             business: $scope.google_places,
-            user: user,
-            price: price,
+            user: $scope.makeid(),
+            price: price
+        };
+        console.log(post_data);
+        $http({
+            method: "POST",
+            url: savvy.api_root + "prices/add",
+            data: post_data,
+            headers: {'Content-Type': 'application/json'}
         })
-        .success(function(data, status, headers, config) {
-            $scope.receipt = JSON.parse(JSON.stringify($scope.product));
-            $scope.receipt.id = data.id;
-            $scope.product = {};
-            $scope.message = "success";
-        }).error(function(data, status, headers, config) {
-            $scope.status = status;
-            $scope.message = "error";
-        });
+            .success(function(data, status, headers, config) {
+                $scope.receipt = JSON.parse(JSON.stringify($scope.product));
+                $scope.receipt.id = data.id;
+                $scope.product = {};
+                $scope.message = "success";
+            })
+            .error(function(data, status, headers, config) {
+                $scope.status = status;
+                $scope.message = "error";
+            });
     }
 
     $scope.initializeGooglePlaces = function() {
