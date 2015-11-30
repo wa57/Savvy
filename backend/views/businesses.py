@@ -23,15 +23,8 @@ def api_search():
         Example:
             [
                 {
-                    "business_id": 90,
-                    "name": "The Store Store",
-                    "street_address": "111 Holly Drive",
-                    "city": "Nowhereville",
-                    "state": "FL",
-                    "open_time": 9,
-                    "close_time": 21,
-                    "phone": "9999999999",
-                    "google_places_id": "asdf8abdfjwe012"
+                    "name": "Store"
+                    "google_places": {}
                 },
                 {
                     ...
