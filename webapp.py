@@ -9,7 +9,7 @@ from backend.views.prices import price_blueprint
 from backend.views.businesses import business_blueprint
 
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder="frontend")
 app.config["PROPAGATE_EXCEPTIONS"] = True
 file_handler = RotatingFileHandler("web.log", maxBytes=10000, backupCount=2)
 file_handler.setLevel(logging.DEBUG)
@@ -18,6 +18,12 @@ app.logger.addHandler(file_handler)
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
+
+
+@app.route("/")
+def root():
+    """Serve the frontend."""
+    return app.send_static_file("index.html")
 
 
 @app.route("/api/v1")
