@@ -10,6 +10,7 @@ from backend.views.businesses import business_blueprint
 
 
 app = Flask(__name__)
+app.config["PROPAGATE_EXCEPTIONS"] = True
 file_handler = RotatingFileHandler("web.log", maxBytes=10000, backupCount=2)
 file_handler.setLevel(logging.DEBUG)
 app.logger.addHandler(file_handler)
