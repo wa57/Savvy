@@ -13,9 +13,9 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
 
         $http.post(savvy.api_root + "prices/add", {
             product: $scope.product.description,
-            business: $scope.product.business,
+            business: $scope.google_places,
             user: user,
-            price: price
+            price: price,
         })
         .success(function(data, status, headers, config) {
             $scope.receipt = JSON.parse(JSON.stringify($scope.product));
@@ -43,7 +43,9 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         autocomplete = new google.maps.places.Autocomplete(input, options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            $scope.product.business = autocomplete.getPlace();
+            $scope.google_places = autocomplete.getPlace();
+            $scope.google_places.geometry.location.lat = $scope.google_places.geometry.location.lat();
+            $scope.google_places.geometry.location.lng = $scope.google_places.geometry.location.lng();
             $scope.$apply();
         });
     }
