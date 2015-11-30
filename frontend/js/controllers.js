@@ -10,7 +10,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
         var user = makeid();
 
-        $http.post("http://besavvy.xyz/api/v1/prices/add", {
+        $http.post(savvy.api_root + "prices/add", {
             product: $scope.product.description,
             business: $scope.product.business,
             user: user,
@@ -25,6 +25,48 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             $scope.status = status;
             $scope.message = "error";
         });
+    }
+
+    var defaultBounds = new google.maps.LatLngBounds(
+        new google.maps.LatLng(39.952584, -75.165222),
+        new google.maps.LatLng(39.952584, -75.165222)
+    );
+
+    var input = document.getElementById('places');
+    var options = {
+      bounds: defaultBounds,
+      types: ['establishment']
+    };
+
+    autocomplete = new google.maps.places.Autocomplete(input, options);
+
+    google.maps.event.addListener(autocomplete, 'place_changed', function() {
+        var place = autocomplete.getPlace();
+        console.log(place);
+        /*$scope.user.fromLat = place.geometry.location.lat();
+        $scope.user.fromLng = place.geometry.location.lng();
+        $scope.user.from = place.formatted_address;*/
+        $scope.$apply();
+    });
+    console.log(autocomplete.getPlace());
+
+
+    $scope.searchPlaces = function(){
+        if($scope.product.business.length > 3) {
+            var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
+            url += "&location=39.952584,-75.165222";
+            url += "&radius=10000";
+            url += "&name=" + $scope.product.business;
+            url += "&key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU";
+
+            /*$http.jsonp(url)
+                .success(function(data, status, headers, config) {
+                    console.log(JSON.stringify(data));
+                })
+                .error(function(data, status, headers, config) {
+                    console.log(data);
+                })*/
+        }
     }
 
     function makeid() {
@@ -51,7 +93,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $scope.search_term = $stateParams.search_term;
         $scope.message = "processing";
 
-        $http.get("http://besavvy.xyz/api/v1/products/search?query=" + $scope.search_term)
+        $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
                 $scope.returned_results_length = $scope.products.length;
