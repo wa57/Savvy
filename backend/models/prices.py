@@ -44,6 +44,15 @@ class PriceDB(DB):
                      "user": user,
                      "submitted_timestamp": Timestamp(datetime.now(), 1)}
         result = self.db.prices.insert_one(new_price)
-        self.db.products.replace_one({"description": product}, {"description": product}, upsert=True)
-        return result.inserted_id or None
+        result = self.db.products.replace_one({"description": product}, {"description": product}, upsert=True)
+        return result.upserted_id or None
+
+
+def test():
+    price_db = PriceDB()
+    price_db.add_price(product="PTest", business="Target", user="user1", price=201)
+
+
+if __name__ == "__main__":
+    test()
 
