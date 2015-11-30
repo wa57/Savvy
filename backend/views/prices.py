@@ -58,7 +58,7 @@ def api_add_price():
             error: "Missing s required field."
         }
     """
-    data = request.get_json()
+    data = request.form
     product = data.get("product", None)
     business = data.get("business", None)
     user = data.get("user", None)
