@@ -43,30 +43,10 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         autocomplete = new google.maps.places.Autocomplete(input, options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            $scope.google_place = autocomplete.getPlace();
+            $scope.product.business = autocomplete.getPlace();
             $scope.$apply();
         });
     }
-
-
-
-    /*$scope.searchPlaces = function(){
-        if($scope.product.business.length > 3) {
-            var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
-            url += "&location=39.952584,-75.165222";
-            url += "&radius=10000";
-            url += "&name=" + $scope.product.business;
-            url += "&key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU";
-
-            $http.jsonp(url)
-                .success(function(data, status, headers, config) {
-                    console.log(JSON.stringify(data));
-                })
-                .error(function(data, status, headers, config) {
-                    console.log(data);
-                })
-        }
-    }*/
 
     $scope.makeid = function() {
         var text = "testuser";
