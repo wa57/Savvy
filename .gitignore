@@ -108,4 +108,4 @@ docs/_build/
 target/
 
 # Mac OS X Bullshit
-.DS_Store
+*DS_Store*
