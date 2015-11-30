@@ -2,6 +2,9 @@
     <h5><i class="fa fa-search"></i> Search</h5>
 </header>
 <div ng-show="message === 'processing'"><img src="images/loader.GIF"></div>
+<div ng-show="message === 'error'" style="margin-top: 15px; margin-bottom: 15px;">
+    <span class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> There was an error while searching. Please try again later.</span>
+</div>
 <div ng-show="message === 'no-results'">
     Your search for "<strong>{{search_term}}</strong>" returned 0 results.
 </div>
@@ -28,7 +31,8 @@
             <div class="row">
                 <div class="col-md-2">
                     <a ui-sref="product({product: '{{product.path}}'})">
-                        <img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">
+                        <!--<img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">-->
+                        No Image Available
                     </a>
                 </div>
                 <div class="col-md-3">

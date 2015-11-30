@@ -9,6 +9,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         $scope.message = "processing";
         var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
+        console.log(price);
         var user = $scope.makeid();
 
         $http.post(savvy.api_root + "prices/add", {
@@ -44,8 +45,6 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
             $scope.google_places = autocomplete.getPlace();
-            $scope.google_places.geometry.location.lat = $scope.google_places.geometry.location.lat();
-            $scope.google_places.geometry.location.lng = $scope.google_places.geometry.location.lng();
             $scope.$apply();
         });
     }
@@ -82,6 +81,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
             })
             .error(function(data, status, headers, config) {
                 $scope.status = status;
+                $scope.message = "error";
             });
 
             console.log($scope.message);
