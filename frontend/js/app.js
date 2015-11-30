@@ -11,7 +11,8 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
         .state('/', {
             url: '/',
             templateUrl: 'templates/template_home.html',
-            controller: 'homeController'
+            controller: 'homeController',
+            display_name: "Home"
         })
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
@@ -19,18 +20,21 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             url: '/signup',
             templateUrl: 'templates/template_signup.html',
             controller: 'signUpController',
+            display_name: "Sign Up"
         })
 
         .state('login', {
             url: '/login',
             templateUrl: 'templates/template_login.html',
             controller: 'loginController',
+            display_name: "Login"
         })
 
         .state('search', {
             url: '/search/:search_term',
             templateUrl: 'templates/template_search.html',
             controller: 'searchController',
+            display_name: "Search",
             params: {
                 search_term: {
                     value: null,
@@ -43,6 +47,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             url: '/submit',
             templateUrl: 'templates/template_submit.html',
             controller: 'submitController',
+            display_name: "Submit Price",
             data: {
                 requireLogin: true
             }
