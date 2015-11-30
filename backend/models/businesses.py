@@ -28,7 +28,7 @@ class BusinessDB(object):
     def add_business(self, business_object):
         """Adds a business to the database."""
         from backend.database import db
-        record = {
+        new_business = {
             "business_id": business_object.business_id,
             "name": business_object.name,
             "street_address": business_object.street_address,
@@ -39,6 +39,8 @@ class BusinessDB(object):
             "phone_number": business_object.phone_number,
             "description": business_object.description
             }
-        db.businesses.insert(record)
+        result = db.businesses.insert_one(new_business)
+        return result.inserted_id or None
+        
             
             
