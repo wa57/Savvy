@@ -44,8 +44,8 @@ class PriceDB(DB):
                      "user": user,
                      "submitted_timestamp": Timestamp(datetime.now(), 1)}
         result = self.db.prices.insert_one(new_price)
-        result = self.db.products.replace_one({"description": product}, {"description": product}, upsert=True)
-        return result.upserted_id or None
+        result = self.db.products.insert_one({"description": product})
+        return result.inserted_id or None
 
 
 def test():
