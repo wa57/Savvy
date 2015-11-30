@@ -229,7 +229,7 @@ input, select {
 
 /* HOMEPAGE */
 #homepage-logo-block {
-    background-image: url(http://previews.123rf.com/images/coffmancmu/coffmancmu1410/coffmancmu141000641/32835485-Coffee-shop-blur-background-with-bokeh-image--Stock-Photo-restaurant.jpg);
+    background-image: url(../images/main-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -281,7 +281,7 @@ input, select {
 }
 
 #home-banner {
-    background-image: url(../images/home-banner.png);
+    background-image: url(../images/savvy-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
