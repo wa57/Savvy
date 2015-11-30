@@ -4,7 +4,7 @@ __author__ = 'Ryan'
 class Business(object):
     """Class for businesses."""
 
-    def __init__(self, business_id=None, name=None, street_address=None, city=None, state=None, open_time=None, close_time=None, phone_number=None, description=None):
+    def __init__(self, business_id=None, name=None, street_address=None, city=None, state=None, open_time=None, close_time=None, phone_number=None, google_places_id=None):
         self.business_id = business_id
         self.name = name
         self.street_address = street_address
@@ -13,7 +13,7 @@ class Business(object):
         self.open_time = open_time
         self.close_time = close_time
         self.phone_number = phone_number
-        self.description = description
+        self.google_places_id = google_places_id
 
 class BusinessDB(object):
     """Class to connect to the Businesses Datastore."""
@@ -37,7 +37,7 @@ class BusinessDB(object):
             "open_time": business_object.open_time,
             "close_time": business_object.close_time,
             "phone_number": business_object.phone_number,
-            "description": business_object.description
+            "google_places_id": business_object.google_places_id
             }
         result = db.businesses.insert_one(new_business)
         return result.inserted_id or None
