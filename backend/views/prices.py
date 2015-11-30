@@ -46,7 +46,8 @@ def api_add_price():
 
     Returns HTTP 200:
         {
-            success: "Price added successfully."
+            success: "Price added successfully.",
+            id: "abcdefghijklmnopqrstuv0123456789"
         }
         OR
         {
@@ -68,4 +69,4 @@ def api_add_price():
     result = price_db.add_price(product=product, business=business, user=user, price=price)
     if not result:
         return json_error("Unable to add price.")
-    return json_success("Price added successfully.")
+    return json_success("Price added successfully.", id=result.toString())
