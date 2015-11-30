@@ -8,6 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/global_alternate.css">
     <base href="/">
+    <title>Savvy | </title>
 </head>
 <body>
 <nav id="nav" ng-controller="navController">
@@ -83,7 +84,7 @@
         </div>
     </div>
 </nav>
-<section id="content" class="container" ui-view></section>
+<section id="content" class="container" ui-view ng-init="initialize()"></section>
 <!--<div id="footer" class="container">
     <p class="center project-statement">
         Savvy 1.0 &middot; Created by Team Savvy Senior Project Team

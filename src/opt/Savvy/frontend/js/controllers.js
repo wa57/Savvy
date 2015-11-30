@@ -6,27 +6,9 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
-        /*var id = Math.floor(Math.random() * (100 - 1));
-        for (var key in $scope.product) {
-            url += key + "/" + $scope.product[key] + "/"
-        }*/
-        var price = $scope.product.price.toFixed(2);
+        var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
+        var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
         var user = makeid();
-        console.log(user);
-
-        /*$http({
-           url:'http://besavvy.xyz/api/v1/prices/add',
-           method:"POST",
-           headers: {
-               'Content-Type': 'application/x-www-form-urlencoded'
-           },
-           data: {
-                  "product": $scope.product.description,
-                  "business": $scope.product.business,
-                  "user": user,
-                  "price": price
-           }
-       });*/
 
         $http.post("http://besavvy.xyz/api/v1/prices/add", {
             product: $scope.product.description,
@@ -35,13 +17,10 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             price: price
         })
         .success(function(data, status, headers, config) {
-            console.log(data);
-            /*$scope.receipt = {};
-            for (var key in data) {
-                $scope.receipt[key] = stringReplace.replaceAll(data[key], "%20", " ");
-            }
+            $scope.receipt = JSON.parse(JSON.stringify($scope.product));
+            $scope.receipt.id = data.id;
             $scope.product = {};
-            $scope.message = "success";*/
+            $scope.message = "success";
         }).error(function(data, status, headers, config) {
             $scope.status = status;
             $scope.message = "error";
@@ -58,6 +37,8 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
 
         return text;
     }
+
+    $scope.initialize();
 });
 
 app.controller('searchController', function($scope, $stateParams, $http, $state) {
@@ -75,25 +56,23 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
                 $scope.products = data;
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
-
-                if($scope.returned_results_length === 0) {
-                    $scope.message = "no-results";
-                }
             })
             .error(function(data, status, headers, config) {
                 $scope.status = status;
             });
+
+            console.log($scope.message);
     }
 
     $scope.initializeOptions = function() {
         $scope.order_options = [
             {
-                name: "avg_price",
+                name: "average_price",
                 display_name: "Average Price: Low to High",
                 order_reverse: false
             },
             {
-                name: "avg_price",
+                name: "average_price",
                 display_name: "Average Price: High to Low",
                 order_reverse: true
             },
@@ -114,7 +93,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
             }
 
         ];
-        $scope.chosen_order_item = $scope.order_options[4];
+        $scope.chosen_order_item = $scope.order_options[0];
         $scope.orderBy();
     }
     $scope.orderBy = function() {
@@ -127,9 +106,8 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
 
 app.controller('navController', function($scope, $state) {
     $scope.state = $state;
-
     $scope.search = function() {
-        if($scope.search_term !== "") {
+        if($scope.search_term !== "" && $scope.search_term) {
             $state.go('search', {search_term: $scope.search_term});
         }
     }
@@ -169,6 +147,11 @@ app.controller('loginController', function($scope) {
     }
 });
 
-app.controller('app', function($scope, $state) {});
+app.controller('app', function($scope, $state) {
+    console.log($state);
+    $scope.title = $state.current.display_name;
+    console.log($state.current);
+});
+
 app.controller('homeController', function($scope, $state) {});
 app.controller('signUpController', function($scope, $state) {});
