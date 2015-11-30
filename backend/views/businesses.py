@@ -25,13 +25,13 @@ def api_search():
                 {
                     "business_id": 90,
                     "name": "The Store Store",
-                    "street": "111 Holly Drive",
+                    "street_address": "111 Holly Drive",
                     "city": "Nowhereville",
                     "state": "FL",
                     "open_time": 9,
                     "close_time": 21,
                     "phone": "9999999999",
-                    "description": "A store which sells store keeping products."
+                    "google_places_id": "asdf8abdfjwe012"
                 },
                 {
                     ...
