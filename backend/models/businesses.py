@@ -4,7 +4,7 @@ __author__ = 'Ryan'
 class Business(object):
     """Class for businesses."""
 
-    def __init__(self, name=None, google_places):
+    def __init__(self, name=None, google_places=None):
         self.name = name
         self.google_places = google_places
 
