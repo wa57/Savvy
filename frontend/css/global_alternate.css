@@ -23,6 +23,10 @@ h1, h2, h3, h4, h5 {
     margin: 0;
 }
 
+ul {
+
+}
+
 .breadcrumb {
     margin: 0;
     padding: 0;
@@ -384,6 +388,28 @@ input, select {
 
 .search-result h4 {
     margin-bottom: 10px;
+}
+
+.filter-box {
+    border: 1px solid #ebebeb;
+    border-radius: 2px;
+}
+
+.filter-box header {
+    background-color: #00A079;
+}
+
+.filter-box h5 {
+    color: #fff;
+}
+
+.filter-box ul {
+    margin: 0;
+    padding: 0;
+}
+
+.filter-box li {
+    display: block;
 }
 
 

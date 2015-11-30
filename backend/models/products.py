@@ -18,5 +18,10 @@ class ProductDB(object):
         """Returns a list of matching products."""
         import re
         from backend.database import db
-        results = db.products.find({"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}, {"_id": 0})
-        return [dict(result) for result in results]
+        results = []
+        for result in db.products.find({"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
+            result = dict(result)
+            result["product_id"] = str(result.pop("_id"))
+            results.append(result)
+        return results
+
