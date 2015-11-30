@@ -43,7 +43,7 @@ class PriceDB(DB):
                      "price": int(price),
                      "user": user,
                      "submitted_timestamp": Timestamp(datetime.now(), 1)}
-        result = self.db.prices.insert_one(new_price)
+        #result = self.db.prices.insert_one(new_price)
         result = self.db.products.insert_one({"description": product})
         return result.inserted_id or None
 
