@@ -14,26 +14,12 @@
             <label>
                 <span>Place of Purchase</span>
                 <input type="text"
-                        ng-model="product.business"
                         ng-required="true"
+                        id="places"
                         placeholder="Enter where you bought the product">
             </label>
-            <!--<label>
-            	<span>Type of Good</span>
-            	<input type="text"
-                        ng-model="product.product_type"
-                        ng-required="true"
-                        placeholder="e.g. Coffee or Television">
-            </label>-->
-            <!--<label>
-            	<span>Place of Purchase</span>
-            	<input type="text"
-                        ng-model="product.place_of_purchase"
-                        ng-required="true"
-                        placeholder="e.g. Walmart or McDonald's">
-            </label>-->
             <label>
-            	<span>Price Paid</span>
+            	<span>Price Paid (enter a number with no dollar sign)</span>
             	<input type="number"
                         ng-model="product.price"
                         step="any"
@@ -41,10 +27,10 @@
                         ng-required="true"
                         placeholder="Enter the price you paid">
             </label>
-            <label>
+            <!--<label>
             	<span>Upload a picture of the product (optional)</span>
             	<input type="file" fileread="product.image">
-            </label>
+            </label>-->
             <button type="submit" ng-disabled="" class="btn btn-success btn-md">Submit</button>
             <span ng-show="message === 'processing'"><img src="images/loader.GIF"></span>
             <span ng-show="message === 'success'" class="text-success">Price Saved!</span>

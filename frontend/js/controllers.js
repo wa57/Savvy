@@ -2,19 +2,21 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     $scope.initialize = function() {
         $scope.product = {};
         $scope.receipt = {};
+        $scope.initializeGooglePlaces();
     }
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
         var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
-        var user = makeid();
+        console.log(price);
+        var user = $scope.makeid();
 
-        $http.post("http://besavvy.xyz/api/v1/prices/add", {
+        $http.post(savvy.api_root + "prices/add", {
             product: $scope.product.description,
-            business: $scope.product.business,
+            business: $scope.google_places,
             user: user,
-            price: price
+            price: price,
         })
         .success(function(data, status, headers, config) {
             $scope.receipt = JSON.parse(JSON.stringify($scope.product));
@@ -27,7 +29,27 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         });
     }
 
-    function makeid() {
+    $scope.initializeGooglePlaces = function() {
+        var defaultBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(39.952584, -75.165222),
+            new google.maps.LatLng(39.952584, -75.165222)
+        );
+
+        var input = document.getElementById('places');
+        var options = {
+          bounds: defaultBounds,
+          types: ['establishment']
+        };
+
+        autocomplete = new google.maps.places.Autocomplete(input, options);
+
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            $scope.google_places = autocomplete.getPlace();
+            $scope.$apply();
+        });
+    }
+
+    $scope.makeid = function() {
         var text = "testuser";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -51,7 +73,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $scope.search_term = $stateParams.search_term;
         $scope.message = "processing";
 
-        $http.get("http://besavvy.xyz/api/v1/products/search?query=" + $scope.search_term)
+        $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
                 $scope.returned_results_length = $scope.products.length;
@@ -59,6 +81,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
             })
             .error(function(data, status, headers, config) {
                 $scope.status = status;
+                $scope.message = "error";
             });
 
             console.log($scope.message);
