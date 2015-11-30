@@ -2,13 +2,14 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     $scope.initialize = function() {
         $scope.product = {};
         $scope.receipt = {};
+        $scope.initializeGooglePlaces();
     }
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
         var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
-        var user = makeid();
+        var user = $scope.makeid();
 
         $http.post(savvy.api_root + "prices/add", {
             product: $scope.product.description,
@@ -27,31 +28,29 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         });
     }
 
-    var defaultBounds = new google.maps.LatLngBounds(
-        new google.maps.LatLng(39.952584, -75.165222),
-        new google.maps.LatLng(39.952584, -75.165222)
-    );
+    $scope.initializeGooglePlaces = function() {
+        var defaultBounds = new google.maps.LatLngBounds(
+            new google.maps.LatLng(39.952584, -75.165222),
+            new google.maps.LatLng(39.952584, -75.165222)
+        );
 
-    var input = document.getElementById('places');
-    var options = {
-      bounds: defaultBounds,
-      types: ['establishment']
-    };
+        var input = document.getElementById('places');
+        var options = {
+          bounds: defaultBounds,
+          types: ['establishment']
+        };
 
-    autocomplete = new google.maps.places.Autocomplete(input, options);
+        autocomplete = new google.maps.places.Autocomplete(input, options);
 
-    google.maps.event.addListener(autocomplete, 'place_changed', function() {
-        var place = autocomplete.getPlace();
-        console.log(place);
-        /*$scope.user.fromLat = place.geometry.location.lat();
-        $scope.user.fromLng = place.geometry.location.lng();
-        $scope.user.from = place.formatted_address;*/
-        $scope.$apply();
-    });
-    console.log(autocomplete.getPlace());
+        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            $scope.google_place = autocomplete.getPlace();
+            $scope.$apply();
+        });
+    }
 
 
-    $scope.searchPlaces = function(){
+
+    /*$scope.searchPlaces = function(){
         if($scope.product.business.length > 3) {
             var url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?";
             url += "&location=39.952584,-75.165222";
@@ -59,17 +58,17 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             url += "&name=" + $scope.product.business;
             url += "&key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU";
 
-            /*$http.jsonp(url)
+            $http.jsonp(url)
                 .success(function(data, status, headers, config) {
                     console.log(JSON.stringify(data));
                 })
                 .error(function(data, status, headers, config) {
                     console.log(data);
-                })*/
+                })
         }
-    }
+    }*/
 
-    function makeid() {
+    $scope.makeid = function() {
         var text = "testuser";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
