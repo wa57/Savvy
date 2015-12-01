@@ -34,6 +34,6 @@ class ProductDB(DB):
             "tags": tags or []
             }
         result = self.db.products.update_one({"description": description},
-                                             {"$set": new_product},
+                                             {"$addToSet": new_product},
                                              upsert=True)
         return result.upserted_id or None
