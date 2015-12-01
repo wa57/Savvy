@@ -81,6 +81,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
+                console.log(data);
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
             })
@@ -173,12 +174,6 @@ app.controller('loginController', function($scope) {
             console.log('hi');
         });
     }
-});
-
-app.controller('app', function($scope, $state) {
-    console.log($state);
-    $scope.title = $state.current.display_name;
-    console.log($state.current);
 });
 
 app.controller('homeController', function($scope, $state) {});
