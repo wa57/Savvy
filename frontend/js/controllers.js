@@ -1,7 +1,6 @@
 app.controller('submitController', function($scope, $state, $http, stringReplace) {
     $scope.initialize = function() {
-        $scope.product = {};
-        $scope.receipt = {};
+        $scope.initializeData();
         $scope.initializeGooglePlaces();
     }
 
@@ -15,7 +14,6 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             user: $scope.makeid(),
             price: price
         };
-        console.log(post_data);
         $http({
             method: "POST",
             url: savvy.api_root + "prices/add",
@@ -25,6 +23,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             .success(function(data, status, headers, config) {
                 $scope.receipt = JSON.parse(JSON.stringify($scope.product));
                 $scope.receipt.id = data.id;
+                $scope.receipt.business = $scope.google_places.formatted_address;
                 $scope.product = {};
                 $scope.message = "success";
             })
@@ -65,6 +64,11 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         return text;
     }
 
+    $scope.initializeData = function() {
+        $scope.product = {};
+        $scope.receipt = {};
+    }
+
     $scope.initialize();
 });
 
@@ -81,7 +85,6 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
-                console.log(data);
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
             })
@@ -89,8 +92,6 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
                 $scope.status = status;
                 $scope.message = "error";
             });
-
-            console.log($scope.message);
     }
 
     $scope.initializeOptions = function() {
