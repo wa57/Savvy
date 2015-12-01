@@ -70,6 +70,10 @@ ul {
     float: right;
 }
 
+#nav-left {
+    float: left;
+}
+
 #nav-body ul, #nav-body ol {
     padding: 0;
 }
@@ -142,6 +146,10 @@ ul li {
 
 .tag {
     margin-right: 5px;
+}
+
+.required-asterisk {
+    color: red;
 }
 
 .note {
@@ -450,8 +458,21 @@ input, select {
         width: 60%;
     }
 }
+
+@media only screen and (max-width: 1200px) {
+    #search-box {
+        width: 80%;
+    }
+}
 @media only screen and (min-width: 768px) {
     /* tablets and desktop */
+}
+
+@media only screen and (max-width: 900px) {
+    #search-box {
+        margin-left: 0;
+        margin-top: 20px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
