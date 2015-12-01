@@ -1,6 +1,9 @@
 __author__ = 'Ryan'
 
 
+from backend.database import DB
+
+
 class Business(object):
     """Class for businesses."""
 
