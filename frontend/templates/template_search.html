@@ -45,9 +45,9 @@
                     <p>Average Price: <strong>{{product.avg_price}}</strong></p>
                 </div>-->
                 <div class="col-md-4">
-                    <h4>Tags</h4>
-                    <span ng-repeat="tag in product.tags" class="tag label label-success">
-                        <a ui-sref="search({search_term: '{{tag.name}}' })">{{tag.name}}</a>
+                    <h5>Tags</h5>
+                    <span ng-repeat="tag in product.tags track by $index" class="tag label label-success">
+                        <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
                     </span>
                 </div>
             </div>
