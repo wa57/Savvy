@@ -1,6 +1,9 @@
 __author__ = 'Colin'
 
 
+from backend.database import DB
+
+
 class Product(object):
     """Class for products."""
 
@@ -11,15 +14,14 @@ class Product(object):
         self.price_reliability = price_reliability
 
 
-class ProductDB(object):
+class ProductDB(DB):
     """Class to connect to the Products Datastore."""
 
     def search(self, query):
         """Returns a list of matching products."""
         import re
-        from backend.database import db
         results = []
-        for result in db.products.find({"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
+        for result in self.db.products.find({"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
             result = dict(result)
             result["product_id"] = str(result.pop("_id"))
             results.append(result)
