@@ -126,21 +126,15 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
                 order_reverse: true
             },
             {
-                name: "name",
+                name: "description",
                 display_name: "Product Name: A to Z",
                 order_reverse: false
             },
             {
-                name: "name",
+                name: "description",
                 display_name: "Product Name: Z to A",
                 order_reverse: true
             },
-            {
-                name: "description",
-                display_name: "Description: A to Z",
-                order_reverse: false
-            }
-
         ];
         $scope.chosen_order_item = $scope.order_options[0];
         $scope.orderBy();

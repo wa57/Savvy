@@ -35,7 +35,7 @@
                         No Image Available
                     </a>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-4">
                     <p>Product ID: <strong>{{product.product_id}}</strong></p>
                     <p>Average Price: <strong>${{product.average_price / 100}}</strong></p>
                 </div>
@@ -44,11 +44,13 @@
                     <p>Average Price: <strong>{{product.avg_price}}</strong></p>
                     <p>Average Price: <strong>{{product.avg_price}}</strong></p>
                 </div>-->
-                <div class="col-md-4">
-                    <h5>Tags</h5>
-                    <span ng-repeat="tag in product.tags track by $index" class="tag label label-success">
-                        <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
-                    </span>
+                <div class="col-md-6">
+                    <h5 style="margin-bottom: 10px;">Tags</h5>
+                    <div>
+                        <span ng-repeat="tag in product.tags track by $index" ng-if="$index < 8" class="tag label label-success">
+                            <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
+                        </span>
+                    </div>
                 </div>
             </div>
         </div>
