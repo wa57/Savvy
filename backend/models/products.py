@@ -25,3 +25,13 @@ class ProductDB(object):
             results.append(result)
         return results
 
+    def add_product(self, description, tags=None):
+        """Adds a product to the database."""
+        new_product = {
+            "description": description,
+            "tags": tags or []
+            }
+        result = self.db.products.update_one({"description": description},
+                                             {"$set": new_product},
+                                             upsert=True)
+        return result.upserted_id or None
