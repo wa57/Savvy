@@ -6,14 +6,22 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
-        var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
+        var rounded_price = parseFloat($scope.price.toFixed(2)*100).toString();
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
+
+        var tags = [];
+        angular.forEach($scope.product.tags.split(","), function(tag, index) {
+            tags.push(stringReplace.replaceAll(tag, " ", ""));
+        });
+        $scope.product.tags = tags;
+
         var post_data = {
-            product: $scope.product.description,
+            product: $scope.product,
             business: $scope.google_places,
             user: $scope.makeid(),
-            price: price
+            price: price,
         };
+
         $http({
             method: "POST",
             url: savvy.api_root + "prices/add",
@@ -21,9 +29,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             headers: {'Content-Type': 'application/json'}
         })
             .success(function(data, status, headers, config) {
-                $scope.receipt = JSON.parse(JSON.stringify($scope.product));
-                $scope.receipt.id = data.id;
-                $scope.receipt.business = $scope.google_places.formatted_address;
+                $scope.createReceipt(data);
                 $scope.product = {};
                 $scope.message = "success";
             })
@@ -65,8 +71,20 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     }
 
     $scope.initializeData = function() {
-        $scope.product = {};
+        $scope.product = {
+            tags: []
+        };
         $scope.receipt = {};
+    }
+
+    $scope.createReceipt = function(api_response) {
+        $scope.receipt = {
+            id: api_response.id,
+            business: $scope.google_places.formatted_address,
+            tags: $scope.product.tags,
+            price: $scope.price,
+            description: $scope.product.description
+        };
     }
 
     $scope.initialize();
@@ -85,6 +103,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
+                console.log(data);
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
             })
