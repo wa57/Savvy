@@ -29,11 +29,8 @@ class ProductDB(DB):
 
     def add_product(self, description, tags=None):
         """Adds a product to the database."""
-        new_product = {
-            "description": description,
-            "tags": tags or []
-            }
+        tags = tags or []
         result = self.db.products.update_one({"description": description},
-                                             {"$addToSet": new_product},
+                                             {"$addToSet": {"tags": tags}},
                                              upsert=True)
         return result.upserted_id or None
