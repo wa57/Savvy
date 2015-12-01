@@ -52,13 +52,17 @@ ul {
 /*
 -----NAVIGATION
 */
-#pullout-nav {
+#mobile-nav-wrapper {
     display: none;
     margin-bottom: 15px;
 }
 
-#pullout-nav a {
+#mobile-nav-wrapper a {
     color: #fff;
+    font-size: 1em;
+}
+
+#mobile-nav-wrapper i {
     font-size: 1.5em;
 }
 
@@ -295,6 +299,8 @@ input, select {
     background-color: #00A079;
     border-radius: 4px;
     padding: 20px 40px 20px 40px;
+    margin: auto;
+    width: 100%;
     font-size: 20px;
 
 }
@@ -345,6 +351,8 @@ input, select {
 
 #sign-up-button {
     margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tagline {
@@ -477,6 +485,12 @@ input, select {
         width: 80%;
     }
 }
+
+@media only screen and (max-width: 860px) {
+    #home-banner .btn-signup {
+        padding: 10px;
+    }
+}
 @media only screen and (min-width: 768px) {
     /* tablets and desktop */
 }
@@ -502,9 +516,29 @@ input, select {
         display: none;
     }
 
-    #pullout-nav {
-        display: block;
+    #mobile-nav-wrapper {
         margin-top: 15px;
+        display: block;
+    }
+
+    #mobile-nav {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    #mobile-nav li, #mobile-nav ul {
+        display: block;
+    }
+
+    #mobile-nav li {
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+
+    #mobile-nav ul {
+        float: none;
+        padding: 0;
+        margin: 0;
     }
 }
 
