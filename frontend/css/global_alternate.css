@@ -275,7 +275,14 @@ input, select {
 }
 
 #signup-block {
-    margin-top: 65px;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    padding: 15px;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 #signup-block p {
@@ -285,7 +292,7 @@ input, select {
 #home-banner .btn-signup {
     color: #fff;
     /*background-color: #00A079;*/
-    background-color: limegreen;
+    background-color: #00A079;
     border-radius: 4px;
     padding: 20px 40px 20px 40px;
     font-size: 20px;
@@ -301,6 +308,11 @@ input, select {
     margin-bottom: -15px;
     margin-top: 50px;
     border-top: 1px solid #ebebeb;
+}
+
+.dark {
+    width: 10%;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 #search-box {
@@ -439,6 +451,7 @@ input, select {
 
 #submit-product-form label span {
     margin-bottom: 5px;
+    font-size: 16px;
 }
 
 #submit-product-form label input:focus {
