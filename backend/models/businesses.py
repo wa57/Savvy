@@ -36,6 +36,6 @@ class BusinessDB(DB):
             "google_places": google_places
             }
         result = self.db.businesses.update_one({"google_places.place_id": google_places["place_id"]},
-                                               new_business,
+                                               {"$set": new_business},
                                                upsert=True)
         return result.inserted_id or None
