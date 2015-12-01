@@ -4,7 +4,7 @@ body {
 }
 
 a:visited {
-    color: #609;
+    /*color: #609;*/
 }
 
 /*
@@ -43,6 +43,10 @@ ul {
 
 .btn-success:hover {
     background-color: #00946E;
+}
+
+.ng-pristine .ng-invalid-required {
+    box-shadow: none;
 }
 
 /*

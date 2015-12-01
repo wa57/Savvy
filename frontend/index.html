@@ -1,4 +1,4 @@
-<html ng-app="savvy" ng-controller="app">
+<html ng-app="savvy">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -8,7 +8,7 @@
     <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="css/global_alternate.css">
     <base href="/">
-    <title>Savvy | </title>
+    <title ng-bind="title"></title>
 </head>
 <body>
 <nav id="nav" ng-controller="navController">
@@ -20,7 +20,7 @@
                         <a ui-sref="/"><img src="images/savvy.png"></a>
                     </div>
                 </div>
-                <form ng-submit="search()" action="" class="col-md-8" handle-submit>
+                <form ng-submit="search()" class="col-md-8" handle-submit>
                     <input type="search"
                            ng-model="search_term"
                            id="search-box"
