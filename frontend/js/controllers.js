@@ -1,31 +1,42 @@
 app.controller('submitController', function($scope, $state, $http, stringReplace) {
     $scope.initialize = function() {
-        $scope.product = {};
-        $scope.receipt = {};
+        $scope.initializeData();
         $scope.initializeGooglePlaces();
     }
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
-        var rounded_price = parseFloat($scope.product.price.toFixed(2)*100).toString();
+        var rounded_price = parseFloat($scope.price.toFixed(2)*100).toString();
         var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
-        var user = $scope.makeid();
 
-        $http.post(savvy.api_root + "prices/add", {
-            product: $scope.product.description,
-            business: $scope.product.business,
-            user: user,
-            price: price
-        })
-        .success(function(data, status, headers, config) {
-            $scope.receipt = JSON.parse(JSON.stringify($scope.product));
-            $scope.receipt.id = data.id;
-            $scope.product = {};
-            $scope.message = "success";
-        }).error(function(data, status, headers, config) {
-            $scope.status = status;
-            $scope.message = "error";
+        var tags = [];
+        angular.forEach($scope.product.tags.split(","), function(tag, index) {
+            tags.push(stringReplace.replaceAll(tag, " ", ""));
         });
+        $scope.product.tags = tags;
+
+        var post_data = {
+            product: $scope.product,
+            business: $scope.google_places,
+            user: $scope.makeid(),
+            price: price,
+        };
+
+        $http({
+            method: "POST",
+            url: savvy.api_root + "prices/add",
+            data: post_data,
+            headers: {'Content-Type': 'application/json'}
+        })
+            .success(function(data, status, headers, config) {
+                $scope.createReceipt(data);
+                $scope.product = {};
+                $scope.message = "success";
+            })
+            .error(function(data, status, headers, config) {
+                $scope.status = status;
+                $scope.message = "error";
+            });
     }
 
     $scope.initializeGooglePlaces = function() {
@@ -43,7 +54,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         autocomplete = new google.maps.places.Autocomplete(input, options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            $scope.product.business = autocomplete.getPlace();
+            $scope.google_places = autocomplete.getPlace();
             $scope.$apply();
         });
     }
@@ -57,6 +68,23 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         }
 
         return text;
+    }
+
+    $scope.initializeData = function() {
+        $scope.product = {
+            tags: []
+        };
+        $scope.receipt = {};
+    }
+
+    $scope.createReceipt = function(api_response) {
+        $scope.receipt = {
+            id: api_response.id,
+            business: $scope.google_places.formatted_address,
+            tags: $scope.product.tags,
+            price: $scope.price,
+            description: $scope.product.description
+        };
     }
 
     $scope.initialize();
@@ -75,14 +103,14 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
+                console.log(data);
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
             })
             .error(function(data, status, headers, config) {
                 $scope.status = status;
+                $scope.message = "error";
             });
-
-            console.log($scope.message);
     }
 
     $scope.initializeOptions = function() {
@@ -98,21 +126,15 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
                 order_reverse: true
             },
             {
-                name: "name",
+                name: "description",
                 display_name: "Product Name: A to Z",
                 order_reverse: false
             },
             {
-                name: "name",
+                name: "description",
                 display_name: "Product Name: Z to A",
                 order_reverse: true
             },
-            {
-                name: "description",
-                display_name: "Description: A to Z",
-                order_reverse: false
-            }
-
         ];
         $scope.chosen_order_item = $scope.order_options[0];
         $scope.orderBy();
@@ -127,9 +149,19 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
 
 app.controller('navController', function($scope, $state) {
     $scope.state = $state;
+    $scope.show_mobile_nav = false;
+
     $scope.search = function() {
         if($scope.search_term !== "" && $scope.search_term) {
             $state.go('search', {search_term: $scope.search_term});
+        }
+    }
+
+    $scope.showMobileNav = function() {
+        if(!$scope.show_mobile_nav) {
+            $scope.show_mobile_nav = true;
+        } else {
+            $scope.show_mobile_nav = false;
         }
     }
 });
@@ -166,12 +198,6 @@ app.controller('loginController', function($scope) {
             console.log('hi');
         });
     }
-});
-
-app.controller('app', function($scope, $state) {
-    console.log($state);
-    $scope.title = $state.current.display_name;
-    console.log($state.current);
 });
 
 app.controller('homeController', function($scope, $state) {});

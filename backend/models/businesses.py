@@ -1,46 +1,41 @@
 __author__ = 'Ryan'
 
 
+from backend.database import DB
+
+
 class Business(object):
     """Class for businesses."""
 
-    def __init__(self, business_id=None, name=None, street_address=None, city=None, state=None, open_time=None, close_time=None, phone_number=None, description=None):
-        self.business_id = business_id
+    def __init__(self, name=None, google_places=None):
         self.name = name
-        self.street_address = street_address
-        self.city = city
-        self.state = state
-        self.open_time = open_time
-        self.close_time = close_time
-        self.phone_number = phone_number
-        self.description = description
+        self.google_places = google_places
 
-class BusinessDB(object):
+
+class BusinessDB(DB):
     """Class to connect to the Businesses Datastore."""
 
     def search(self, query):
         """Returns a list of matching businesses."""
         import re
-        from backend.database import db
-        results = db.businesses.find({"name": re.compile(".*{}.*".format(query), re.IGNORECASE)}, {"_id": 0})
-        return [dict(result) for result in results]
+        for result in self.db.businesses.find({"name": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
+            result = dict(result)
+            result["business_id"] = str(result.pop("_id"))
+            results.append(result)
+        return results
 
-    def add_business(self, business_object):
+    def add_business(self, name, address=None, phone_number=None, open_time=None, close_time=None,
+                     google_places=None):
         """Adds a business to the database."""
-        from backend.database import db
         new_business = {
-            "business_id": business_object.business_id,
-            "name": business_object.name,
-            "street_address": business_object.street_address,
-            "city": business_object.city,
-            "state": business_object.state,
-            "open_time": business_object.open_time,
-            "close_time": business_object.close_time,
-            "phone_number": business_object.phone_number,
-            "description": business_object.description
+            "name": name,
+            "address": address,
+            "open_time": open_time,
+            "close_time": close_time,
+            "phone_number": phone_number,
+            "google_places": google_places
             }
-        result = db.businesses.insert_one(new_business)
-        return result.inserted_id or None
-        
-            
-            
+        result = self.db.businesses.update_one({"google_places.place_id": google_places["place_id"]},
+                                               {"$set": new_business},
+                                               upsert=True)
+        return result.upserted_id or None

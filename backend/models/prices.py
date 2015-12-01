@@ -38,12 +38,21 @@ class PriceDB(DB):
         """Adds a price record to the database."""
         from bson.timestamp import Timestamp
         from datetime import datetime
-        new_price = {"product": product,
-                     "business": business,
+        from backend.models.businesses import BusinessDB
+        from backend.models.products import ProductDB
+        new_price = {"product": product["description"],
+                     "business": business["name"],
                      "price": int(price),
                      "user": user,
                      "submitted_timestamp": Timestamp(datetime.now(), 1)}
         result = self.db.prices.insert_one(new_price)
-        self.db.products.replace_one({"description": product}, {"description": product}, upsert=True)
+        product_db = ProductDB()
+        product_db.add_product(description=product["description"],
+                               tags=product["tags"])
+        business_db = BusinessDB()
+        business_db.add_business(name=business["name"],
+                                 address=business["formatted_address"],
+                                 phone_number=business["formatted_phone_number"],
+                                 google_places=business)
         return result.inserted_id or None
 

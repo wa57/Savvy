@@ -4,7 +4,7 @@ body {
 }
 
 a:visited {
-    color: #609;
+    /*color: #609;*/
 }
 
 /*
@@ -45,16 +45,24 @@ ul {
     background-color: #00946E;
 }
 
+.ng-pristine .ng-invalid-required {
+    box-shadow: none;
+}
+
 /*
 -----NAVIGATION
 */
-#pullout-nav {
+#mobile-nav-wrapper {
     display: none;
     margin-bottom: 15px;
 }
 
-#pullout-nav a {
+#mobile-nav-wrapper a {
     color: #fff;
+    font-size: 1em;
+}
+
+#mobile-nav-wrapper i {
     font-size: 1.5em;
 }
 
@@ -64,6 +72,10 @@ ul {
 
 #nav-right {
     float: right;
+}
+
+#nav-left {
+    float: left;
 }
 
 #nav-body ul, #nav-body ol {
@@ -138,6 +150,10 @@ ul li {
 
 .tag {
     margin-right: 5px;
+}
+
+.required-asterisk {
+    color: red;
 }
 
 .note {
@@ -229,7 +245,7 @@ input, select {
 
 /* HOMEPAGE */
 #homepage-logo-block {
-    background-image: url(http://previews.123rf.com/images/coffmancmu/coffmancmu1410/coffmancmu141000641/32835485-Coffee-shop-blur-background-with-bokeh-image--Stock-Photo-restaurant.jpg);
+    background-image: url(../images/main-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -263,7 +279,14 @@ input, select {
 }
 
 #signup-block {
-    margin-top: 65px;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    width: 30%;
+    padding: 15px;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.8);
 }
 
 #signup-block p {
@@ -273,15 +296,17 @@ input, select {
 #home-banner .btn-signup {
     color: #fff;
     /*background-color: #00A079;*/
-    background-color: limegreen;
+    background-color: #00A079;
     border-radius: 4px;
     padding: 20px 40px 20px 40px;
+    margin: auto;
+    width: 100%;
     font-size: 20px;
 
 }
 
 #home-banner {
-    background-image: url(../images/home-banner.png);
+    background-image: url(../images/savvy-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -289,6 +314,11 @@ input, select {
     margin-bottom: -15px;
     margin-top: 50px;
     border-top: 1px solid #ebebeb;
+}
+
+.dark {
+    width: 10%;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 #search-box {
@@ -321,6 +351,8 @@ input, select {
 
 #sign-up-button {
     margin-top: 50px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .tagline {
@@ -427,6 +459,7 @@ input, select {
 
 #submit-product-form label span {
     margin-bottom: 5px;
+    font-size: 16px;
 }
 
 #submit-product-form label input:focus {
@@ -446,8 +479,27 @@ input, select {
         width: 60%;
     }
 }
+
+@media only screen and (max-width: 1200px) {
+    #search-box {
+        width: 80%;
+    }
+}
+
+@media only screen and (max-width: 860px) {
+    #home-banner .btn-signup {
+        padding: 10px;
+    }
+}
 @media only screen and (min-width: 768px) {
     /* tablets and desktop */
+}
+
+@media only screen and (max-width: 900px) {
+    #search-box {
+        margin-left: 0;
+        margin-top: 20px;
+    }
 }
 
 @media only screen and (max-width: 767px) {
@@ -457,18 +509,45 @@ input, select {
 
     #search-box {
         width: 75%;
-        margin: 20px 0 0 0;
+        margin: 30px 0 0 0;
     }
 
     #nav-body {
         display: none;
     }
 
-    #pullout-nav {
+    #mobile-nav-wrapper {
+        margin-top: 15px;
         display: block;
+    }
+
+    #mobile-nav {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    #mobile-nav li, #mobile-nav ul {
+        display: block;
+    }
+
+    #mobile-nav li {
+        margin-bottom: 10px;
+        font-size: 1.2em;
+    }
+
+    #mobile-nav ul {
+        float: none;
+        padding: 0;
+        margin: 0;
     }
 }
 
 @media only screen and (max-width: 767px) and (orientation: portrait) {
     /* portrait phones */
+}
+
+@media only screen and (max-width: 667px) {
+    #signup-block {
+        width: 50%;
+    }
 }

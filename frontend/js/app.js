@@ -1,9 +1,14 @@
 var app = angular.module('savvy', ['ui.router']);
 
+app.run(function($rootScope){
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState){
+        $rootScope.title = "Savvy | " + toState.title;
+    });
+});
+
 app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
 
     $urlRouterProvider.otherwise('/');
-    //$locationProvider.html5Mode(true);
     $urlMatcherFactoryProvider.strictMode(false)
 
     $stateProvider
@@ -12,7 +17,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             url: '/',
             templateUrl: 'templates/template_home.html',
             controller: 'homeController',
-            display_name: "Home"
+            title: "Home"
         })
 
         // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
@@ -20,21 +25,21 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             url: '/signup',
             templateUrl: 'templates/template_signup.html',
             controller: 'signUpController',
-            display_name: "Sign Up"
+            title: "Sign Up"
         })
 
         .state('login', {
             url: '/login',
             templateUrl: 'templates/template_login.html',
             controller: 'loginController',
-            display_name: "Login"
+            title: "Login"
         })
 
         .state('search', {
             url: '/search/:search_term',
             templateUrl: 'templates/template_search.html',
             controller: 'searchController',
-            display_name: "Search",
+            title: "Search",
             params: {
                 search_term: {
                     value: null,
@@ -47,7 +52,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             url: '/submit',
             templateUrl: 'templates/template_submit.html',
             controller: 'submitController',
-            display_name: "Submit Price",
+            title: "Submit Price",
             data: {
                 requireLogin: true
             }
@@ -55,13 +60,15 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
         .state('product', {
             url: '/product/:product',
             templateUrl: 'templates/template_product.html',
-            controller: 'productController'
+            controller: 'productController',
+            title: "Product Page"
         })
 
         .state('admin', {
             url: '/admin',
             templateUrl: 'templates/template_admin.html',
-            controller: 'adminController'
+            controller: 'adminController',
+            title: "Admin"
         })
 
 });
