@@ -1,6 +1,9 @@
 __author__ = 'Ryan'
 
 
+from backend.database import DB
+
+
 class Business(object):
     """Class for businesses."""
 
@@ -8,25 +11,31 @@ class Business(object):
         self.name = name
         self.google_places = google_places
 
-class BusinessDB(object):
+
+class BusinessDB(DB):
     """Class to connect to the Businesses Datastore."""
 
     def search(self, query):
         """Returns a list of matching businesses."""
         import re
-        from backend.database import db
-        results = db.businesses.find({"name": re.compile(".*{}.*".format(query), re.IGNORECASE)}, {"_id": 0})
-        return [dict(result) for result in results]
+        for result in self.db.businesses.find({"name": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
+            result = dict(result)
+            result["business_id"] = str(result.pop("_id"))
+            results.append(result)
+        return results
 
-    def add_business(self, business_object):
+    def add_business(self, name, address=None, phone_number=None, open_time=None, close_time=None,
+                     google_places=None):
         """Adds a business to the database."""
-        from backend.database import db
         new_business = {
-            "name": business_object.name,
-            "google_places": business_object.google_places
+            "name": name,
+            "address": address,
+            "open_time": open_time,
+            "close_time": close_time,
+            "phone_number": phone_number,
+            "google_places": google_places
             }
-        result = db.businesses.insert_one(new_business)
-        return result.inserted_id or None
-        
-            
-            
+        result = self.db.businesses.update_one({"google_places.place_id": google_places["place_id"]},
+                                               {"$set": new_business},
+                                               upsert=True)
+        return result.upserted_id or None
