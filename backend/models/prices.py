@@ -26,7 +26,7 @@ class PriceDB(DB):
                 next_result = result.next()
                 return int(next_result['average'])
             else:
-                return "69696969"
+                return "error"
         except:
             raise
 
@@ -50,7 +50,7 @@ class PriceDB(DB):
                 next_result = result.next()
                 return int(next_result['lowest_price'])
             else:
-                return "69696969"
+                return "error"
         except:
             raise
     
