@@ -21,8 +21,39 @@ class PriceDB(DB):
                 }
             }
         ])
-        return int(next(result)["average"])
+        try:
+            if(result.alive):
+                next_result = result.next()
+                return int(next_result['average'])
+            else:
+                return "error"
+        except:
+            raise
 
+    def lowest_price(self, product):
+        """Returns the lowest price of a product."""
+        result = self.db.prices.aggregate([
+            {"$match":
+                {
+                    "product": product
+                }
+            },
+            {"$group":
+                {
+                    "_id": "$product",
+                    "lowest_price": {"$min": "$price"}
+                }
+            }
+        ])
+        try:
+            if(result.alive):
+                next_result = result.next()
+                return int(next_result['lowest_price'])
+            else:
+                return "error"
+        except:
+            raise
+    
     def search(self, product=None, business=None):
         """Returns a list of matching prices."""
         import re

@@ -21,7 +21,7 @@ class ProductDB(DB):
         """Returns a list of matching products."""
         import re
         results = []
-        for result in self.db.products.find({"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
+        for result in self.db.products.find({ "$or": [{"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}, {"tags": re.compile(".*{}.*".format(query), re.IGNORECASE)}]}):
             result = dict(result)
             result["product_id"] = str(result.pop("_id"))
             results.append(result)
