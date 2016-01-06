@@ -2,13 +2,18 @@
     <div class="content-header">
         <h5><i class="fa fa-share-square-o"></i> Submit a Price</h5>
     </div>
-    <form ng-submit="submitPrice()" ng-hide="message === 'success'" id="submit-product-form" name="submitForm" role="form">
-        <section class="">
+    <form ng-submit="submitPrice()"
+            ng-hide="message === 'success'"
+            id="submit-product-form"
+            name="submitForm"
+            role="form">
+        <section class="col-md-8">
             <label>
                 <span>Product Name &ast;</span>
                 <input type="text"
                         ng-model="product.description"
                         ng-required="true"
+                        id="product-name"
                         placeholder="Enter the name of the product, e.g. 12oz. Coke Can">
             </label>
             <label>
@@ -22,6 +27,7 @@
             	<span>Price Paid (enter a number with no dollar sign) &ast;</span>
             	<input type="number"
                         ng-model="price"
+                        id="price-paid"
                         step="any"
                         min="0"
                         ng-required="true"
@@ -31,18 +37,30 @@
             	<span>Upload a picture of the product (optional)</span>
             	<input type="file" fileread="product.image">
             </label>-->
-            <label>
-                <span>Add Tags</span>
-                <input type="text"
-                        ng-model="product.tags"
-                        placeholder="Tags (Comma separated list)">
-            </label>
             <button type="submit" ng-disabled="" class="btn btn-success btn-md">Submit</button>
             <span ng-show="message === 'processing'"><img src="images/loader.GIF"></span>
             <span ng-show="message === 'success'" class="text-success">Price Saved!</span>
             <span ng-show="message === 'error'" class="alert alert-danger">
                 <i class="fa fa-exclamation-triangle"></i> Submission Error. Please try again later.
             </span>
+        </section>
+        <section class="col-md-4">
+            <label id="add-tag-wrapper">
+                <span>Add A Tag</span>
+                <input type="text"
+                        ng-model="tag"
+                        size="6"
+                        id="add-tag"
+                        placeholder="Enter a tag">
+                <button type="button"
+                        class="btn btn-primary btn-sm"
+                        ng-click="addTag()">
+                        Add
+                </button>
+            </label>
+            <span ng-show="messages.tag_message === 'error-empty-input'" class="error-message">Please enter a tag.</span>
+            <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
+            <span ng-repeat="tag in product.tags" class="tag">{{tag}}</span>
         </section>
     </form>
 

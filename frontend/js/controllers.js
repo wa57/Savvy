@@ -1,4 +1,4 @@
-app.controller('submitController', function($scope, $state, $http, stringReplace) {
+app.controller('submitController', function($scope, $state, $http, stringReplace, $filter) {
     $scope.initialize = function() {
         $scope.initializeData();
         $scope.initializeGooglePlaces();
@@ -71,10 +71,19 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     }
 
     $scope.initializeData = function() {
+        $scope.tag = "";
         $scope.product = {
             tags: []
         };
         $scope.receipt = {};
+        $scope.message = "";
+        $scope.messages = {
+            tag_message: "",
+            save_message: ""
+        }
+        $scope.google_places = "";
+        $scope.price = "";
+        document.getElementById('places').value = "";
     }
 
     $scope.createReceipt = function(api_response) {
@@ -85,6 +94,21 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             price: $scope.price,
             description: $scope.product.description
         };
+    }
+
+    $scope.addTag = function() {
+        var exists_in_array = $scope.product.tags.indexOf($scope.tag);
+        if($scope.tag == "") {
+            $scope.messages.tag_message = "error-empty-input";
+            return;
+        } else if(exists_in_array > -1) {
+            $scope.messages.tag_message = "error-already-entered";
+            return;
+        }
+
+        $scope.product.tags.push($scope.tag);
+        $scope.tag = "";
+        $scope.messages.tag_message = "";
     }
 
     $scope.initialize();
@@ -139,6 +163,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $scope.chosen_order_item = $scope.order_options[0];
         $scope.orderBy();
     }
+    
     $scope.orderBy = function() {
         $scope.order_item = $scope.chosen_order_item.name;
         $scope.order_reverse = $scope.chosen_order_item.order_reverse;
@@ -152,7 +177,9 @@ app.controller('navController', function($scope, $state) {
     $scope.show_mobile_nav = false;
 
     $scope.search = function() {
+        console.log($scope.search_term);
         if($scope.search_term !== "" && $scope.search_term) {
+            console.log('hi');
             $state.go('search', {search_term: $scope.search_term});
         }
     }
@@ -168,26 +195,7 @@ app.controller('navController', function($scope, $state) {
 
 //WIP CONTROLLERS
 
-app.controller('productController', function($scope, $stateParams) {
-    var formatted_product = $stateParams.product[0].toUpperCase() + $stateParams.product.substr(1);
-    $scope.product = {
-        name: formatted_product,
-        avg_price: "2.67",
-        highest_price: "3.57",
-        tags: {
-            coffee: {
-                name: "coffee"
-            },
-            drink: {
-                name: "drink"
-            },
-            tasty: {
-                name: "tasty"
-            }
-        },
-    };
-});
-
+app.controller('productController', function($scope, $stateParams) {});
 app.controller('loginController', function($scope) {
     $scope.data = {};
 
@@ -199,6 +207,5 @@ app.controller('loginController', function($scope) {
         });
     }
 });
-
 app.controller('homeController', function($scope, $state) {});
 app.controller('signUpController', function($scope, $state) {});
