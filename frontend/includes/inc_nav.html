@@ -1,12 +1,90 @@
-<ul>
-    <li><a ui-sref="/"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-    <li ng-repeat="link in nav_links"
-        ui-sref-active="active-nav">
-        <a ui-sref="{{link.route}}">{{link.name}}</a>
-    </li>
-</ul>
-
-<!--<ol class="breadcrumb">
-    <li><a ui-sref="/">Home</a></li>
-    <li><a class="active" ui-sref="'{{state.current.url}}'">{{state.current.name}}</a></li>
-</ol>-->
+<nav ng-controller="navController" id="nav">
+    <div class="container">
+        <div id="nav-header">
+            <div class="row">
+                <div class="col-md-2">
+                    <div id="brand-logo">
+                        <a ui-sref="/"><img src="images/savvy.png"></a>
+                    </div>
+                </div>
+                <form ng-submit="search()" class="col-md-8" handle-submit>
+                    <input type="search"
+                           ng-model="search_term"
+                           id="search-box"
+                           placeholder="Search for products or services...">
+                    <button type="submit" id="search-box-button">
+                        <i class="fa fa-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div id="nav-body">
+            <ul id="nav-left">
+                <li>
+                    <a ui-sref="/">Home</a>
+                </li>
+                <li>
+                    <a ui-sref="submit">Submit Price</a>
+                </li>
+                <li>
+                    <a ui-sref="about">About</a>
+                </li>
+            </ul>
+            <ul id="nav-right">
+                <li>
+                    <a ui-sref="login">Login</a>
+                </li>
+                <li>
+                    <a ui-sref="signup">Sign Up</a>
+                </li>
+                <li>
+                    <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
+                </li>
+            </ul>
+        </div>
+        <div id="mobile-nav-wrapper">
+            <a ng-click="showMobileNav()" href=""><i class="fa fa-navicon"></i></a>
+            <div ng-show="show_mobile_nav" id="mobile-nav">
+                <ul id="nav-left">
+                    <li>
+                        <a ui-sref="/">Home</a>
+                    </li>
+                    <li>
+                        <a ui-sref="submit">Submit Price</a>
+                    </li>
+                    <li>
+                        <a ui-sref="about">About</a>
+                    </li>
+                </ul>
+                <ul id="nav-right">
+                    <li>
+                        <a ui-sref="login">Login</a>
+                    </li>
+                    <li>
+                        <a ui-sref="signup">Sign Up</a>
+                    </li>
+                    <li>
+                        <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="nav-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <ol class="breadcrumb">
+                        <li><a ui-sref="/">Home</a></li>
+                        <li ng-if="state.current.name === 'submit'" class="active">
+                            Submit
+                        </li>
+                        <li ng-if="state.current.name === 'search'" class="active">
+                            Search
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
