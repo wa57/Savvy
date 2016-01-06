@@ -41,5 +41,6 @@ def api_search():
     results = []
     for result in product_db.search(query):
         result["average_price"] = price_db.average_price(result["description"])
+        result["lowest_price"] = price_db.lowest_price(result["description"])
         results.append(result)
     return json.dumps(results)

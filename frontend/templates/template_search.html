@@ -37,7 +37,9 @@
                 </div>
                 <div class="col-md-4">
                     <p>Product ID: <strong>{{product.product_id}}</strong></p>
-                    <p>Average Price: <strong>${{product.average_price / 100}}</strong></p>
+					<p>Lowest Price: <strong>${{product.lowest_price / 100 | number:2}}</strong></p>
+                    <p>Average Price: <strong>${{product.average_price / 100 | number:2}}</strong></p>
+					
                 </div>
                 <!--<div class="col-md-3">
                     <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
