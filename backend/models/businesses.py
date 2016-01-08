@@ -18,6 +18,7 @@ class BusinessDB(DB):
     def search(self, query):
         """Returns a list of matching businesses."""
         import re
+        results = []
         for result in self.db.businesses.find({"name": re.compile(".*{}.*".format(query), re.IGNORECASE)}):
             result = dict(result)
             result["business_id"] = str(result.pop("_id"))
