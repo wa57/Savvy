@@ -77,6 +77,42 @@ class PriceDB(DB):
         highest_price = int(next_result['highest_price'])
         logger.debug("Retrieved highest price for '{}' = {}".format(product, highest_price))
         return highest_price
+
+    def average_price_per_day(self, product):
+        """Returns an x,y coordinate for a product per day."""
+        result = self.db.prices.aggregate([
+            {
+                "$match":
+                {
+                    "product": product
+                }
+            },
+            {
+                "$project": {
+                    "date": {"$dateToString": {"format": "%Y-%m-%d", "date": "$submitted_timestamp"}},
+                    "price": 1
+                }
+            },
+            {
+                "$group":
+                {
+                    "_id": {"date": "$date"},
+                    "y": {"$avg": "$price"}
+                }
+            },
+            {
+                "$project": {
+                    "_id": 0,
+                    "x": "$_id.date",
+                    "y": 1
+                }
+            }
+        ])
+        if not result:
+            raise Exception("Unable to retrieve average price per day for '{}'".format(product))
+        average_price_per_day = result.next()
+        logger.debug("Retrieved average price per day for '{}'".format(product))
+        return average_price_per_day
     
     def search(self, product=None, business=None):
         """Returns a list of matching prices."""

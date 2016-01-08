@@ -43,5 +43,6 @@ def api_search():
         result["average_price"] = price_db.average_price(result["description"])
         result["lowest_price"] = price_db.lowest_price(result["description"])
         result["highest_price"] = price_db.highest_price(result["description"])
+        result["average_price_per_day"] = price_db.average_price_per_day(result["description"])
         results.append(result)
     return json.dumps(results)
