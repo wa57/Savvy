@@ -16,7 +16,7 @@ app.config["PROPAGATE_EXCEPTIONS"] = False
 
 
 # Configure logging
-log_format = logging.Formatter("%(asctime)s [%(name)s]\n\t%(levelname)8s: %(message)s\n")
+log_format = logging.Formatter("%(asctime)s [%(name)s.%(funcName)s():%(lineno)d]\n\t%(levelname)8s: %(message)s\n")
 
 logger = logging.getLogger()
 
