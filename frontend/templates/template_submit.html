@@ -23,6 +23,7 @@
                             ng-required="true"
                             id="places"
                             placeholder="Where you bought the product">
+                    <a>Enter Custom Address</a>
                 </label>
                 <label>
                 	<p>Price Paid (enter a number with no dollar sign) <span class="required-asterisk">&ast;</span></p>
@@ -60,7 +61,7 @@
                 </label>
                 <span ng-show="messages.tag_message === 'error-empty-input'" class="error-message">Please enter a tag.</span>
                 <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
-                <span ng-repeat="tag in product.tags" class="tag">{{tag}}</span>
+                <span ng-repeat="tag in product.tags" class="tag">{{tag}}<span style="margin-left: 2px; padding: 1px; background-color: grey;">X</span></span>
             </section>
         </div>
         <section>
