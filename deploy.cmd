@@ -1,3 +1,6 @@
+REM *** Make file read-writeable
+attrib -r %windir%\system32\inetsrv\config\schema\appwarmup_schema.xml
+
 REM *** Prevent the IIS app pools from shutting down due to being idle.
 %windir%\system32\inetsrv\appcmd set config -section:applicationPools -applicationPoolDefaults.processModel.idleTimeout:00:00:00
 
