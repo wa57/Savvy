@@ -34,12 +34,27 @@ app.directive("fileread", [function () {
     }
 }]);*/
 
-app.directive('handleSubmit', function () { //Addresses usability problem on phones where keyboard does not dismiss after form submit
+//Addresses usability issue on phones (just iOS?) where keyboard does not dismiss after form submit
+app.directive('handleSubmit', function () {
     return function (scope, element, attr) {
         var textFields = element.find('input');
 
         element.bind('submit', function() {
             textFields[0].blur();
+        });
+    };
+});
+
+//http://jsfiddle.net/lsconyer/bktpzgre/1/
+app.directive('ngEnter', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.$apply(function (){
+                    scope.$eval(attrs.ngEnter);
+                });
+                event.preventDefault();
+            }
         });
     };
 });

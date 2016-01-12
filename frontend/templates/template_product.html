@@ -1,11 +1,29 @@
+<div id="product-info">
+
+<div class="content-header">
+    <h5><i class="fa fa-info-circle"></i> Product Information</h5>
+</div>
+
 <div class="row">
-    <div class="col-sm-6">
-        <h3>{{product.name}}</h3>
-        <h4>${{product.avg_price}}</h4>
-        <h4>${{product.highest_price}}</h4>
+    <div class="col-sm-2">
+        <div>
+            <i ng-click="vote('up');" class="fa {{icon}}" style="font-size: 20px; color: red;"></i>
+        </div>
+        <div>
+            <i ng-click="vote('down');" class="fa fa-thumbs-o-down" style="font-size: 20px; color: green;"></i>
+        </div>
+        {{icon}}
+        <p>
+            Was this information helpful?
+        </p>
     </div>
-    <div class="col-sm-6">
-        <img src="http://www.greekshares.com/uploads/image/stock_market_quotes.jpg">
+    <div class="col-sm-5">
+        <h2>Folger's Coffee</h2>
+        <p><span style="font-size: 24px;">$5.40</span> <span style="font-size: 12px;">Average Price</span></p>
+        <p><span style="font-size: 24px;">$5.40</span> <span style="font-size: 12px;">Lowest Price</span></p>
+    </div>
+    <div class="col-sm-5">
+        <img src="http://www.greekshares.com/uploads/image/stock_market_quotes.jpg" style="width: 85%; ">
         <div>
             <span>Tags:</span>
             <span ng-repeat="tag in product.tags" class="badge">
@@ -22,14 +40,14 @@
 <div class="row">
     <div class="col-sm-8 col-sm-offset-3">
         <h2>Price Over Time</h2>
-        <img src="http://image.tutorvista.com/content/feed/u881/T8_8.GIF">
+        <div id="visualization"></div>
     </div>
 </div>
 <hr>
 <div class="row">
     <div class="col-sm-6">
         <h2>Best Prices</h2>
-        <table>
+        <table class="table table-striped">
             <tr>
                 <th>Brand</th>
                 <th>Avg Price</th>
@@ -44,7 +62,7 @@
     </div>
     <div class="col-sm-6">
         <h2>Latest Prices</h2>
-        <table>
+        <table class="table table-striped">
             <tr>
                 <th>Brand</th>
                 <th>Avg Price</th>
@@ -57,4 +75,5 @@
             </tr>
         </table>
     </div>
+</div>
 </div>
