@@ -7,60 +7,70 @@
             id="submit-product-form"
             name="submitForm"
             role="form">
-        <section class="col-md-8">
-            <label>
-                <span>Product Name &ast;</span>
-                <input type="text"
-                        ng-model="product.description"
-                        ng-required="true"
-                        id="product-name"
-                        placeholder="Enter the name of the product, e.g. 12oz. Coke Can">
-            </label>
-            <label>
-                <span>Place of Purchase &ast;</span>
-                <input type="text"
-                        ng-required="true"
-                        id="places"
-                        placeholder="Enter where you bought the product">
-            </label>
-            <label>
-            	<span>Price Paid (enter a number with no dollar sign) &ast;</span>
-            	<input type="number"
-                        ng-model="price"
-                        id="price-paid"
-                        step="any"
-                        min="0"
-                        ng-required="true"
-                        placeholder="Enter the price you paid">
-            </label>
-            <!--<label>
-            	<span>Upload a picture of the product (optional)</span>
-            	<input type="file" fileread="product.image">
-            </label>-->
+        <div class="row">
+            <section class="col-md-8">
+                <label>
+                    <p>Product Name <span class="required-asterisk">&ast;</span></p>
+                    <input type="text"
+                            ng-model="product.description"
+                            ng-required="true"
+                            id="product-name"
+                            placeholder="The name of the product, e.g. 12oz. Coke Can">
+                </label>
+                <label>
+                    <p>Place of Purchase <span class="required-asterisk">&ast;</span></p>
+                    <input type="text"
+                            ng-required="true"
+                            id="places"
+                            placeholder="Where you bought the product">
+                    <a>Enter Custom Address</a>
+                </label>
+                <label>
+                	<p>Price Paid (enter a number with no dollar sign) <span class="required-asterisk">&ast;</span></p>
+                    <span class="input-addon"
+                        style="background-color: #eee; padding: 12px; margin-right: -5px; border-top-left-radius: 2px;
+                        border-bottom-left-radius: 2px; border: 1px solid #e5e5e5;">
+                    $</span>
+                    <input type="number"
+                            ng-model="price"
+                            id="price-paid"
+                            step="any"
+                            min="0"
+                            ng-required="true"
+                            placeholder="The price you paid">
+                </label>
+                <!--<label>
+                	<span>Upload a picture of the product (optional)</span>
+                	<input type="file" fileread="product.image">
+                </label>-->
+            </section>
+            <section class="col-md-4">
+                <label id="add-tag-wrapper">
+                    <p>Add A Tag</p>
+                    <input type="text"
+                            ng-model="tag"
+                            ng-enter="addTag();"
+                            size="6"
+                            id="add-tag"
+                            placeholder="Enter a tag">
+                    <button type="button"
+                            class="btn btn-primary btn-sm"
+                            ng-click="addTag()">
+                            Add
+                    </button>
+                </label>
+                <span ng-show="messages.tag_message === 'error-empty-input'" class="error-message">Please enter a tag.</span>
+                <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
+                <span ng-repeat="tag in product.tags" class="tag">{{tag}}<span style="margin-left: 2px; padding: 1px; background-color: grey;">X</span></span>
+            </section>
+        </div>
+        <section>
             <button type="submit" ng-disabled="" class="btn btn-success btn-md">Submit</button>
             <span ng-show="message === 'processing'"><img src="images/loader.GIF"></span>
             <span ng-show="message === 'success'" class="text-success">Price Saved!</span>
             <span ng-show="message === 'error'" class="alert alert-danger">
                 <i class="fa fa-exclamation-triangle"></i> Submission Error. Please try again later.
             </span>
-        </section>
-        <section class="col-md-4">
-            <label id="add-tag-wrapper">
-                <span>Add A Tag</span>
-                <input type="text"
-                        ng-model="tag"
-                        size="6"
-                        id="add-tag"
-                        placeholder="Enter a tag">
-                <button type="button"
-                        class="btn btn-primary btn-sm"
-                        ng-click="addTag()">
-                        Add
-                </button>
-            </label>
-            <span ng-show="messages.tag_message === 'error-empty-input'" class="error-message">Please enter a tag.</span>
-            <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
-            <span ng-repeat="tag in product.tags" class="tag">{{tag}}</span>
         </section>
     </form>
 

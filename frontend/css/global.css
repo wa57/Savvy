@@ -44,6 +44,7 @@ a:visited {
 
 .required-asterisk {
     color: red;
+    display: inline;
 }
 
 .note {
@@ -498,11 +499,12 @@ ul li {
     margin: 1em 0 1em 0;
 }
 
-#submit-product-form label, #submit-product-form label span {
+#submit-product-form label, #submit-product-form label p {
     display: block;
 }
 
-#submit-product-form label span {
+#submit-product-form label p {
+    margin: 0;
     margin-bottom: 5px;
     font-size: 16px;
 }
@@ -522,8 +524,8 @@ ul li {
     width: 60%;
 }
 
-#add-tag-wrapper {
-
+#add-tag-form {
+    margin-top: 25px;
 }
 
 #product-name, #places {
@@ -532,6 +534,8 @@ ul li {
 
 #price-paid {
     width: 30%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 
 
