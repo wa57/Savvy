@@ -6,14 +6,14 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
-        var rounded_price = parseFloat($scope.price.toFixed(2)*100).toString();
-        var price = parseInt(stringReplace.replaceAll(rounded_price, ".", ""));
 
-        var tags = [];
-        angular.forEach($scope.product.tags.split(","), function(tag, index) {
-            tags.push(stringReplace.replaceAll(tag, " ", ""));
-        });
-        $scope.product.tags = tags;
+        var price = parseInt(parseFloat($scope.price.toFixed(2)*100));
+
+        if($scope.product.tags.length > 0) {
+            angular.forEach($scope.product.tags, function(tag, index) {
+                $scope.product.tags[index] = stringReplace.replaceAll(tag, " ", "");
+            });
+        }
 
         var post_data = {
             product: $scope.product,
@@ -28,15 +28,15 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             data: post_data,
             headers: {'Content-Type': 'application/json'}
         })
-            .success(function(data, status, headers, config) {
-                $scope.createReceipt(data);
-                $scope.product = {};
-                $scope.message = "success";
-            })
-            .error(function(data, status, headers, config) {
-                $scope.status = status;
-                $scope.message = "error";
-            });
+        .success(function(data, status, headers, config) {
+            $scope.createReceipt(data);
+            $scope.product = {};
+            $scope.message = "success";
+        })
+        .error(function(data, status, headers, config) {
+            $scope.status = status;
+            $scope.message = "error";
+        });
     }
 
     $scope.initializeGooglePlaces = function() {
@@ -163,7 +163,7 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $scope.chosen_order_item = $scope.order_options[0];
         $scope.orderBy();
     }
-    
+
     $scope.orderBy = function() {
         $scope.order_item = $scope.chosen_order_item.name;
         $scope.order_reverse = $scope.chosen_order_item.order_reverse;
@@ -195,7 +195,48 @@ app.controller('navController', function($scope, $state) {
 
 //WIP CONTROLLERS
 
-app.controller('productController', function($scope, $stateParams) {});
+app.controller('productController', function($scope, $stateParams) {
+    $scope.icon = "fa-thumbs-o-up";
+    $scope.product = {
+
+    };
+    $scope.test = function() {
+        console.log('hi');
+        if($scope.icon = "fa-thumbs-o-up") {
+            $scope.icon = "fa-thumbs-up";
+        } else if($scope.icon = "fa-thumbs-up"){
+            $scope.icon = "fa-thumbs-o-up";
+        }
+    }
+
+    $scope.vote = function(direction) {
+        if(direction === "up") {
+            console.log('hello');
+            $scope.icon = "fa-thumbs-up";
+        }
+    }
+
+    $scope.initializeGraph = function() {
+        var container = document.getElementById('visualization');
+        var items = [
+            {x: '2014-06-11', y: 10},
+            {x: '2014-06-12', y: 25},
+            {x: '2014-06-13', y: 30},
+            {x: '2014-06-14', y: 10},
+            {x: '2014-06-15', y: 15},
+            {x: '2014-06-16', y: 30}
+        ];
+        var dataset = new vis.DataSet(items);
+        var options = {
+            start: items[0].x,
+            end: items[items.length-1].x
+        };
+        var graph2d = new vis.Graph2d(container, dataset, options);
+    };
+
+    $scope.initializeGraph();
+});
+
 app.controller('loginController', function($scope) {
     $scope.data = {};
 
