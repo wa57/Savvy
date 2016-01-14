@@ -1,4 +1,5 @@
 import json
+import logging
 
 from flask import Blueprint
 from flask import request
@@ -6,6 +7,10 @@ from flask import request
 from backend.models.products import ProductDB
 from backend.models.prices import PriceDB
 from backend.utils import json_error, crossdomain
+
+
+logger = logging.getLogger("savvy.views.products")
+
 
 product_blueprint = Blueprint("products", __name__, url_prefix="/api/v1/products")
 
@@ -62,6 +67,7 @@ def api_search():
             ]
     """
     query = request.args.get("query", None)
+    logger.debug("Searching for products. Query = '{}'".format(query))
     if not query:
         return json_error("Query can not be empty")
     product_db = ProductDB()
@@ -73,4 +79,5 @@ def api_search():
         result["highest_price"] = price_db.highest_price(result["description"])
         result["average_price_per_day"] = price_db.average_price_per_day(result["description"])
         results.append(result)
+    logger.debug("Product search result. Query = '{}'. Result = '{}'".format(query, results))
     return json.dumps(results)
