@@ -1,9 +1,9 @@
 import logging
 import traceback
-from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask import request
+from cloghandler import ConcurrentRotatingFileHandler
 
 from backend.views.users import user_blueprint
 from backend.views.products import product_blueprint
@@ -25,7 +25,7 @@ stderr_handler.setLevel(logging.DEBUG)
 stderr_handler.setFormatter(log_format)
 logger.addHandler(stderr_handler)
 
-file_handler = RotatingFileHandler("web.log", maxBytes=10000, backupCount=2)
+file_handler = ConcurrentRotatingFileHandler("web.log", maxBytes=50000, backupCount=2)
 file_handler.setLevel(logging.DEBUG)
 file_handler.setFormatter(log_format)
 logger.addHandler(file_handler)
