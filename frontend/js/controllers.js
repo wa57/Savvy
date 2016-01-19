@@ -7,7 +7,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     $scope.submitPrice = function() {
         $scope.message = "processing";
 
-        var price = parseInt(parseFloat($scope.price.toFixed(2)*100));
+        var price = parseInt($scope.price.toFixed(2)*100);
 
         if($scope.product.tags.length > 0) {
             angular.forEach($scope.product.tags, function(tag, index) {
@@ -196,24 +196,12 @@ app.controller('navController', function($scope, $state) {
 //WIP CONTROLLERS
 
 app.controller('productController', function($scope, $stateParams) {
-    $scope.icon = "fa-thumbs-o-up";
     $scope.product = {
 
     };
-    $scope.test = function() {
-        console.log('hi');
-        if($scope.icon = "fa-thumbs-o-up") {
-            $scope.icon = "fa-thumbs-up";
-        } else if($scope.icon = "fa-thumbs-up"){
-            $scope.icon = "fa-thumbs-o-up";
-        }
-    }
 
     $scope.vote = function(direction) {
-        if(direction === "up") {
-            console.log('hello');
-            $scope.icon = "fa-thumbs-up";
-        }
+        
     }
 
     $scope.initializeGraph = function() {
