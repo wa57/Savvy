@@ -1,42 +1,36 @@
-<div id="content" class="signup col-lg-4 col-lg-offset-4">
+<div class="signup">
     <h2 class="heading center">Sign Up</h2>
-    <form name="userForm" class="input-group">
+    <form name="userForm">
         <p>First Name<p>
         <input type="text"
                 ng-model="user.first_name"
                 ng-required="required"
-                placeholder="First Name"
-                class="form-control">
+                placeholder="First Name">
 
         <input type="text"
                 ng-model="user.last_name"
                 ng-required="required"
-                placeholder="Last Name"
-                class="form-control">
+                placeholder="Last Name">
 
         <input type="password"
                 ng-required="required"
                 ng-model="user.confirmed_password"
-                placeholder="Username"
-                class="form-control">
+                placeholder="Username">
 
         <input type="text"
                 ng-model="user.email"
                 ng-required="required"
-                placeholder="Email Address"
-                class="form-control">
+                placeholder="Email Address">
 
         <input type="password"
                 ng-model="user.password"
                 ng-required="required"
-                placeholder="Password"
-                class="form-control">
+                placeholder="Password">
 
         <input type="password"
                 ng-required="required"
                 ng-model="user.confirmed_password"
-                placeholder="Confirm Password"
-                class="form-control">
+                placeholder="Confirm Password">
 
         <div>
             <button type="button"
