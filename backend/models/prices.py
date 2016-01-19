@@ -27,11 +27,13 @@ class PriceDB(DB):
                 }
             }
         ])
-        if not result:
-            raise Exception("Unable to retrieve average price for '{}'".format(product))
-        next_result = result.next()
-        average_price = int(next_result['average'])
-        logger.debug("Retrieved average price for '{}' = {}".format(product, average_price))
+        try:
+            next_result = result.next()
+            average_price = int(next_result['average'])
+            logger.debug("Retrieved average price for '{}' = {}".format(product, average_price))
+        except StopIteration:
+            logger.warning("Unable to retrieve average price for '{}'".format(product))
+            average_price = -1
         return average_price
 
     def lowest_price(self, product):
@@ -49,11 +51,13 @@ class PriceDB(DB):
                 }
             }
         ])
-        if not result:
-            raise Exception("Unable to retrieve lowest price for '{}'".format(product))
-        next_result = result.next()
-        lowest_price = int(next_result['lowest_price'])
-        logger.debug("Retrieved lowest price for '{}' = {}".format(product, lowest_price))
+        try:
+            next_result = result.next()
+            lowest_price = int(next_result['lowest_price'])
+            logger.debug("Retrieved lowest price for '{}' = {}".format(product, lowest_price))
+        except StopIteration:
+            logger.warning("Unable to retrieve lowest price for '{}'".format(product))
+            lowest_price = -1
         return lowest_price
 
     def highest_price(self, product):
@@ -71,11 +75,13 @@ class PriceDB(DB):
                 }
             }
         ])
-        if not result:
-            raise Exception("Unable to retrieve highest price for '{}'".format(product))
-        next_result = result.next()
-        highest_price = int(next_result['highest_price'])
-        logger.debug("Retrieved highest price for '{}' = {}".format(product, highest_price))
+        try:
+            next_result = result.next()
+            highest_price = int(next_result['highest_price'])
+            logger.debug("Retrieved highest price for '{}' = {}".format(product, highest_price))
+        except StopIteration:
+            logger.warning("Unable to retrieve highest price for '{}'".format(product))
+            highest_price = -1
         return highest_price
 
     def average_price_per_day(self, product):
@@ -108,10 +114,12 @@ class PriceDB(DB):
                 }
             }
         ])
-        if not result:
-            raise Exception("Unable to retrieve average price per day for '{}'".format(product))
-        average_price_per_day = result.next()
-        logger.debug("Retrieved average price per day for '{}'".format(product))
+        try:
+            average_price_per_day = result.next()
+            logger.debug("Retrieved average price per day for '{}'".format(product))
+        except StopIteration:
+            logger.warning("Unable to retrieve average price per day for '{}'".format(product))
+            average_price_per_day = []
         return average_price_per_day
     
     def search(self, product=None, business=None):
