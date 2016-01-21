@@ -12,29 +12,16 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
     $urlMatcherFactoryProvider.strictMode(false)
 
     $stateProvider
-        // HOME STATES AND NESTED VIEWS ========================================
-        .state('/', {
+        /*.state('app', {
+            templateUrl: 'templates/template_app.html',
+            abstract: true,
+        })*/
+        .state('home', {
             url: '/',
             templateUrl: 'templates/template_home.html',
             controller: 'homeController',
             title: "Home"
         })
-
-        // ABOUT PAGE AND MULTIPLE NAMED VIEWS =================================
-        .state('signup', {
-            url: '/signup',
-            templateUrl: 'templates/template_signup.html',
-            controller: 'signUpController',
-            title: "Sign Up"
-        })
-
-        .state('login', {
-            url: '/login',
-            templateUrl: 'templates/template_login.html',
-            controller: 'loginController',
-            title: "Login"
-        })
-
         .state('search', {
             url: '/search/:search_term',
             templateUrl: 'templates/template_search.html',
@@ -47,7 +34,6 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
                 }
             }
         })
-
         .state('submit', {
             url: '/submit',
             templateUrl: 'templates/template_submit.html',
@@ -61,14 +47,30 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             url: '/product/:product',
             templateUrl: 'templates/template_product.html',
             controller: 'productController',
-            title: "Product Page"
+            title: "Product Page",
+            params: {
+                product_id: {
+                    value: null,
+                    squash: true
+                }
+            }
         })
-
         .state('admin', {
             url: '/admin',
             templateUrl: 'templates/template_admin.html',
             controller: 'adminController',
             title: "Admin"
         })
-
+        .state('signup', {
+            url: '/signup',
+            templateUrl: 'templates/template_signup.html',
+            controller: 'signUpController',
+            title: "Sign Up"
+        })
+        .state('login', {
+            url: '/login',
+            templateUrl: 'templates/template_login.html',
+            controller: 'loginController',
+            title: "Login"
+        })
 });
