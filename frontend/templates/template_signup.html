@@ -1,50 +1,45 @@
 <div class="signup">
-    <h2 class="heading center">Sign Up</h2>
-    <form name="userForm">
-        <p>First Name<p>
-        <input type="text"
-                ng-model="user.first_name"
-                ng-required="required"
-                placeholder="First Name">
+    <img src="../images/savvy_grey_dollar.png"
+        style="display: block; margin: 0 auto; width: 10%; margin-top: 20px;">
+    <div style="border-bottom: 1px solid #ebebeb; height: 1px; margin-top: 20px; margin-left: -15px; margin-right: -15px;">
 
-        <input type="text"
-                ng-model="user.last_name"
-                ng-required="required"
-                placeholder="Last Name">
-
-        <input type="password"
-                ng-required="required"
-                ng-model="user.confirmed_password"
-                placeholder="Username">
-
-        <input type="text"
-                ng-model="user.email"
-                ng-required="required"
-                placeholder="Email Address">
-
-        <input type="password"
-                ng-model="user.password"
-                ng-required="required"
-                placeholder="Password">
-
-        <input type="password"
-                ng-required="required"
-                ng-model="user.confirmed_password"
-                placeholder="Confirm Password">
-
-        <div>
-            <button type="button"
-                ng-click="saveNewUser();"
-                ng-disabled="userForm.$invalid"
-                id="signup-btn"
-                class="btn btn-warning btn-lg btn-block">
-                Sign Up
-            </button>
+    </div>
+    <form style="width: 50%; margin: 0 auto; margin-top: 20px;">
+        <h3 style="color: #00A079; margin-bottom: 20px; font-weight: bold;">Sign Up</h3>
+        <label>
+            <p>Email Address</p>
+            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+        </label>
+        <label>
+            <p>Password</p>
+            <input type="text" ng-model="data.password" style="display: block; width: 100%; margin-bottom: 20px;">
+        </label>
+        <label>
+            <p>Email Address</p>
+            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+        </label>
+        <label>
+            <p>Email Address</p>
+            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+        </label>
+        <label>
+            <p>Email Address</p>
+            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+        </label>
+        <label>
+            <p>Email Address</p>
+            <input type="text" ng-model="data.email" style="width: 100%; margin-bottom: 20px;">
+        </label>
+        <button
+            ng-click="loginUser();"
+            class="btn btn-success btn-lg btn-block"
+            style="margin-bottom: 20px;">
+        Sign Up
+        </button>
+        <div class="center">
+            <p style="margin-bottom: 20px;">Don't have an account? <a ui-sref="signup">Sign Up</a></p>
+            <p><a ui-sref="account-recovery">Forgot your password?</a></p>
         </div>
-        <p class="signup-login center">
-            Already have an account?
-            <a ui-sref="login">Log In</a>
-        </p>
     </form>
-    {{user}}
 </div>
+{{data}}

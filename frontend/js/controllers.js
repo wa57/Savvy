@@ -127,7 +127,6 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
-                console.log(data);
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
             })
@@ -177,9 +176,7 @@ app.controller('navController', function($scope, $state) {
     $scope.show_mobile_nav = false;
 
     $scope.search = function() {
-        console.log($scope.search_term);
         if($scope.search_term !== "" && $scope.search_term) {
-            console.log('hi');
             $state.go('search', {search_term: $scope.search_term});
         }
     }
@@ -201,8 +198,13 @@ app.controller('productController', function($scope, $stateParams) {
     };
 
     $scope.vote = function(direction) {
-        
+
     }
+
+    $http.get(savvy.api_root + "products/565ce07f5f58e56f823c9351")
+        .success(function(data, status, headers, config){
+            
+        });
 
     $scope.initializeGraph = function() {
         var container = document.getElementById('visualization');

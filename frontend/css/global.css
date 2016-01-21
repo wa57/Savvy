@@ -441,6 +441,13 @@ ul li {
     margin: .5em 0 1em 0;
 }
 
+/* LOGIN */
+
+.login label, .signup label {
+    display: block;
+}
+
+
 /* SEARCH */
 
 .product-image {
