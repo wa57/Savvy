@@ -39,10 +39,11 @@
                             ng-required="true"
                             placeholder="The price you paid">
                 </label>
-                <!--<label>
+                <label>
                 	<span>Upload a picture of the product (optional)</span>
-                	<input type="file" fileread="product.image">
-                </label>-->
+                	<!--<input type="file" fileread="product.image">-->
+                    <input type="file" ng-model="product_image" fileread="product_image">
+                </label>
             </section>
             <section class="col-md-4">
                 <label id="add-tag-wrapper">

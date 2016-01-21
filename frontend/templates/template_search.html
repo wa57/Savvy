@@ -26,17 +26,16 @@
     <div ng-show="message !== 'no-results'">
         <div ng-repeat="product in products | orderObjectBy:order_item:order_reverse" class="search-result">
             <div class="row">
-                <h4 class="col-md-12"><a ui-sref="product({product: '{{product.product_id}}'})">{{product.description}}{{product.product_id}}</a></h4>
+                <h4 class="col-md-12"><a ui-sref="product({product_id: '{{product.product_id}}'})">{{product.description}}</a></h4>
             </div>
             <div class="row">
                 <div class="col-md-2">
-                    <a ui-sref="product({product: '{{product.path}}'})">
+                    <a ui-sref="product({product_id: '{{product.path}}'})">
                         <!--<img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">-->
                         No Image Available
                     </a>
                 </div>
                 <div class="col-md-4">
-                    <p>Product ID: <strong>{{product.product_id}}</strong></p>
 					<p>Lowest Price: <strong>${{product.lowest_price / 100 | number:2}}</strong></p>
                     <p>Average Price: <strong>${{product.average_price / 100 | number:2}}</strong></p>
 
