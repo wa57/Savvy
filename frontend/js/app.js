@@ -12,17 +12,17 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
     $urlMatcherFactoryProvider.strictMode(false)
 
     $stateProvider
-        .state('app', {
+        /*.state('app', {
             templateUrl: 'templates/template_app.html',
             abstract: true,
-        })
-        .state('app.home', {
+        })*/
+        .state('home', {
             url: '/',
             templateUrl: 'templates/template_home.html',
             controller: 'homeController',
             title: "Home"
         })
-        .state('app.search', {
+        .state('search', {
             url: '/search/:search_term',
             templateUrl: 'templates/template_search.html',
             controller: 'searchController',
@@ -34,7 +34,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
                 }
             }
         })
-        .state('app.submit', {
+        .state('submit', {
             url: '/submit',
             templateUrl: 'templates/template_submit.html',
             controller: 'submitController',
@@ -43,13 +43,19 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
                 requireLogin: true
             }
         })
-        .state('app.product', {
+        .state('product', {
             url: '/product/:product',
             templateUrl: 'templates/template_product.html',
             controller: 'productController',
-            title: "Product Page"
+            title: "Product Page",
+            params: {
+                product_id: {
+                    value: null,
+                    squash: true
+                }
+            }
         })
-        .state('app.admin', {
+        .state('admin', {
             url: '/admin',
             templateUrl: 'templates/template_admin.html',
             controller: 'adminController',

@@ -10,7 +10,9 @@
 </head>
 <body>
 
-    <div ui-view=""></div>
+    <!--<div ui-view=""></div>-->
+    <div ng-include src='"includes/inc_nav.html"'></div>
+    <section ng-init="initialize()" ui-view id="content" class="container"></section>
 
     <script src="js/config.js"></script>
     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU&libraries=places"></script>
