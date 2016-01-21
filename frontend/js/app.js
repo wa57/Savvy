@@ -44,7 +44,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             }
         })
         .state('product', {
-            url: '/product/:product',
+            url: '/product/:product_id',
             templateUrl: 'templates/template_product.html',
             controller: 'productController',
             title: "Product Page",

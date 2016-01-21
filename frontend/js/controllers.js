@@ -20,7 +20,9 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             business: $scope.google_places,
             user: $scope.makeid(),
             price: price,
+            product_image: $scope.image
         };
+
 
         $http({
             method: "POST",
@@ -75,6 +77,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         $scope.product = {
             tags: []
         };
+        $scope.image = "";
         $scope.receipt = {};
         $scope.message = "";
         $scope.messages = {
@@ -192,7 +195,7 @@ app.controller('navController', function($scope, $state) {
 
 //WIP CONTROLLERS
 
-app.controller('productController', function($scope, $stateParams) {
+app.controller('productController', function($scope, $stateParams, $http) {
     $scope.product = {
 
     };
@@ -201,9 +204,10 @@ app.controller('productController', function($scope, $stateParams) {
 
     }
 
-    $http.get(savvy.api_root + "products/565ce07f5f58e56f823c9351")
+    $http.get(savvy.api_root + "products/" + $stateParams.product_id)
         .success(function(data, status, headers, config){
-            
+            console.log(data);
+            $scope.product = data;
         });
 
     $scope.initializeGraph = function() {
