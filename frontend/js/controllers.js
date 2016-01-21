@@ -7,7 +7,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
     $scope.submitPrice = function() {
         $scope.message = "processing";
 
-        var price = parseInt(parseFloat($scope.price.toFixed(2)*100));
+        var price = parseInt($scope.price.toFixed(2)*100);
 
         if($scope.product.tags.length > 0) {
             angular.forEach($scope.product.tags, function(tag, index) {
@@ -127,7 +127,6 @@ app.controller('searchController', function($scope, $stateParams, $http, $state)
         $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
-                console.log(data);
                 $scope.returned_results_length = $scope.products.length;
                 $scope.message = "success";
             })
@@ -177,9 +176,7 @@ app.controller('navController', function($scope, $state) {
     $scope.show_mobile_nav = false;
 
     $scope.search = function() {
-        console.log($scope.search_term);
         if($scope.search_term !== "" && $scope.search_term) {
-            console.log('hi');
             $state.go('search', {search_term: $scope.search_term});
         }
     }
@@ -196,25 +193,18 @@ app.controller('navController', function($scope, $state) {
 //WIP CONTROLLERS
 
 app.controller('productController', function($scope, $stateParams) {
-    $scope.icon = "fa-thumbs-o-up";
     $scope.product = {
 
     };
-    $scope.test = function() {
-        console.log('hi');
-        if($scope.icon = "fa-thumbs-o-up") {
-            $scope.icon = "fa-thumbs-up";
-        } else if($scope.icon = "fa-thumbs-up"){
-            $scope.icon = "fa-thumbs-o-up";
-        }
-    }
 
     $scope.vote = function(direction) {
-        if(direction === "up") {
-            console.log('hello');
-            $scope.icon = "fa-thumbs-up";
-        }
+
     }
+
+    $http.get(savvy.api_root + "products/565ce07f5f58e56f823c9351")
+        .success(function(data, status, headers, config){
+            
+        });
 
     $scope.initializeGraph = function() {
         var container = document.getElementById('visualization');
