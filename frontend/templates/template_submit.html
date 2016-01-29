@@ -39,11 +39,6 @@
                             ng-required="true"
                             placeholder="The price you paid">
                 </label>
-                <label>
-                	<span>Upload a picture of the product (optional)</span>
-                	<!--<input type="file" fileread="product.image">-->
-                    <input type="file" ng-model="product_image" fileread="product_image">
-                </label>
             </section>
             <section class="col-md-4">
                 <label id="add-tag-wrapper">
@@ -64,6 +59,16 @@
                 <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
                 <span ng-repeat="tag in product.tags" class="tag">{{tag}}<span style="margin-left: 2px; padding: 1px; background-color: grey;">X</span></span>
             </section>
+            <label>
+                <span>Upload a picture of the product (optional)</span>
+                <!--<input type="file" fileread="product.image">-->
+                <input type="file" ng-change="test();" ng-model="product_image" fileread="product_image">
+                <button ng-click="test()">test</button>
+                <img src="{{product_image}}">
+                <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUA
+AAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO
+    9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+            </label>
         </div>
         <section>
             <button type="submit" ng-disabled="" class="btn btn-success btn-md">Submit</button>
