@@ -19,15 +19,15 @@
     </div>
     <div class="col-sm-5">
         <h2>{{product.description}}</h2>
-        <p><span style="font-size: 24px;">{{product.average_price / 100}}</span> <span style="font-size: 12px;">Average Price</span></p>
-        <p><span style="font-size: 24px;">$5.40</span> <span style="font-size: 12px;">Lowest Price</span></p>
+        <p><span style="font-size: 24px;">${{product.average_price / 100}}</span> <span style="font-size: 12px;">Average Price</span></p>
+        <p><span style="font-size: 24px;">${{product.lowest_price}}</span> <span style="font-size: 12px;">Lowest Price</span></p>
     </div>
     <div class="col-sm-5">
         <img src="http://www.greekshares.com/uploads/image/stock_market_quotes.jpg" style="width: 85%; ">
         <div>
             <span>Tags:</span>
             <span ng-repeat="tag in product.tags" class="badge">
-                <a ui-sref="results({search_term: '{{tag.name}}'})">{{tag.name}}</a>
+                <a ui-sref="search({search_term: '{{tag}}'})">{{tag}}</a>
             </span>
             <input type="text"
                    placeholder="Add tags, comma seperated">
@@ -38,42 +38,31 @@
 </div>
 <hr>
 <div class="row">
-    <div class="col-sm-8 col-sm-offset-3">
-        <h2>Price Over Time</h2>
-        <div id="visualization"></div>
-    </div>
-</div>
-<hr>
-<div class="row">
-    <div class="col-sm-6">
-        <h2>Best Prices</h2>
-        <table class="table table-striped">
-            <tr>
-                <th>Brand</th>
-                <th>Avg Price</th>
-                <th>Low Price</th>
-            </tr>
-            <tr>
-                <td>Folgers</td>
-                <td>$1.65</td>
-                <td>$1.20</td>
-            </tr>
-        </table>
-    </div>
-    <div class="col-sm-6">
+    <div class="col-sm-4">
         <h2>Latest Prices</h2>
         <table class="table table-striped">
             <tr>
-                <th>Brand</th>
-                <th>Avg Price</th>
-                <th>Low Price</th>
+                <th>
+                    Location
+                </th>
+                <th>Purchase Price</th>
+                <th>Date Purchased</th>
             </tr>
             <tr>
-                <td>Folgers</td>
+                <th>
+                    Starbucks
+                </th>
                 <td>$1.65</td>
                 <td>$1.20</td>
             </tr>
         </table>
     </div>
+    <div class="col-sm-8">
+        <img src="" alt="Google Map with all businesses marked">
+    </div>
+</div>
+<div class="row">
+    <h2>Price Over Time</h2>
+    <div id="visualization"></div>
 </div>
 </div>

@@ -4,6 +4,24 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
         $scope.initializeGooglePlaces();
     }
 
+    $scope.test = function() {
+        console.log($scope.product_image);
+        var encode = btoa($scope.product_image);
+        console.log(encode);
+        var decode = atob(encode);
+        console.log(decode);
+    };
+    // Define the string
+var string = 'Hello World!';
+
+// Encode the String
+var encodedString = btoa(string);
+console.log(encodedString); // Outputs: "SGVsbG8gV29ybGQh"
+
+// Decode the String
+var decodedString = atob(encodedString);
+console.log(decodedString); // Outputs: "Hello World!"
+
     $scope.submitPrice = function() {
         $scope.message = "processing";
 
@@ -23,6 +41,7 @@ app.controller('submitController', function($scope, $state, $http, stringReplace
             product_image: $scope.image
         };
 
+        console.log(window.atob(post_data.product_image));
 
         $http({
             method: "POST",
