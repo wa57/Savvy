@@ -1,141 +1,3 @@
-app.controller('submitController', function($scope, $state, $http, stringReplace, $filter) {
-    $scope.initialize = function() {
-        $scope.initializeData();
-        $scope.initializeGooglePlaces();
-    }
-
-    $scope.test = function() {
-        console.log($scope.product_image);
-        var encode = btoa($scope.product_image);
-        console.log(encode);
-        var decode = atob(encode);
-        console.log(decode);
-    };
-    // Define the string
-var string = 'Hello World!';
-
-// Encode the String
-var encodedString = btoa(string);
-console.log(encodedString); // Outputs: "SGVsbG8gV29ybGQh"
-
-// Decode the String
-var decodedString = atob(encodedString);
-console.log(decodedString); // Outputs: "Hello World!"
-
-    $scope.submitPrice = function() {
-        $scope.message = "processing";
-
-        var price = parseInt($scope.price.toFixed(2)*100);
-
-        if($scope.product.tags.length > 0) {
-            angular.forEach($scope.product.tags, function(tag, index) {
-                $scope.product.tags[index] = stringReplace.replaceAll(tag, " ", "");
-            });
-        }
-
-        var post_data = {
-            product: $scope.product,
-            business: $scope.google_places,
-            user: $scope.makeid(),
-            price: price,
-            product_image: $scope.image
-        };
-
-        console.log(window.atob(post_data.product_image));
-
-        $http({
-            method: "POST",
-            url: savvy.api_root + "prices/add",
-            data: post_data,
-            headers: {'Content-Type': 'application/json'}
-        })
-        .success(function(data, status, headers, config) {
-            $scope.createReceipt(data);
-            $scope.product = {};
-            $scope.message = "success";
-        })
-        .error(function(data, status, headers, config) {
-            $scope.status = status;
-            $scope.message = "error";
-        });
-    }
-
-    $scope.initializeGooglePlaces = function() {
-        var defaultBounds = new google.maps.LatLngBounds(
-            new google.maps.LatLng(39.952584, -75.165222),
-            new google.maps.LatLng(39.952584, -75.165222)
-        );
-
-        var input = document.getElementById('places');
-        var options = {
-          bounds: defaultBounds,
-          types: ['establishment']
-        };
-
-        autocomplete = new google.maps.places.Autocomplete(input, options);
-
-        google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            $scope.google_places = autocomplete.getPlace();
-            $scope.$apply();
-        });
-    }
-
-    $scope.makeid = function() {
-        var text = "testuser";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        for( var i=0; i < 5; i++ ) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-
-        return text;
-    }
-
-    $scope.initializeData = function() {
-        $scope.tag = "";
-        $scope.product = {
-            tags: []
-        };
-        $scope.image = "";
-        $scope.receipt = {};
-        $scope.message = "";
-        $scope.messages = {
-            tag_message: "",
-            save_message: ""
-        }
-        $scope.google_places = "";
-        $scope.price = "";
-        document.getElementById('places').value = "";
-    }
-
-    $scope.createReceipt = function(api_response) {
-        $scope.receipt = {
-            id: api_response.id,
-            business: $scope.google_places.formatted_address,
-            tags: $scope.product.tags,
-            price: $scope.price,
-            description: $scope.product.description
-        };
-    }
-
-    $scope.addTag = function() {
-        var exists_in_array = $scope.product.tags.indexOf($scope.tag);
-        if($scope.tag == "") {
-            $scope.messages.tag_message = "error-empty-input";
-            return;
-        } else if(exists_in_array > -1) {
-            $scope.messages.tag_message = "error-already-entered";
-            return;
-        }
-
-        $scope.product.tags.push($scope.tag);
-        $scope.tag = "";
-        $scope.messages.tag_message = "";
-    }
-
-    $scope.initialize();
-});
-
 app.controller('searchController', function($scope, $stateParams, $http, $state) {
     $scope.initialize = function() {
         $scope.initializeData();
@@ -229,25 +91,42 @@ app.controller('productController', function($scope, $stateParams, $http) {
             $scope.product = data;
         });
 
-    $scope.initializeGraph = function() {
-        var container = document.getElementById('visualization');
-        var items = [
-            {x: '2014-06-11', y: 10},
-            {x: '2014-06-12', y: 25},
-            {x: '2014-06-13', y: 30},
-            {x: '2014-06-14', y: 10},
-            {x: '2014-06-15', y: 15},
-            {x: '2014-06-16', y: 30}
-        ];
-        var dataset = new vis.DataSet(items);
-        var options = {
-            start: items[0].x,
-            end: items[items.length-1].x
-        };
-        var graph2d = new vis.Graph2d(container, dataset, options);
+    $scope.initGraph = function() {
+        google.charts.setOnLoadCallback(function(){
+            var data = google.visualization.arrayToDataTable([
+              ['Date', 'Average Price (USD)'],
+              ['2004',  1000],
+              ['2005',  1170],
+              ['2006',  660],
+              ['2007',  1030]
+            ]);
+
+            var options = {
+              curveType: 'function',
+              legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
+
+            chart.draw(data, options);
+        });
     };
 
-    $scope.initializeGraph();
+    $scope.initMap = function() {
+        $scope.map_status = "loading";
+        navigator.geolocation.getCurrentPosition(function(position) {
+            $scope.map_status = "success";
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: position.coords.latitude, lng: position.coords.longitude},
+                scrollwheel: false,
+                zoom: 8
+            });
+            console.log(map);
+        });
+    };
+
+    $scope.initGraph();
+    $scope.initMap();
 });
 
 app.controller('loginController', function($scope) {
