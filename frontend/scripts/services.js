@@ -18,3 +18,35 @@ app.service('stringReplace', function() { //For removing every occurence of "%20
         return str.replace(new RegExp(this.escapeRegExp(find), 'g'), replace);
     };
 });
+
+angular.module('savvy').service('ProductService', ['$http', function($http) {
+    this.saveProduct = function(product) {
+        return $http({
+            method: "POST",
+            url: savvy.api_root + "prices/add",
+            data: post_data,
+            headers: {'Content-Type': 'application/json'}
+        })
+        .success(function(data, status, headers, config) {
+            $scope.createReceipt(data);
+            $scope.product = {};
+            $scope.message = "success";
+        })
+        .error(function(data, status, headers, config) {
+            $scope.status = status;
+            $scope.message = "error";
+        });
+    };
+
+    this.searchGoats = function(query) {
+        return $http.get('/goats/search/' + query);
+    };
+
+    this.getGoats = function() {
+        return $http.get('/goats');
+    };
+
+    this.getGoat = function(name) {
+        return $http.get('/goat/' + name);
+    };
+}]);
