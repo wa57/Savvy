@@ -63,10 +63,11 @@ def api_add_price():
     business = data.get("business", None)
     user = data.get("user", None)
     price = data.get("price", None)
+    image = data.get("image", None)
     if not product or not business or not user or price is None:
         return json_error("Missing a required field.")
     price_db = PriceDB()
-    result = price_db.add_price(product=product, business=business, user=user, price=price)
+    result = price_db.add_price(product=product, business=business, user=user, price=price, image=image)
     if not result:
         return json_error("Unable to add price.")
     return json_success("Price added successfully.", id=str(result))
