@@ -29,7 +29,8 @@ def hash_password(passwd, salt=None):
     import os
     salt = salt or os.urandom(512)
     hashed = passwd + salt
-    for i in range(100): hashed = hashlib.sha512(hashed)
+    for _ in range(100):
+        hashed = hashlib.sha512(hashed)
     return hashed, salt
 
 
