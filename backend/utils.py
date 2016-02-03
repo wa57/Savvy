@@ -1,7 +1,9 @@
 import logging
+
 from datetime import timedelta
-from flask import make_response, request, current_app
 from functools import update_wrapper
+
+from flask import make_response, request, current_app
 
 
 logger = logging.getLogger("savvy.utils")
@@ -27,11 +29,13 @@ def hash_password(passwd, salt=None):
     """Creates a hash from a password using a salt and 100 rounds of SHA512."""
     import hashlib
     import os
+
     salt = salt or os.urandom(512)
-    hashed = passwd + salt
+    passwd = bytes(passwd, "utf-8")
+    hashed_password = hashlib.sha512(passwd + salt).digest()
     for _ in range(100):
-        hashed = hashlib.sha512(hashed)
-    return hashed, salt
+        hashed_password = hashlib.sha512(passwd + salt + hashed_password).digest()
+    return hashed_password, salt
 
 
 def crossdomain(origin=None, methods=None, headers=None,
