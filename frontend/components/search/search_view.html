@@ -1,9 +1,12 @@
 <header class="content-header">
     <h5><i class="fa fa-search"></i> Search</h5>
 </header>
-<div ng-show="message === 'processing'"><img src="images/loader.GIF"></div>
+<div ng-show="message === 'processing'"><img src="assets/images/loader.GIF"></div>
 <div ng-show="message === 'error'" style="margin-top: 15px; margin-bottom: 15px;">
-    <span class="alert alert-danger"><i class="fa fa-exclamation-triangle"></i> There was an error while searching. Please try again later.</span>
+    <span class="alert alert-danger">
+        <i class="fa fa-exclamation-triangle"></i>
+        There was an error while searching. Please try again later.
+    </span>
 </div>
 <div ng-show="message === 'no-results'">
     Your search for "<strong>{{search_term}}</strong>" returned 0 results.
@@ -12,7 +15,8 @@
     <header class="row">
         <div class="col-md-8">
             <p>
-                Showing <strong>{{returned_results_length}}</strong> result(s) for: <strong>"{{search_term}}"</strong>
+                Showing <strong>{{returned_results_length}}</strong> result(s)
+                for: <strong>"{{search_term}}"</strong>
             </p>
 			<p>
 				Click a product or service name below to view more detailed information about it.
@@ -29,7 +33,11 @@
     <div ng-show="message !== 'no-results'">
         <div ng-repeat="product in products | orderObjectBy:order_item:order_reverse" class="search-result">
             <div class="row">
-                <h4 class="col-md-12"><a ui-sref="product({product_id: '{{product.product_id}}'})">{{product.description}}</a></h4>
+                <h4 class="col-md-12">
+                    <a ui-sref="product({product_id: '{{product.product_id}}'})">
+                        {{product.description}}
+                    </a>
+                </h4>
             </div>
             <div class="row">
                 <div class="col-md-2">

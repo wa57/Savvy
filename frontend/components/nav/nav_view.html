@@ -1,17 +1,17 @@
-<nav ng-controller="navController" id="nav">
+<nav ng-controller="nav_controller" id="nav">
     <div class="container">
         <div id="nav-header">
             <div class="row">
                 <div class="col-md-2">
                     <div id="brand-logo">
-                        <a ui-sref="/"><img src="images/savvy.png"></a>
+                        <a ui-sref="home"><img src="assets/images/savvy.png"></a>
                     </div>
                 </div>
                 <form ng-submit="search()" class="col-md-8" handle-submit>
                     <input type="search"
                            ng-model="search_term"
                            id="search-box"
-                           placeholder="Search for products or services. For example: Air Conditioner Repair, Coffee">
+                           placeholder="Search for products or services e.g. Coffee, Car Repair">
                     <button type="submit" id="search-box-button">
                         <i class="fa fa-search"></i>
                     </button>

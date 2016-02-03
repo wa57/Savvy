@@ -1,4 +1,4 @@
-angular.module('savvy').controller('submitController', function($scope, $state, ProductService, stringReplace, $filter) {
+app.controller('submit_controller', function($scope, $state, ProductService, stringReplace, $filter) {
     $scope.initialize = function() {
         $scope.initializeData();
         $scope.initializeGooglePlaces();
