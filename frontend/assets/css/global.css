@@ -299,7 +299,7 @@ ul li {
 
 /* HOMEPAGE */
 #homepage-logo-block {
-    background-image: url(../../images/main-banner.png);
+    background-image: url(../../assets/images/main-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -360,7 +360,7 @@ ul li {
 }
 
 #home-banner {
-    background-image: url(../../images/savvy-banner.png);
+    background-image: url(../../assets/images/savvy-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
