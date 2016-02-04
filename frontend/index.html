@@ -4,7 +4,6 @@
     <!--<base href="/">-->
     <title ng-bind="title"></title>
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/vis.min.css" rel="stylesheet">
     <link href="assets/css/font-awesome.min.css" rel="stylesheet">
     <link href="assets/css/global.css" rel="stylesheet">
     <link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
@@ -15,28 +14,8 @@
     <div ng-include src='"components/nav/nav_view.html"'></div>
     <section ng-init="initialize()" ui-view id="content" class="container"></section>
 
-    <!--Libraries-->
-    <script src="assets/libs/angular.min.js"></script>
-    <script src="assets/libs/angular-ui-router.min.js"></script>
-    <script src="assets/libs/google_charts.js"></script>
-
     <!--App Scripts-->
-    <script src="scripts/config.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/app.routes.js"></script>
-
-    <!--Controllers-->
-    <script src="/components/home/home_controller.js"></script>
-    <script src="/components/login/login_controller.js"></script>
-    <script src="/components/nav/nav_controller.js"></script>
-    <script src="/components/product/product_controller.js"></script>
-    <script src="/components/search/search_controller.js"></script>
-    <script src="/components/signup/signup_controller.js"></script>
-    <script src="/components/submit/submit_controller.js"></script>
-
-    <script src="scripts/directives.js"></script>
-    <script src="scripts/services.js"></script>
-    <script src="scripts/filters.js"></script>
+    <script src="/build/js/main.min.js"></script>
 
     <!--Google Services-->
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU&libraries=places"></script>
@@ -55,6 +34,5 @@
         google_ad_width = 320;
         google_ad_height = 100;
     </script>
-    <script type="text/javascript" src="//pagead2.googlesyndication.com/pagead/show_ads.js"></script>
 </body>
 </html>

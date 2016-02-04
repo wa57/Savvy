@@ -1,3 +1,4 @@
+var angular = require('angular');
 var app = angular.module('savvy', ['ui.router']);
 
 app.run(function($rootScope){
