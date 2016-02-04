@@ -3,10 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!--<base href="/">-->
     <title ng-bind="title"></title>
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="assets/css/font-awesome.min.css" rel="stylesheet">
-    <link href="assets/css/global.css" rel="stylesheet">
-    <link href='//fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <link href="build/main.min.css" rel="stylesheet">
 </head>
 <body>
 
@@ -14,25 +11,29 @@
     <div ng-include src='"components/nav/nav_view.html"'></div>
     <section ng-init="initialize()" ui-view id="content" class="container"></section>
 
-    <!--App Scripts-->
-    <script src="/build/js/main.min.js"></script>
 
-    <!--Google Services-->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU&libraries=places"></script>
-    <script>
-         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-         })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+   <script src="assets/lib/angular.min.js"></script>
+   <script src="assets/lib/angular-ui-router.js"></script>
+   <script src="assets/lib/google_charts.js"></script>
 
-         ga('create', 'UA-72129407-1', 'auto');
-         ga('send', 'pageview');
-    </script>
-    <script type="text/javascript">
-        google_ad_client = "ca-pub-7805480983151148";
-        google_ad_slot = "9280615002";
-        google_ad_width = 320;
-        google_ad_height = 100;
-    </script>
+   <script src="assets/js/config.js"></script>
+   <script src="assets/js/app.js"></script>
+   <script src="assets/js/app.routes.js"></script>
+   <script src="assets/js/directives.js"></script>
+   <script src="assets/js/services.js"></script>
+   <script src="assets/js/filters.js"></script>
+
+   <script src="/components/nav/nav_controller.js"></script>
+   <script src="/components/home/home_controller.js"></script>
+   <script src="/components/login/login_controller.js"></script>
+   <script src="/components/nav/nav_controller.js"></script>
+   <script src="/components/product/product_controller.js"></script>
+   <script src="/components/search/search_controller.js"></script>
+   <script src="/components/signup/signup_controller.js"></script>
+   <script src="/components/submit/submit_controller.js"></script>
+
+
+   <!--Google Services-->
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDpGtWzeIB_5tcXQ5YVv5G4VWR1Splj7qU&libraries=places"></script>
 </body>
 </html>

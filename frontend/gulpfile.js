@@ -1,31 +1,46 @@
-// Include gulp
-var gulp = require('gulp');
+// Include main libs
+var gulp = require('gulp'),
+    browserify = require('browserify'),
+    source = require('vinyl-source-stream');
 
-// Include plugins
-var concat = require('gulp-concat');
-var uglify = require('gulp-uglify');
-var rename = require('gulp-rename');
+// Include Gulp plugins
+var concat = require('gulp-concat'),
+    minify_css = require('gulp-minify-css'),
+    uglify = require('gulp-uglify'),
+    sass = require('gulp-sass');
 
 // Concatenate JS Files & Minify
-var paths = [
-    'assets/lib/*.js',
-    'scripts/*.js',
+var js_paths = [
+    //'assets/lib/*.js',
+    'assets/**/*.js',
     'components/**/*.js'
 ]
 
-gulp.task('scripts', function(){
-    return gulp.src(paths)
-        .pipe(concat('main.js'))
-            .pipe(rename({suffix: '.min'}))
-            .pipe(uglify())
-            .pipe(gulp.dest('build/js'));
+var css_paths = [
+    'assets/css/*.css'
+]
+
+gulp.task('js', function(){
+    return gulp.src(js_paths)
+        .pipe(concat('main.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('build'));
+});
+
+gulp.task('css', function() {
+    gulp.src(css_paths)
+        .pipe(concat('main.min.css'))
+        .pipe(sass())
+        .pipe(minify_css())
+        .pipe(gulp.dest('build'));
 });
 
 gulp.task('watch', function(){
     // Watch .js files
-    gulp.watch(paths, ['scripts']);
+    gulp.watch(js_paths, ['js']);
+
+    //Watch .css files
+    gulp.watch(css_paths, ['css']);
 })
 
-gulp.task('default', ['scripts', 'watch']);
-
-//In terminal type "gulp" to run all tasks
+gulp.task('default', ['js', 'css', 'watch']);

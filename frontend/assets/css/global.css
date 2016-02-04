@@ -299,7 +299,7 @@ ul li {
 
 /* HOMEPAGE */
 #homepage-logo-block {
-    background-image: url(../../assets/images/main-banner.png);
+    background-image: url(/assets/images/main-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -360,7 +360,7 @@ ul li {
 }
 
 #home-banner {
-    background-image: url(../../assets/images/savvy-banner.png);
+    background-image: url(/assets/images/savvy-banner.png);
     background-repeat: no-repeat;
     background-position: 50% 50%;
     background-size: cover;
@@ -401,7 +401,6 @@ ul li {
     padding: 6px;
     height: 36px;
     width: 40px;
-    vertical-align:
 }
 
 #sign-up-button {
