@@ -12,7 +12,17 @@ Savvy is a web-based service that provides location centric price information of
 
 ### Installation ###
 
-* No Information
+* Frontend
+
+Run env.sh
+env.sh will auto install brew, node, npm modules, all dependencies, and clone the repo to your current directory
+
+Run "gulp" to activate the gulp task manager, will auto concatenate and minify all JS as well as watch for any changes
+gulp will also compile all SASS
+
+If you want to run specific gulp tasks, run "gulp <<TASK NAME>>"
+
+Run npm run server to start the local server. The local server will watch for any changes
 
 ### Contribution guidelines ###
 
