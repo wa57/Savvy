@@ -13,13 +13,13 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
         })*/
         .state('home', {
             url: '/',
-            templateUrl: '/components/home/home_view.html',
+            templateUrl: 'frontend/components/home/home_view.html',
             controller: 'home_controller',
             title: "Home"
         })
         .state('search', {
             url: '/search/:search_term',
-            templateUrl: '/components/search/search_view.html',
+            templateUrl: 'frontend/components/search/search_view.html',
             controller: 'search_controller',
             title: "Search",
             params: {
@@ -31,7 +31,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
         })
         .state('submit', {
             url: '/submit',
-            templateUrl: '/components/submit/submit_view.html',
+            templateUrl: 'frontend/components/submit/submit_view.html',
             controller: 'submit_controller',
             title: "Submit Price",
             data: {
@@ -40,7 +40,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
         })
         .state('product', {
             url: '/product/:product_id',
-            templateUrl: '/components/product/product_view.html',
+            templateUrl: 'frontend/components/product/product_view.html',
             controller: 'product_controller',
             title: "Product Page",
             params: {
@@ -52,13 +52,13 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
         })
         .state('signup', {
             url: '/signup',
-            templateUrl: '/components/signup/signup_view.html',
+            templateUrl: 'frontend/components/signup/signup_view.html',
             controller: 'signup_controller',
             title: "Sign Up"
         })
         .state('login', {
             url: '/login',
-            templateUrl: '/components/login/login_view.html',
+            templateUrl: 'frontend/components/login/login_view.html',
             controller: 'login_controller',
             title: "Login"
         })

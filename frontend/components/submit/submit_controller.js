@@ -25,7 +25,7 @@ app.controller('submit_controller', function($scope, $state, ProductService, str
 
         $http({
             method: "POST",
-            url: savvy.api_root + "prices/add",
+            url: "/api/v1/prices/add",
             data: post_data,
             headers: {'Content-Type': 'application/json'}
         })
