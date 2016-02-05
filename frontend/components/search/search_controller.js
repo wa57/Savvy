@@ -8,7 +8,7 @@ app.controller('search_controller', function($scope, $stateParams, $http, $state
         $scope.search_term = $stateParams.search_term;
         $scope.message = "processing";
 
-        $http.get(savvy.api_root + "products/search?query=" + $scope.search_term)
+        $http.get("/api/v1/products/search?query=" + $scope.search_term)
             .success(function(data, status, headers, config) {
                 $scope.products = data;
                 $scope.returned_results_length = $scope.products.length;

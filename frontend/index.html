@@ -3,34 +3,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <!--<base href="/">-->
     <title ng-bind="title"></title>
-    <link href="build/main.min.css" rel="stylesheet">
+    <link href="frontend/build/main.min.css" rel="stylesheet">
 </head>
 <body>
 
     <!--Nav & Main Content Injection-->
-    <div ng-include src='"components/nav/nav_view.html"'></div>
+    <div ng-include src='"frontend/components/nav/nav_view.html"'></div>
     <section ng-init="initialize()" ui-view id="content" class="container"></section>
 
+    <script src="frontend/build/test.js"></script>
+    <!--<script src="frontend/assets/lib/angular.min.js"></script>
+    <script src="frontend/assets/lib/angular-ui-router.js"></script>
+    <script src="frontend/assets/lib/google_charts.js"></script>
 
-   <script src="assets/lib/angular.min.js"></script>
-   <script src="assets/lib/angular-ui-router.js"></script>
-   <script src="assets/lib/google_charts.js"></script>
+    <script src="frontend/assets/js/app.js"></script>
+    <script src="frontend/assets/js/app.routes.js"></script>
+    <script src="frontend/assets/js/directives.js"></script>
+    <script src="frontend/assets/js/services.js"></script>
+    <script src="frontend/assets/js/filters.js"></script>
 
-   <script src="assets/js/config.js"></script>
-   <script src="assets/js/app.js"></script>
-   <script src="assets/js/app.routes.js"></script>
-   <script src="assets/js/directives.js"></script>
-   <script src="assets/js/services.js"></script>
-   <script src="assets/js/filters.js"></script>
-
-   <script src="/components/nav/nav_controller.js"></script>
-   <script src="/components/home/home_controller.js"></script>
-   <script src="/components/login/login_controller.js"></script>
-   <script src="/components/nav/nav_controller.js"></script>
-   <script src="/components/product/product_controller.js"></script>
-   <script src="/components/search/search_controller.js"></script>
-   <script src="/components/signup/signup_controller.js"></script>
-   <script src="/components/submit/submit_controller.js"></script>
+    <script src="frontend/components/nav/nav_controller.js"></script>
+    <script src="frontend/components/home/home_controller.js"></script>
+    <script src="frontend/components/login/login_controller.js"></script>
+    <script src="frontend/components/nav/nav_controller.js"></script>
+    <script src="frontend/components/product/product_controller.js"></script>
+    <script src="frontend/components/search/search_controller.js"></script>
+    <script src="frontend/components/signup/signup_controller.js"></script>
+    <script src="frontend/components/submit/submit_controller.js"></script>-->
 
 
    <!--Google Services-->

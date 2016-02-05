@@ -7,7 +7,7 @@ app.controller('product_controller', function($scope, $stateParams, $http) {
 
     }
 
-    $http.get(savvy.api_root + "products/" + $stateParams.product_id)
+    $http.get("/api/v1/products/" + $stateParams.product_id)
         .success(function(data, status, headers, config){
             console.log(data);
             $scope.product = data;

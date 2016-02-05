@@ -11,9 +11,17 @@ var concat = require('gulp-concat'),
 
 // Concatenate JS Files & Minify
 var js_paths = [
-    //'assets/lib/*.js',
-    'assets/**/*.js',
-    'components/**/*.js'
+    'assets/lib/angular.min.js',
+    'assets/lib/angular-ui-router.js',
+    'assets/lib/google_charts.js',
+    'assets/js/*.js',
+    'components/home/home_controller.js',
+    'components/login/login_controller.js',
+    'components/nav/nav_controller.js',
+    'components/product/product_controller.js',
+    'components/search/search_controller.js',
+    'components/signup/signup_controller.js',
+    'components/submit/submit_controller.js'
 ]
 
 var css_paths = [
@@ -21,7 +29,7 @@ var css_paths = [
 ]
 
 gulp.task('js', function(){
-    return gulp.src(js_paths)
+    gulp.src(js_paths)
         .pipe(concat('main.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('build'));
