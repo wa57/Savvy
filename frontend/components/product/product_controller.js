@@ -1,4 +1,8 @@
-app.controller('product_controller', function($scope, $stateParams, $http) {
+angular.module('savvy')
+    .controller('product_controller', product_controller)
+    .$inject = ['$scope', '$stateParams', '$http'];
+
+function product_controller($scope, $stateParams, $http) {
     $scope.product = {
 
     };
@@ -57,4 +61,4 @@ app.controller('product_controller', function($scope, $stateParams, $http) {
 
     $scope.initGraph();
     $scope.initMap();
-});
+};

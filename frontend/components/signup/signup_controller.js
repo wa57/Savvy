@@ -1,3 +1,7 @@
-app.controller('signup_controller', function($scope, $state) {
-    
-});
+angular.module('savvy')
+    .controller('signup_controller', signup_controller)
+    .$inject = ['$scope', '$state'];
+
+function signup_controller($scope, $state) {
+
+}

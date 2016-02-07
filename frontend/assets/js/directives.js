@@ -1,4 +1,4 @@
-app.directive("fileread", [function () {
+angular.module('savvy').directive("fileread", [function () {
     return {
         scope: {
             fileread: "="
@@ -35,7 +35,7 @@ app.directive("fileread", [function () {
 }]);*/
 
 //Addresses usability issue on phones (just iOS?) where keyboard does not dismiss after form submit
-app.directive('handleSubmit', function () {
+angular.module('savvy').directive('handleSubmit', function () {
     return function (scope, element, attr) {
         var textFields = element.find('input');
 
@@ -46,7 +46,7 @@ app.directive('handleSubmit', function () {
 });
 
 //http://jsfiddle.net/lsconyer/bktpzgre/1/
-app.directive('ngEnter', function () {
+angular.module('savvy').directive('ngEnter', function () {
     return function (scope, element, attrs) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {

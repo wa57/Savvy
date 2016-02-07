@@ -1,54 +1,104 @@
 // Include main libs
 var gulp = require('gulp'),
     browserify = require('browserify'),
-    source = require('vinyl-source-stream');
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
+    transform = require('vinyl-transform'),
+    globify = require('require-globify'),
+    bulkify = require('bulkify');
 
 // Include Gulp plugins
-var concat = require('gulp-concat'),
-    minify_css = require('gulp-minify-css'),
+var minify_css = require('gulp-minify-css'),
     uglify = require('gulp-uglify'),
-    sass = require('gulp-sass');
+    sass = require('gulp-sass'),
+    concat = require('gulp-concat'),
+    annotate = require('gulp-ng-annotate'),
+    sourcemaps = require('gulp-sourcemaps');
 
-// Concatenate JS Files & Minify
-var js_paths = [
-    'assets/lib/angular.min.js',
-    'assets/lib/angular-ui-router.js',
-    'assets/lib/google_charts.js',
-    'assets/js/*.js',
-    'components/home/home_controller.js',
-    'components/login/login_controller.js',
-    'components/nav/nav_controller.js',
-    'components/product/product_controller.js',
-    'components/search/search_controller.js',
-    'components/signup/signup_controller.js',
-    'components/submit/submit_controller.js'
-]
+var paths = {
+    js: [
+        './app.js',
+        'assets/**/*.js',
+        'components/**/*.js'
+    ],
+    css: [
+        'assets/css/*.css',
+        'assets/css/*.scss'
+    ]
+};
 
-var css_paths = [
-    'assets/css/*.css'
-]
+//console.log(gulp.src(paths.js));
+/*gulp.task('js', function () {
+  // set up the browserify instance on a task basis
+  var b = browserify({
+    entries: './assets/js/app.js',
+    debug: true
+  });
 
-gulp.task('js', function(){
-    gulp.src(js_paths)
-        .pipe(concat('main.min.js'))
-        .pipe(uglify())
+  return b.bundle()
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({loadMaps: true}))
+        // Add transformation tasks to the pipeline here.
+        .pipe(uglify()).on('error', function(e){
+            console.log(e);
+         })
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('./dist/js/'));
+});*/
+
+/*gulp.task('js', function () {
+    var browserified = transform(function(filename) {
+        var b = browserify(filename);
+        return b.bundle();
+    });
+
+    return gulp.src(paths.js)
+        .pipe(browserified)
+        .pipe(uglify()).on('error', function(e){
+            console.log(e);
+         })
+        .pipe(gulp.dest('build'));
+});*/
+
+gulp.task('js', function() {
+    return browserify('./app.js')
+        .transform(bulkify)
+        .bundle()
+        .pipe(source('bundle.js'))
+        .pipe(annotate())
+        .pipe(buffer())
+        .pipe(uglify()).on('error', function(e){
+            console.log(e);
+         })
         .pipe(gulp.dest('build'));
 });
 
 gulp.task('css', function() {
-    gulp.src(css_paths)
-        .pipe(concat('main.min.css'))
+    gulp.src(paths.css)
         .pipe(sass())
+        .pipe(concat('main.min.css'))
         .pipe(minify_css())
         .pipe(gulp.dest('build'));
 });
 
+/*gulp.task('css', function() {
+    return browserify(css_paths)
+        .bundle()
+        .pipe(source('bundle.css'))
+        .pipe(buffer())
+        .pipe(sass())
+        .pipe(minify_css())
+        .pipe(gulp.dest('build'));
+});*/
+
 gulp.task('watch', function(){
     // Watch .js files
-    gulp.watch(js_paths, ['js']);
+    //gulp.watch(js_paths, ['js']);
+    gulp.watch(paths.js, ['js']);
 
     //Watch .css files
-    gulp.watch(css_paths, ['css']);
+    gulp.watch(paths.css, ['css']);
 })
 
 gulp.task('default', ['js', 'css', 'watch']);

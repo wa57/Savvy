@@ -1,4 +1,4 @@
-app.filter('orderObjectBy', function() {
+angular.module('savvy').filter('orderObjectBy', function() {
     return function(items, field, reverse) {
         var filtered = [];
         angular.forEach(items, function(item) {
