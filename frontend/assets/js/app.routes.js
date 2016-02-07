@@ -1,4 +1,4 @@
-app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
+angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
 
     $urlRouterProvider.otherwise('/');
     $urlMatcherFactoryProvider.strictMode(false);
@@ -62,4 +62,4 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider, $urlM
             controller: 'login_controller',
             title: "Login"
         })
-});
+}]);

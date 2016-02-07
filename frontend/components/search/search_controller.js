@@ -1,4 +1,8 @@
-app.controller('search_controller', function($scope, $stateParams, $http, $state) {
+angular.module('savvy')
+    .controller('search_controller', search_controller)
+    .$inject = ['$scope', '$stateParams', '$http', '$state'];
+
+function search_controller($scope, $stateParams, $http, $state) {
     $scope.initialize = function() {
         $scope.initializeData();
         $scope.initializeOptions();
@@ -53,4 +57,4 @@ app.controller('search_controller', function($scope, $stateParams, $http, $state
     }
 
     $scope.initialize();
-});
+};

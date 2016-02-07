@@ -1,4 +1,8 @@
-app.controller('nav_controller', function($scope, $state) {
+angular.module('savvy')
+    .controller('nav_controller', nav_controller)
+    .$inject = ['$scope', '$state'];
+
+function nav_controller($scope, $state) {
     $scope.state = $state;
     $scope.show_mobile_nav = false;
 
@@ -15,4 +19,4 @@ app.controller('nav_controller', function($scope, $state) {
             $scope.show_mobile_nav = false;
         }
     }
-});
+}

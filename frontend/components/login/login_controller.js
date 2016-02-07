@@ -1,4 +1,8 @@
-app.controller('login_controller', function($scope) {
+angular.module('savvy')
+    .controller('login_controller', login_controller)
+    .$inject = ['$scope', '$state'];
+
+function login_controller($scope, $state) {
     $scope.data = {};
 
     $scope.login = function() {
@@ -8,4 +12,4 @@ app.controller('login_controller', function($scope) {
             console.log('hi');
         });
     }
-});
+}

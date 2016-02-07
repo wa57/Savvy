@@ -9,7 +9,7 @@
     return service;
 }]);*/
 
-app.service('stringReplace', function() { //For removing every occurence of "%20" in string
+angular.module('savvy').service('stringReplace', function() { //For removing every occurence of "%20" in string
     this.escapeRegExp = function(str) {
         return str.replace(/([.*+?^=!:${}()|\[\]\/\\])/g, "\\$1");
     };

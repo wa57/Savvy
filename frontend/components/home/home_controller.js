@@ -1,3 +1,7 @@
-app.controller('home_controller', function($scope, $state) {
-    
-});
+angular.module('savvy')
+    .controller('home_controller', home_controller)
+    .$inject = ['$scope', '$state'];
+
+function home_controller($scope, $state) {
+
+}

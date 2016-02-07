@@ -1,3 +1,5 @@
+$primary_color: #00A079;
+
 body {
     background: #ebebeb;
     font-family: 'Roboto', Helvetica, Arial, sans-serif;
@@ -9,10 +11,6 @@ h3 { font-size: 1.17em; }
 h4 { font-size: 1.12em; }
 h5 { font-size: .83em; }
 h6 { font-size: .75em; }
-
-a:visited {
-    /*color: #609;*/
-}
 
 .error-message {
     background-color: #FFCCCC;
@@ -37,7 +35,7 @@ a:visited {
 }
 
 .tag {
-    background-color: #00A079;
+    background-color: $primary_color;
     margin-right: 5px;
     padding: .2em .6em .3em;
     font-size: 75%;
@@ -93,11 +91,11 @@ ul {
 }
 
 .primary-color {
-    color: #00946E;
+    color: $primary_color;
 }
 
 .success, .btn-success,  .btn-success:active, .btn-success:focus, .btn-success:active:focus {
-    background-color: #00A079;
+    background-color: $primary_color;
     border-radius: 2px;
     outline: 0;
 }
@@ -117,7 +115,7 @@ ul {
 }
 
 .btn-success:hover {
-    background-color: #00946E;
+    background-color: $primary_color;
 }
 
 .ng-pristine .ng-invalid-required {
@@ -183,7 +181,7 @@ ul {
 }
 
 #brand-logo a, #brand-logo a:hover {
-    color: #00A079;
+    color: $primary_color;
     text-decoration: none;
 }
 
@@ -200,7 +198,7 @@ ul li {
     margin-top: 20px;
     margin-bottom: 15px;
     width: 70%;
-    border: 5px solid #00A079;
+    border: 5px solid $primary_color;
     border-radius: 3px;
     background-color: #fff;
     box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -228,7 +226,7 @@ ul li {
 }
 
 .label-success {
-    background-color: #00A079;
+    background-color: $primary_color;
 }
 
 .content-header {
@@ -236,13 +234,13 @@ ul li {
         -55deg,
         #009670,
         #009670 10px,
-        #00A079 10px,
-        #00A079 20px
+        $primary_color 10px,
+        $primary_color 20px
     );*/
     color: #000;
     padding: 5px;
     margin: 0 -15px 15px -15px;
-    background-color: #00A079;
+    background-color: $primary_color;
     border-top-left-radius: 3px;
     border-top-right-radius: 3px;
 }
@@ -349,8 +347,8 @@ ul li {
 }
 #home-banner .btn-signup {
     color: #fff;
-    /*background-color: #00A079;*/
-    background-color: #00A079;
+    /*background-color: $primary_color;*/
+    background-color: $primary_color;
     border-radius: 4px;
     padding: 20px 40px 20px 40px;
     margin: auto;
@@ -388,12 +386,12 @@ ul li {
 }
 
 #search-box:focus {
-    outline: #00A079;
+    outline: $primary_color;
 }
 
 #search-box-button {
     margin-left: -4px;
-    background-color: #00A079;
+    background-color: $primary_color;
     border: 1px solid transparent;
     border-top-right-radius: 2px;
     border-bottom-right-radius: 2px;
@@ -489,7 +487,7 @@ ul li {
 }
 
 .filter-box header {
-    background-color: #00A079;
+    background-color: $primary_color;
 }
 
 .filter-box h5 {
