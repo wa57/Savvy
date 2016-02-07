@@ -62,4 +62,10 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             controller: 'login_controller',
             title: "Login"
         })
+        .state('admin', {
+            url: '/',
+            templateUrl: 'frontend/components/admin/admin_view.html',
+            controller: 'admin_controller',
+            title: "Admin"
+        })
 }]);

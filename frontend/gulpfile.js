@@ -77,7 +77,7 @@ gulp.task('js', function() {
 gulp.task('css', function() {
     gulp.src(paths.css)
         .pipe(sass())
-        .pipe(concat('main.min.css'))
+        .pipe(concat('bundle.css'))
         .pipe(minify_css())
         .pipe(gulp.dest('build'));
 });
