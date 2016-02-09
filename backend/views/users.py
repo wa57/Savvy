@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import request
+from flask.ext.login import login_user, current_user
 
 from backend.models.users import UserDB
 from backend.utils import json_error, json_success
@@ -43,12 +44,55 @@ def api_users():
 
 @user_blueprint.route("/create", methods=["POST"])
 def api_create_user():
+    data = request.get_json()
+
+    username = data.get("username", None)
+    if username is None:
+        return json_error("username is required.")
+
+    password = data.get("password", None)
+    if password is None:
+        return json_error("password is required.")
+
+    email = data.get("email", None)
+    if email is None:
+        return json_error("email is required.")
+
+    first_name = data.get("first_name", None)
+    if first_name is None:
+        return json_error("first_name is required.")
+
     user_db = UserDB()
-    user = user_db.create_user(username=request.form["username"],
-                               password=request.form["password"],
-                               email=request.form["email"],
-                               first_name=request.form["first_name"])
+    user = user_db.create_user(username=username,
+                               password=password,
+                               email=email,
+                               first_name=first_name)
+
     return json_success("User '{}' created successfully.".format(user.username))
+
+
+@user_blueprint.route("/login", methods=["POST"])
+def api_login():
+    data = request.get_json()
+
+    username = data.get("username", None)
+    if username is None:
+        return json_error("username is required.")
+
+    password = data.get("password", None)
+    if password is None:
+        return json_error("password is required.")
+
+    user_db = UserDB()
+
+    user = user_db.authenticate_user(username, password)
+    if not user:
+        return json_error("Invalid username or password.")
+
+    login_user(user)
+
+    return json_success("Login successful {}".format(current_user),
+                        {"token": get})
 
 
 @user_blueprint.route("/change_password", methods=["POST"])
