@@ -3,9 +3,11 @@ import logging
 
 from flask import Blueprint
 from flask import request
+from flask.ext.login import login_required
 
 from backend.models.products import ProductDB
 from backend.models.prices import PriceDB
+from backend.models.businesses import BusinessDB
 from backend.utils import json_error, crossdomain
 
 
@@ -35,16 +37,19 @@ def api_get_product(product_id):
     """
     product_db = ProductDB()
     price_db = PriceDB()
+    business_db = BusinessDB()
     result = product_db.get(product_id)
     result["average_price"] = price_db.average_price(result["description"])
     result["lowest_price"] = price_db.lowest_price(result["description"])
     result["highest_price"] = price_db.highest_price(result["description"])
     result["average_price_per_day"] = price_db.average_price_per_day(result["description"])
+    result["businesses"] = [business_db.get_business(price["business"]) for price in price_db.search(product=result["description"])]
     return json.dumps(result)
 
 
 @product_blueprint.route("/search", methods=["GET"])
 @crossdomain(origin="*")
+#@login_required
 def api_search():
     """Returns details about products.
 
