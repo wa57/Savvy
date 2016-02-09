@@ -1,15 +1,17 @@
 <header class="content-header">
-    <h5><i class="fa fa-search"></i> Search</h5>
+    <h4><i class="fa fa-search"></i> Search</h4>
 </header>
-<div ng-show="message === 'processing'"><img src="/frontend/assets/images/loader.GIF"></div>
-<div ng-show="message === 'error'" style="margin-top: 15px; margin-bottom: 15px;">
-    <span class="alert alert-danger">
-        <i class="fa fa-exclamation-triangle"></i>
-        There was an error while searching. Please try again later.
-    </span>
-</div>
-<div ng-show="message === 'no-results'">
-    Your search for "<strong>{{search_term}}</strong>" returned 0 results.
+<div style="margin: auto; width: 100px;">
+    <div ng-show="message === 'processing'"><img src="/frontend/assets/images/loader.gif"></div>
+    <div ng-show="message === 'error'" class="system-message error" style="margin-top: 15px; margin-bottom: 15px;">
+        <span class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle"></i>
+            There was an error while searching. Please try again later.
+        </span>
+    </div>
+    <div ng-show="message === 'no-results'">
+        Your search for "<strong>{{search_term}}</strong>" returned 0 results.
+    </div>
 </div>
 <div ng-show="message === 'success'" id="search-result-list">
     <header class="row">
@@ -40,22 +42,11 @@
                 </h4>
             </div>
             <div class="row">
-                <div class="col-md-2">
-                    <a ui-sref="product({product_id: '{{product.path}}'})">
-                        <!--<img class="product-image" src="http://www.dailytimesgazette.com/wp-content/uploads/2015/03/coffee-and-breakfast1.png">-->
-                        No Image Available
-                    </a>
-                </div>
                 <div class="col-md-4">
 					<p>Lowest Price: <strong>${{product.lowest_price / 100 | number:2}}</strong></p>
                     <p>Average Price: <strong>${{product.average_price / 100 | number:2}}</strong></p>
                     <p>Highest Price: <strong>${{product.highest_price / 100 | number:2}}</strong></p>
                 </div>
-                <!--<div class="col-md-3">
-                    <p>Lowest Price: <strong>{{product.highest_price}}</strong></p>
-                    <p>Average Price: <strong>{{product.avg_price}}</strong></p>
-                    <p>Average Price: <strong>{{product.avg_price}}</strong></p>
-                </div>-->
                 <div class="col-md-6">
                     <h5 style="margin-bottom: 10px;">Tags</h5>
                     <div>
@@ -63,6 +54,11 @@
                             <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
                         </span>
                     </div>
+                </div>
+                <div class="col-md-2">
+                    <a ui-sref="product({product_id: '{{product.path}}'})">
+                        <img src="" alt="Product Image">
+                    </a>
                 </div>
             </div>
         </div>

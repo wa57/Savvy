@@ -51,6 +51,44 @@ angular.module('savvy').service('ProductService', ['$http', function($http) {
     };
 }]);
 
-angular.module('savvy').service('GoogleMaps', function(){
-    
+angular.module('savvy').service('productService', ['$http', function($http){
+    'use strict';
+
+    this.getProductById = function(product_id) {
+        return $http.get("/api/v1/products/" + product_id).then(function(response) {
+            return response.data;
+        });
+    }
+}]);
+
+angular.module('savvy').service('googleMapService', function(){
+    'use strict';
+
+    this.init_graph = function() {
+
+    }
 });
+
+angular.module('savvy').service('geolocationService', ['$q', '$window', function ($q, $window) {
+
+    'use strict';
+
+    this.getCurrentPosition = function() {
+        var deferred = $q.defer();
+
+        if (!$window.navigator.geolocation) {
+            deferred.reject('Geolocation not supported.');
+        } else {
+            $window.navigator.geolocation.getCurrentPosition(
+                function (position) {
+                    deferred.resolve(position);
+                },
+                function (err) {
+                    deferred.reject(err);
+                });
+        }
+        return deferred.promise;
+    }
+
+    return this;
+}]);

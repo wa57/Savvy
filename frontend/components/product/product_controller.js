@@ -1,23 +1,24 @@
 angular.module('savvy')
-    .controller('product_controller', product_controller)
-    .$inject = ['$scope', '$stateParams', '$http'];
-
-function product_controller($scope, $stateParams, $http) {
-    $scope.product = {
-
+.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService',
+function($scope, $stateParams, productService, geolocationService) {
+    $scope.status = {
+        product: 'loading',
+        map: 'loading'
     };
 
-    $scope.vote = function(direction) {
-
+    $scope.vote = function(vote) {
+        productService.addVoteToProduct(vote); //yes or no
     }
 
-    $http.get("/api/v1/products/" + $stateParams.product_id)
-        .success(function(data, status, headers, config){
-            console.log(data);
-            $scope.product = data;
+    function fetchProductDetails(product_id) {
+        productService.getProductById(product_id).then(function(response){
+            $scope.product = response;
+            $scope.status.product = 'ready';
+            init_graph();
         });
+    }
 
-    $scope.init_graph = function() {
+    function init_graph() {
         google.charts.setOnLoadCallback(function(){
             var data = google.visualization.arrayToDataTable([
               ['Date', 'Average Price (USD)'],
@@ -34,32 +35,41 @@ function product_controller($scope, $stateParams, $http) {
 
             var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
             chart.draw(data, options);
+            $scope.status.chart = 'ready';
         });
     };
 
-    $scope.init_map = function() {
-        $scope.map_status = "loading";
-        navigator.geolocation.getCurrentPosition(function(position) {
-            $scope.map_status = "success";
-            var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: position.coords.latitude, lng: position.coords.longitude},
-                scrollwheel: false,
-                zoom: 13
+    function init_map(position) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: position.coords.latitude, lng: position.coords.longitude},
+            scrollwheel: false,
+            zoom: 13
+        });
+        var positions = [
+            {lat: position.coords.latitude, lng: position.coords.longitude},
+            {lat: 39.975994, lng: -75.170329}
+        ];
+
+        generateMapMarkers(positions, map);
+        $scope.status.map = "ready";
+    }
+
+    function generateMapMarkers(positions, map) {
+        for(var i = 0; i < positions.length; i++) {
+            new google.maps.Marker({
+                map: map,
+                position: positions[i],
+                title: ''
             });
-            var positions = [
-                {lat: position.coords.latitude, lng: position.coords.longitude},
-                {lat: 39.975994, lng: -75.170329}
-            ];
-            for(var i = 0; i < positions.length; i++) {
-                new google.maps.Marker({
-                    map: map,
-                    position: positions[i],
-                    title: 'Hello World!'
-                });
-            }
-        });
-    };
+        }
+    }
 
-    $scope.init_map();
-    $scope.init_graph();
-};
+    function fetchUserLocation(geolocationService) {
+        geolocationService.getCurrentPosition().then(function(response){
+            init_map(response);
+        });
+    }
+
+    fetchProductDetails($stateParams.product_id);
+    fetchUserLocation(geolocationService, callback);
+}]);
