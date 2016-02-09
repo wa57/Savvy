@@ -1,0 +1,42 @@
+#submit-price p {
+    margin: 1em 0 1em 0;
+}
+
+#submit-product-form label, #submit-product-form label p {
+    display: block;
+}
+
+#submit-product-form label p {
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 16px;
+}
+
+#submit-product-form label input:focus {
+    outline: none;
+    border-color: #7dc7ed;
+
+}
+
+#submit-product-form label {
+    margin-bottom: 1.5em;
+}
+
+#add-tag {
+    display: inline-block;
+    width: 60%;
+}
+
+#add-tag-form {
+    margin-top: 25px;
+}
+
+#product-name, #places {
+    width: 100%;
+}
+
+#price-paid {
+    width: 30%;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}

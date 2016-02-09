@@ -50,3 +50,7 @@ angular.module('savvy').service('ProductService', ['$http', function($http) {
         return $http.get('/goat/' + name);
     };
 }]);
+
+angular.module('savvy').service('GoogleMaps', function(){
+    
+});

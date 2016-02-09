@@ -1,5 +1,5 @@
 <div class="signup">
-    <img src="../assets/images/savvy_grey_dollar.png"
+    <img src="/frontend/assets/images/savvy_grey_dollar.png"
         style="display: block; margin: 0 auto; width: 10%; margin-top: 20px;">
     <div style="border-bottom: 1px solid #ebebeb; height: 1px; margin-top: 20px; margin-left: -15px; margin-right: -15px;">
 
@@ -17,11 +17,11 @@
     		</p>
         </div>
         <label>
-            <p>Email Address</p>
+            <p>First Name</p>
             <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
-            <p>Password</p>
+            <p>Username</p>
             <input type="text" ng-model="data.password" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
@@ -29,25 +29,26 @@
             <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
-            <p>Email Address</p>
+            <p>Confirm Email Address</p>
             <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
-            <p>Email Address</p>
+            <p>Password</p>
             <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
-            <p>Email Address</p>
+            <p>Confirm Password</p>
             <input type="text" ng-model="data.email" style="width: 100%; margin-bottom: 20px;">
         </label>
         <button
             ng-click="loginUser();"
             class="btn btn-success btn-lg btn-block"
             style="margin-bottom: 20px;">
+        <i class="fa fa-lock"></i>
         Sign Up
         </button>
         <div class="center">
-            <p style="margin-bottom: 20px;">Don't have an account? <a ui-sref="signup">Sign Up</a></p>
+            <p style="margin-bottom: 20px;">Already have an account? <a ui-sref="signup">Login</a></p>
             <p><a ui-sref="account-recovery">Forgot your password?</a></p>
         </div>
     </form>

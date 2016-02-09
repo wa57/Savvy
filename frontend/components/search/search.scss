@@ -1,0 +1,50 @@
+@import "./assets/css/global";
+
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 3px;
+}
+
+#search-result-list header {
+    border-bottom: 1px solid #e5e5e5;
+    margin-bottom: 10px;
+}
+
+.search-result {
+    background: #fff;
+    padding: 5px;
+    margin-bottom: 10px;
+    /*box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);*/
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.search-result:last-of-type {
+    border: none;
+}
+
+.search-result h4 {
+    margin-bottom: 10px;
+}
+
+.filter-box {
+    border: 1px solid #ebebeb;
+    border-radius: 2px;
+}
+
+.filter-box header {
+    background-color: $primary_color;
+}
+
+.filter-box h5 {
+    color: #fff;
+}
+
+.filter-box ul {
+    margin: 0;
+    padding: 0;
+}
+
+.filter-box li {
+    display: block;
+}
