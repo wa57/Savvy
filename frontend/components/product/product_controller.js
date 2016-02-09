@@ -14,7 +14,6 @@ function($scope, $stateParams, productService, geolocationService) {
         productService.getProductById(product_id).then(function(response){
             $scope.product = response;
             $scope.status.product = 'ready';
-            init_graph();
         });
     }
 
@@ -71,5 +70,5 @@ function($scope, $stateParams, productService, geolocationService) {
     }
 
     fetchProductDetails($stateParams.product_id);
-    fetchUserLocation(geolocationService, callback);
+    fetchUserLocation(geolocationService);
 }]);
