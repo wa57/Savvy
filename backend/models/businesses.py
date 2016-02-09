@@ -25,6 +25,11 @@ class BusinessDB(DB):
             results.append(result)
         return results
 
+    def get_business(self, name):
+        result = self.db.businesses.find_one({"name": name})
+        result["business_id"] = str(result.pop("_id"))
+        return result
+
     def add_business(self, name, address=None, phone_number=None, open_time=None, close_time=None,
                      google_places=None):
         """Adds a business to the database."""

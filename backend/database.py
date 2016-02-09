@@ -17,5 +17,4 @@ logger.debug("Connected to database.")
 class DB(object):
     """Database parent class."""
 
-    def __init__(self):
-        self.db = db
+    db = db

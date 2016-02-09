@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask import request
+from flask.ext.login import LoginManager
 
 from backend.views.users import user_blueprint
 from backend.views.products import product_blueprint
@@ -13,6 +14,7 @@ from backend.views.businesses import business_blueprint
 
 app = Flask(__name__, static_folder="frontend")
 app.config["PROPAGATE_EXCEPTIONS"] = False
+app.config["SECRET_KEY"] = '\x85\xe7\x98?L\xfaKa2\xbdQ\xef\xa5&\x03\x17\x9bj\x17 \xbc\xc8j\xbb'
 
 
 # Configure logging
@@ -38,6 +40,19 @@ logger.info("Logging Configured at Level {}".format(logger.getEffectiveLevel()))
 
 # Make the WSGI interface available at the top level so wfastcgi can get it.
 wsgi_app = app.wsgi_app
+
+
+# Configure authentication handler
+login_manager = LoginManager()
+login_manager.init_app(app)
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    from backend.models.users import UserDB
+    db = UserDB()
+    user = db.get_user(user_id=user_id)
+    return user
 
 
 @app.errorhandler(500)
