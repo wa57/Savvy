@@ -19,7 +19,7 @@
             </div>
         </div>
         <div id="nav-body">
-            <ul id="nav-left">
+            <ul class="pull-left">
                 <li>
                     <a ui-sref="home">Home</a>
                 </li>
@@ -30,7 +30,7 @@
                     <a ui-sref="about">About</a>
                 </li>
             </ul>
-            <ul id="nav-right">
+            <ul class="pull-right">
                 <li>
                     <a ui-sref="login">Login</a>
                 </li>
@@ -40,12 +40,16 @@
                 <li>
                     <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
                 </li>
+                <!--<li style="color: #fff;">
+                    <span style="color: #fff; margin-right: 3px;">Hello User!</span>
+                    <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
+                </li>-->
             </ul>
         </div>
         <div id="mobile-nav-wrapper">
             <a ng-click="showMobileNav()" href=""><i class="fa fa-navicon"></i></a>
             <div ng-show="show_mobile_nav" id="mobile-nav">
-                <ul id="nav-left">
+                <ul class="nav-left">
                     <li>
                         <a ui-sref="/">Home</a>
                     </li>

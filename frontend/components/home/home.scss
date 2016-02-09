@@ -1,0 +1,64 @@
+@import "./assets/css/global";
+
+#homepage-logo-block {
+    background-image: url(/frontend/assets/images/main-banner.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    border-bottom: 1px solid #ebebeb;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    margin-bottom: 40px;
+}
+
+#homepage-info {
+    img {
+        margin: auto;
+        display: block;
+        padding-top: 25px;
+    }
+    h3 {
+        color: #fff;
+        margin-top: 10px;
+        margin-bottom: 30px;
+    }
+    h4 {
+        font-weight: bold;
+    }
+    p {
+        margin: auto;
+        margin-top: 20px;
+        font-size: 14px;
+        width: 50%;
+    }
+}
+
+#signup-block {
+    margin: 3% auto;
+    width: 30%;
+    padding: 15px;
+    border: 1px solid #ebebeb;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+#home-banner {
+    .btn-signup {
+        color: #fff;
+        /*background-color: $primary_color;*/
+        background-color: $primary_color;
+        border-radius: 4px;
+        padding: 20px 40px 20px 40px;
+        margin: auto;
+        width: 100%;
+        font-size: 20px;
+    }
+    background-image: url(/frontend/assets/images/savvy-banner.png);
+    background-repeat: no-repeat;
+    background-position: 50% 50%;
+    background-size: cover;
+    height: 220px;
+    margin-bottom: -15px;
+    margin-top: 50px;
+    border-top: 1px solid #ebebeb;
+}

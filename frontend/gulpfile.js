@@ -23,7 +23,8 @@ var paths = {
     ],
     css: [
         'assets/css/*.css',
-        'assets/css/*.scss'
+        'assets/css/*.scss',
+        'components/**/*.scss'
     ]
 };
 
