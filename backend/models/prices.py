@@ -133,7 +133,7 @@ class PriceDB(DB):
         results = self.db.prices.find(query, {"_id": 0})
         return [dict(result) for result in results]
 
-    def add_price(self, product, business, price, user):
+    def add_price(self, product, business, price, user, image):
         """Adds a price record to the database."""
         from bson.timestamp import Timestamp
         from datetime import datetime
@@ -143,7 +143,8 @@ class PriceDB(DB):
                      "business": business["name"],
                      "price": int(price),
                      "user": user,
-                     "submitted_timestamp": Timestamp(datetime.now(), 1)}
+                     "submitted_timestamp": Timestamp(datetime.now(), 1),
+                     "image": image}
         result = self.db.prices.insert_one(new_price)
         product_db = ProductDB()
         product_db.add_product(description=product["description"],
