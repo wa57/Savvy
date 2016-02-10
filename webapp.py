@@ -4,6 +4,7 @@ from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask import request
+from flask import Response
 from flask.ext.login import LoginManager
 
 from backend.views.users import user_blueprint
@@ -64,7 +65,7 @@ def json_error(msg, **data):
         msg = str(msg)
     response = {"error": msg}
     response.update(data)
-    return json.dumps(response), 500
+    return Response(json.dumps(response), mimetype="application/json"), 500
 
 
 @app.route("/")

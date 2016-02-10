@@ -4,6 +4,7 @@ from datetime import timedelta
 from functools import update_wrapper
 
 from flask import make_response, request, current_app
+from flask import Response
 
 
 logger = logging.getLogger("savvy.utils")
@@ -14,7 +15,7 @@ def json_error(msg, **data):
     response = {"error": msg}
     response.update(data)
     logger.warning("JSON Error Msg: {}".format(response))
-    return json.dumps(response)
+    return Response(json.dumps(response), mimetype="application/json")
 
 
 def json_success(msg, **data):
@@ -22,7 +23,7 @@ def json_success(msg, **data):
     response = {"success": msg}
     response.update(data)
     logger.debug("JSON Success Msg: {}".format(response))
-    return json.dumps(response)
+    return Response(json.dumps(response), mimetype="application/json")
 
 
 def hash_password(passwd, salt=None):
