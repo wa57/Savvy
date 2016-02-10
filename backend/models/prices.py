@@ -82,7 +82,11 @@ class PriceDB(DB):
         return average_price_per_day
 
     def get_sanitized_submissions(self, *args, **kwargs):
-        return self.get_submissions(*args, **kwargs)
+        submissions = []
+        for submission in self.get_submissions(*args, **kwargs):
+            submission.pop("user", None)
+            submissions.append(submission)
+        return submissions
 
     def get_submissions(self, product_id=None, business_id=None, limit=None, most_recent=False):
         """Returns a list of matching prices."""
@@ -94,12 +98,6 @@ class PriceDB(DB):
         pipeline = [
             {
                 "$match": query
-            },
-            {
-                "$project": {
-                    "price_id": "$_id",
-                    "_id": 0
-                }
             }
         ]
         if most_recent:
@@ -108,11 +106,16 @@ class PriceDB(DB):
             pipeline.append({"$limit": limit})
         result = self.db.prices.aggregate(pipeline)
         try:
-            submissions = list(result)
+            results = list(result)
             logger.debug("Retrieved average price per day for '{}'".format(product_id))
         except StopIteration:
             logger.warning("Unable to retrieve average price per day for '{}'".format(product_id))
-            submissions = []
+            results = []
+        submissions = []
+        for submission in results:
+            submission["price_id"] = str(submission.pop("_id"))
+            submission["submitted_timestamp"] = str(submission["submitted_timestamp"].as_datetime())
+            submissions.append(submission)
         return submissions
 
     def add_price(self, product, business, price, user, image):
