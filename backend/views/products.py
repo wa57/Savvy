@@ -3,6 +3,7 @@ import logging
 
 from flask import Blueprint
 from flask import request
+from flask import Response
 from flask.ext.login import login_required
 
 from backend.models.products import ProductDB
@@ -43,7 +44,7 @@ def api_get_product(product_id):
     result.update(stats)
     result["average_price_per_day"] = price_db.average_price_per_day(product_id)
     result["price_submissions"] = price_db.get_sanitized_submissions(product_id=product_id, limit=15, most_recent=True)
-    return json.dumps(result)
+    return Response(json.dumps(result), mimetype="application/json")
 
 
 @product_blueprint.route("/search", methods=["GET"])
@@ -84,4 +85,4 @@ def api_search():
         result["average_price_per_day"] = price_db.average_price_per_day(product_id)
         results.append(result)
     logger.debug("Product search result. Query = '{}'. Result = '{}'".format(query, results))
-    return json.dumps(results)
+    return Response(json.dumps(results), mimetype="application/json")

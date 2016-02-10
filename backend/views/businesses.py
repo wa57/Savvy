@@ -2,6 +2,7 @@ import json
 
 from flask import Blueprint
 from flask import request
+from flask import Response
 
 from backend.models.businesses import BusinessDB
 from backend.utils import json_error, crossdomain
@@ -27,7 +28,7 @@ def api_get_product(business_id):
     """
     business_db = BusinessDB()
     result = business_db.get_business(business_id)
-    return json.dumps(result)
+    return Response(json.dumps(result), mimetype="application/json")
 
 
 @business_blueprint.route("/search", methods=["GET"])
