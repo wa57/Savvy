@@ -140,7 +140,6 @@ class PriceDB(DB):
                      "user": user,
                      "submitted_timestamp": Timestamp(datetime.now(), 1),
                      "image": image}
-        logger.warn(new_price)
         result = self.db.prices.insert_one(new_price)
         return result.inserted_id or None
 
