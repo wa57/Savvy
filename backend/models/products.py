@@ -1,7 +1,11 @@
 __author__ = 'Colin'
 
+import logging
 
 from backend.database import DB
+
+
+logger = logging.getLogger("savvy.models.products")
 
 
 class Product(object):
