@@ -9,7 +9,7 @@ from flask.ext.login import login_required
 from backend.models.products import ProductDB
 from backend.models.prices import PriceDB
 from backend.models.businesses import BusinessDB
-from backend.utils import json_error, crossdomain
+from backend.utils import json_success, json_error, crossdomain
 
 
 logger = logging.getLogger("savvy.views.products")
@@ -45,6 +45,32 @@ def api_get_product(product_id):
     result["average_price_per_day"] = price_db.average_price_per_day(product_id)
     result["price_submissions"] = price_db.get_sanitized_submissions(product_id=product_id, limit=15, most_recent=True)
     return Response(json.dumps(result), mimetype="application/json")
+
+
+@product_blueprint.route("/<product_id>/thumbs-up", methods=["POST", "PUT"])
+@crossdomain(origin="*")
+def api_product_thumbs_up(product_id):
+    """Returns details about a single product.
+
+    Input Parameters:
+        product_id       (string): The product ID to get.
+    """
+    product_db = ProductDB()
+    product_db.thumbs_up(product_id)
+    return json_success("Thumbed it up.")
+
+
+@product_blueprint.route("/<product_id>/thumbs-down", methods=["POST", "PUT"])
+@crossdomain(origin="*")
+def api_product_thumbs_down(product_id):
+    """Returns details about a single product.
+
+    Input Parameters:
+        product_id       (string): The product ID to get.
+    """
+    product_db = ProductDB()
+    product_db.thumbs_down(product_id)
+    return json_success("Thumbed it down.")
 
 
 @product_blueprint.route("/search", methods=["GET"])
