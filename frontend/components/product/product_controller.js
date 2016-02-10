@@ -1,6 +1,6 @@
 angular.module('savvy')
-.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService',
-function($scope, $stateParams, productService, geolocationService) {
+.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService', '$http',
+function($scope, $stateParams, productService, geolocationService, $http) {
     $scope.status = {
         product: 'loading',
         map: 'loading'
@@ -42,25 +42,21 @@ function($scope, $stateParams, productService, geolocationService) {
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: position.coords.latitude, lng: position.coords.longitude},
             scrollwheel: false,
-            zoom: 13
+            zoom: 12
         });
-        var positions = [
-            {lat: position.coords.latitude, lng: position.coords.longitude},
-            {lat: 39.975994, lng: -75.170329}
-        ];
-
-        generateMapMarkers(positions, map);
+        generateBusinessMapMarkers(map);
         $scope.status.map = "ready";
     }
 
-    function generateMapMarkers(positions, map) {
-        for(var i = 0; i < positions.length; i++) {
+    function generateBusinessMapMarkers(map) {
+        $scope.product.businesses.forEach(function(value, index) {
+            var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
             new google.maps.Marker({
                 map: map,
-                position: positions[i],
-                title: ''
+                position: lat_long,
+                title: value.name
             });
-        }
+        });
     }
 
     function fetchUserLocation(geolocationService) {
@@ -69,6 +65,7 @@ function($scope, $stateParams, productService, geolocationService) {
         });
     }
 
+    init_graph();
     fetchProductDetails($stateParams.product_id);
     fetchUserLocation(geolocationService);
 }]);

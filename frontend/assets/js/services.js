@@ -59,9 +59,20 @@ angular.module('savvy').service('productService', ['$http', function($http){
             return response.data;
         });
     }
+
+    this.saveProduct = function(product) {
+        return $http({
+            method: "POST",
+            url: "/api/v1/prices/add",
+            data: product,
+            headers: {'Content-Type': 'application/json'}
+        }).then(function(response){
+            return response.data;
+        });
+    }
 }]);
 
-angular.module('savvy').service('googleMapService', function(){
+angular.module('savvy').service('googleMapService', function() {
     'use strict';
 
     this.init_graph = function() {
