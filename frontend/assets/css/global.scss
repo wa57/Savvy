@@ -142,9 +142,10 @@ h1, h2, h3, h4, h5 {
 }
 
 .btn-outline {
-    &:hover {
+    &:hover, .active {
         background-color: $accent_color;
         color: #fff;
+        outline: none;
     }
     background-color: #fff;
     border: 2px solid $accent_color;

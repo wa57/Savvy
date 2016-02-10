@@ -6,8 +6,25 @@ function($scope, $stateParams, productService, geolocationService, $http) {
         map: 'loading'
     };
 
-    $scope.vote = function(vote) {
-        productService.addVoteToProduct(vote); //yes or no
+    $scope.vote = {
+        yes: false,
+        no: false
+    }
+
+    $scope.sendVote = function(vote) {
+        toggleVote(vote);
+        //productService.saveVote(vote); //yes or no
+    }
+
+    function toggleVote(vote) {
+        console.log(vote);
+        if(vote === 'yes') {
+            $scope.vote.yes = true; $scope.vote.no = false;
+        } else {
+            $scope.vote.yes = false; $scope.vote.no = true;
+        }
+        console.log($scope.vote);
+        //(vote === 'yes') ? $scope.vote = true : $scope.vote = false;
     }
 
     function fetchProductDetails(product_id) {
@@ -50,12 +67,14 @@ function($scope, $stateParams, productService, geolocationService, $http) {
 
     function generateBusinessMapMarkers(map) {
         $scope.product.businesses.forEach(function(value, index) {
-            var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
-            new google.maps.Marker({
-                map: map,
-                position: lat_long,
-                title: value.name
-            });
+            if(index < 10) {
+                var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
+                new google.maps.Marker({
+                    map: map,
+                    position: lat_long,
+                    title: value.name
+                });
+            }
         });
     }
 
