@@ -2,7 +2,7 @@ angular.module('savvy')
     .controller('submit_controller', submit_controller)
     .$inject = ['$scope', '$state', 'ProductService', 'stringReplace', '$filter'];
 
-function submit_controller($scope, $state, ProductService, stringReplace, $filter) {
+function submit_controller($scope, $state, productService, stringReplace, $filter) {
     $scope.initialize = function() {
         $scope.initializeData();
         $scope.initializeGooglePlaces();
@@ -27,19 +27,12 @@ function submit_controller($scope, $state, ProductService, stringReplace, $filte
             product_image: $scope.image
         };
 
-        $http({
-            method: "POST",
-            url: "/api/v1/prices/add",
-            data: post_data,
-            headers: {'Content-Type': 'application/json'}
-        })
-        .success(function(data, status, headers, config) {
-            $scope.createReceipt(data);
+        productService.saveProduct(post_data).then(function(response){
+            $scope.createReceipt(post_data);
             $scope.product = {};
             $scope.message = "success";
-        })
-        .error(function(data, status, headers, config) {
-            $scope.status = status;
+        },
+        function(){
             $scope.message = "error";
         });
     }
