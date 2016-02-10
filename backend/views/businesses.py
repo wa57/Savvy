@@ -9,6 +9,27 @@ from backend.utils import json_error, crossdomain
 business_blueprint = Blueprint("businesses", __name__, url_prefix="/api/v1/businesses")
 
 
+@business_blueprint.route("/<business_id>", methods=["GET"])
+@crossdomain(origin="*")
+def api_get_product(business_id):
+    """Returns details about a single product.
+
+    Input Parameters:
+        business_id       (string): The business ID to get.
+
+    Returns:
+        A JSON object of dictionaries containing details for the business matching the ID.
+
+        Example:
+            {
+                business_id: 1235,
+            }
+    """
+    business_db = BusinessDB()
+    result = business_db.get_business(business_id)
+    return json.dumps(result)
+
+
 @business_blueprint.route("/search", methods=["GET"])
 @crossdomain(origin="*")
 def api_search():

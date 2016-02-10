@@ -25,8 +25,8 @@ class BusinessDB(DB):
             results.append(result)
         return results
 
-    def get_business(self, name):
-        result = self.db.businesses.find_one({"name": name})
+    def get_business(self, business_id):
+        result = self.db.businesses.find_one({"_id": business_id})
         result["business_id"] = str(result.pop("_id"))
         return result
 
@@ -44,4 +44,9 @@ class BusinessDB(DB):
         result = self.db.businesses.update_one({"google_places.place_id": google_places["place_id"]},
                                                {"$set": new_business},
                                                upsert=True)
-        return result.upserted_id or None
+        if result.upserted_id:
+            business_id = str(result.upserted_id)
+        else:
+            result = self.db.businesses.find_one({"google_places.place_id": google_places["place_id"]})
+            business_id = str(result["_id"])
+        return business_id

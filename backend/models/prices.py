@@ -12,85 +12,44 @@ logger = logging.getLogger("savvy.models.prices")
 class PriceDB(DB):
     """Class to connect to the Prices Datastore."""
 
-    def average_price(self, product):
+    def price_stats(self, product_id):
         """Returns the average price of a product."""
         result = self.db.prices.aggregate([
-            {"$match":
+            {
+                "$match":
                 {
-                    "product": product
+                    "product_id": product_id
                 }
             },
-            {"$group":
+            {
+                "$group":
                 {
-                    "_id": "$product",
-                    "average": {"$avg": "$price"}
-                }
-            }
-        ])
-        try:
-            next_result = result.next()
-            average_price = int(next_result['average'])
-            logger.debug("Retrieved average price for '{}' = {}".format(product, average_price))
-        except StopIteration:
-            logger.warning("Unable to retrieve average price for '{}'".format(product))
-            average_price = -1
-        return average_price
-
-    def lowest_price(self, product):
-        """Returns the lowest price of a product."""
-        result = self.db.prices.aggregate([
-            {"$match":
-                {
-                    "product": product
-                }
-            },
-            {"$group":
-                {
-                    "_id": "$product",
-                    "lowest_price": {"$min": "$price"}
-                }
-            }
-        ])
-        try:
-            next_result = result.next()
-            lowest_price = int(next_result['lowest_price'])
-            logger.debug("Retrieved lowest price for '{}' = {}".format(product, lowest_price))
-        except StopIteration:
-            logger.warning("Unable to retrieve lowest price for '{}'".format(product))
-            lowest_price = -1
-        return lowest_price
-
-    def highest_price(self, product):
-        """Returns the lowest price of a product."""
-        result = self.db.prices.aggregate([
-            {"$match":
-                {
-                    "product": product
-                }
-            },
-            {"$group":
-                {
-                    "_id": "$product",
+                    "_id": "$product_id",
+                    "average_price": {"$avg": "$price"},
+                    "lowest_price": {"$min": "$price"},
                     "highest_price": {"$max": "$price"}
                 }
             }
         ])
         try:
-            next_result = result.next()
-            highest_price = int(next_result['highest_price'])
-            logger.debug("Retrieved highest price for '{}' = {}".format(product, highest_price))
+            stats = result.next()
+            logger.debug("Retrieved price stats for '{}' = {}".format(product_id, stats))
         except StopIteration:
-            logger.warning("Unable to retrieve highest price for '{}'".format(product))
-            highest_price = -1
-        return highest_price
+            logger.warning("Unable to retrieve average price for '{}'".format(product_id))
+            return {
+                "average_price": -1,
+                "lowest_price": -1,
+                "highest_price": -1
+            }
+        return stats
 
-    def average_price_per_day(self, product):
+    def average_price_per_day(self, product_id):
         """Returns an x,y coordinate for a product per day."""
         result = self.db.prices.aggregate([
             {
                 "$match":
                 {
-                    "product": product
+                    "product_id": product_id
                 }
             },
             {
@@ -116,22 +75,45 @@ class PriceDB(DB):
         ])
         try:
             average_price_per_day = result.next()
-            logger.debug("Retrieved average price per day for '{}'".format(product))
+            logger.debug("Retrieved average price per day for '{}'".format(product_id))
         except StopIteration:
-            logger.warning("Unable to retrieve average price per day for '{}'".format(product))
+            logger.warning("Unable to retrieve average price per day for '{}'".format(product_id))
             average_price_per_day = []
         return average_price_per_day
-    
-    def search(self, product=None, business=None):
+
+    def get_sanitized_submissions(self, *args, **kwargs):
+        return self.get_submissions(*args, **kwargs)
+
+    def get_submissions(self, product_id=None, business_id=None, limit=None, most_recent=False):
         """Returns a list of matching prices."""
-        import re
         query = {}
-        if product:
-            query["product"] = re.compile(".*{}.*".format(product), re.IGNORECASE)
-        if business:
-            query["business"] = re.compile(".*{}.*".format(business), re.IGNORECASE)
-        results = self.db.prices.find(query, {"_id": 0})
-        return [dict(result) for result in results]
+        if product_id:
+            query["product_id"] = product_id
+        if business_id:
+            query["business_id"] = business_id
+        pipeline = [
+            {
+                "$match": query
+            },
+            {
+                "$project": {
+                    "price_id": "$_id",
+                    "_id": 0
+                }
+            }
+        ]
+        if most_recent:
+            pipeline.append({"$sort": {"submitted_timestamp": -1}})
+        if limit:
+            pipeline.append({"$limit": limit})
+        result = self.db.prices.aggregate(pipeline)
+        try:
+            submissions = list(result)
+            logger.debug("Retrieved average price per day for '{}'".format(product_id))
+        except StopIteration:
+            logger.warning("Unable to retrieve average price per day for '{}'".format(product_id))
+            submissions = []
+        return submissions
 
     def add_price(self, product, business, price, user, image):
         """Adds a price record to the database."""
@@ -139,20 +121,26 @@ class PriceDB(DB):
         from datetime import datetime
         from backend.models.businesses import BusinessDB
         from backend.models.products import ProductDB
-        new_price = {"product": product["description"],
-                     "business": business["name"],
+
+        # Add product and tags to DB
+        product_db = ProductDB()
+        product_id = product_db.add_product(description=product["description"],
+                                            tags=product["tags"])
+
+        # Add business to database
+        business_db = BusinessDB()
+        business_id = business_db.add_business(name=business["name"],
+                                               address=business["formatted_address"],
+                                               phone_number=business["formatted_phone_number"],
+                                               google_places=business)
+
+        new_price = {"product_id": product_id,
+                     "business_id": business_id,
                      "price": int(price),
                      "user": user,
                      "submitted_timestamp": Timestamp(datetime.now(), 1),
                      "image": image}
+        logger.warn(new_price)
         result = self.db.prices.insert_one(new_price)
-        product_db = ProductDB()
-        product_db.add_product(description=product["description"],
-                               tags=product["tags"])
-        business_db = BusinessDB()
-        business_db.add_business(name=business["name"],
-                                 address=business["formatted_address"],
-                                 phone_number=business["formatted_phone_number"],
-                                 google_places=business)
         return result.inserted_id or None
 

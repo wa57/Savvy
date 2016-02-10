@@ -42,4 +42,9 @@ class ProductDB(DB):
         result = self.db.products.update_one({"description": description},
                                              {"$addToSet": {"tags": {"$each": tags}}},
                                              upsert=True)
-        return result.upserted_id or None
+        if result.upserted_id:
+            product_id = str(result.upserted_id)
+        else:
+            result = self.db.products.find_one({"description": description})
+            product_id = str(result["_id"])
+        return product_id
