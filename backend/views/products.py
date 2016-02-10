@@ -37,13 +37,12 @@ def api_get_product(product_id):
     """
     product_db = ProductDB()
     price_db = PriceDB()
-    business_db = BusinessDB()
     result = product_db.get(product_id)
-    result["average_price"] = price_db.average_price(result["description"])
-    result["lowest_price"] = price_db.lowest_price(result["description"])
-    result["highest_price"] = price_db.highest_price(result["description"])
-    result["average_price_per_day"] = price_db.average_price_per_day(result["description"])
-    result["businesses"] = [business_db.get_business(price["business"]) for price in price_db.search(product=result["description"])]
+    # Get prices
+    stats = price_db.price_stats(product_id)
+    result.update(stats)
+    result["average_price_per_day"] = price_db.average_price_per_day(product_id)
+    result["price_submissions"] = price_db.get_sanitized_submissions(product_id=product_id, limit=15, most_recent=True)
     return json.dumps(result)
 
 
@@ -79,10 +78,10 @@ def api_search():
     price_db = PriceDB()
     results = []
     for result in product_db.search(query):
-        result["average_price"] = price_db.average_price(result["description"])
-        result["lowest_price"] = price_db.lowest_price(result["description"])
-        result["highest_price"] = price_db.highest_price(result["description"])
-        result["average_price_per_day"] = price_db.average_price_per_day(result["description"])
+        product_id = result["product_id"]
+        stats = price_db.price_stats(product_id)
+        result.update(stats)
+        result["average_price_per_day"] = price_db.average_price_per_day(product_id)
         results.append(result)
     logger.debug("Product search result. Query = '{}'. Result = '{}'".format(query, results))
     return json.dumps(results)

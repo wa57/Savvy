@@ -27,7 +27,7 @@ def api_get_prices():
     if not product and not business:
         return json_error("Query can not be empty")
     product_db = PriceDB()
-    results = product_db.search(product, business)
+    results = product_db.get_submissions(product, business)
     return json.dumps(results)
 
 
