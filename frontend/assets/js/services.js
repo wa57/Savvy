@@ -70,6 +70,12 @@ angular.module('savvy').service('productService', ['$http', function($http){
             return response.data;
         });
     }
+
+    this.saveVote = function(vote) {
+        /*return $http.post("/api/v1/products/vote/" + vote).then(function(response) {
+            return response.data;
+        });*/
+    }
 }]);
 
 angular.module('savvy').service('googleMapService', function() {

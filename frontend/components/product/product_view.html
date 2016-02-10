@@ -12,14 +12,22 @@
                 <p style="width: 100%;">
                     <span style="font-size: 12px;">Was this information helpful?</span>
                 </p>
+                <!-- add the class 'text-success' if the variable 'awesome' is true -->
+<!--<div ng-class="{ 'text-success': awesome, 'text-large': giant }">-->
                 <div class="vote" style="margin-bottom: 10px;">
-                    <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 5px;">
-                        <i ng-click="vote();" class="fa fa-thumbs-o-up" style="font-size: 14px;"></i> Yes
+                    <button ng-click="sendVote('yes');"
+                            ng-class="{'vote-button-active': vote.yes}"
+                            class="btn btn-outline btn-sm"
+                            style="width: 100%; margin-bottom: 5px;">
+                        <i class="fa fa-thumbs-o-up" style="font-size: 14px;"></i> Yes
                     </button>
                 </div>
                 <div class="vote" style="margin-bottom: 10px;">
-                    <button class="btn btn-outline btn-sm" style="width: 100%;">
-                        <i ng-click="vote();" class="fa fa-thumbs-o-down" style="font-size: 14px;"></i> No
+                    <button ng-click="sendVote('no');"
+                            ng-class="{'vote-button-active': vote.no}"
+                            class="btn btn-outline btn-sm"
+                            style="width: 100%;">
+                        <i class="fa fa-thumbs-o-down" style="font-size: 14px;"></i> No
                     </button>
                 </div>
             </div>
