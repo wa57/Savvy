@@ -79,3 +79,14 @@ def crossdomain(origin=None, methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
+
+
+def get_google_places_by_id(place_id):
+    import requests
+    url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyD2NjLAT9oyFc2RxlYy0P30ejMXvAaUdV4&placeid={}".format(place_id)
+    response = requests.get(url)
+    data = response.json()
+    if data["status"] != "OK":
+        raise Exception("Invalid Google Places ID or Google API error.")
+    return data["result"]
+
