@@ -4,6 +4,7 @@ from datetime import timedelta
 from functools import update_wrapper
 
 from flask import make_response, request, current_app
+from flask import Response
 
 
 logger = logging.getLogger("savvy.utils")
@@ -14,7 +15,7 @@ def json_error(msg, **data):
     response = {"error": msg}
     response.update(data)
     logger.warning("JSON Error Msg: {}".format(response))
-    return json.dumps(response)
+    return Response(json.dumps(response), mimetype="application/json")
 
 
 def json_success(msg, **data):
@@ -22,7 +23,7 @@ def json_success(msg, **data):
     response = {"success": msg}
     response.update(data)
     logger.debug("JSON Success Msg: {}".format(response))
-    return json.dumps(response)
+    return Response(json.dumps(response), mimetype="application/json")
 
 
 def hash_password(passwd, salt=None):
@@ -78,3 +79,14 @@ def crossdomain(origin=None, methods=None, headers=None,
         f.provide_automatic_options = False
         return update_wrapper(wrapped_function, f)
     return decorator
+
+
+def get_google_places_by_id(place_id):
+    import requests
+    url = "https://maps.googleapis.com/maps/api/place/details/json?key=AIzaSyD2NjLAT9oyFc2RxlYy0P30ejMXvAaUdV4&placeid={}".format(place_id)
+    response = requests.get(url)
+    data = response.json()
+    if data["status"] != "OK":
+        raise Exception("Invalid Google Places ID or Google API error.")
+    return data["result"]
+
