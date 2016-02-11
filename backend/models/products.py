@@ -1,7 +1,11 @@
 __author__ = 'Colin'
 
+import logging
 
 from backend.database import DB
+
+
+logger = logging.getLogger("savvy.models.products")
 
 
 class Product(object):
@@ -26,6 +30,16 @@ class ProductDB(DB):
         product["product_id"] = str(product.pop("_id"))
         return product
 
+    def thumbs_up(self, product_id):
+        from bson.objectid import ObjectId
+        self.db.products.update_one({"_id": ObjectId(product_id)},
+                                    {"$inc": {"thumbs_up": 1}})
+
+    def thumbs_down(self, product_id):
+        from bson.objectid import ObjectId
+        self.db.products.update_one({"_id": ObjectId(product_id)},
+                                    {"$inc": {"thumbs_down": 1}})
+
     def search(self, query):
         """Returns a list of matching products."""
         import re
@@ -42,4 +56,9 @@ class ProductDB(DB):
         result = self.db.products.update_one({"description": description},
                                              {"$addToSet": {"tags": {"$each": tags}}},
                                              upsert=True)
-        return result.upserted_id or None
+        if result.upserted_id:
+            product_id = str(result.upserted_id)
+        else:
+            result = self.db.products.find_one({"description": description})
+            product_id = str(result["_id"])
+        return product_id

@@ -2,6 +2,7 @@ import json
 
 from flask import Blueprint
 from flask import request
+from flask import Response
 
 from backend.models.prices import PriceDB
 from backend.utils import json_error, json_success, crossdomain
@@ -27,8 +28,8 @@ def api_get_prices():
     if not product and not business:
         return json_error("Query can not be empty")
     product_db = PriceDB()
-    results = product_db.search(product, business)
-    return json.dumps(results)
+    results = product_db.get_submissions(product, business)
+    return Response(json.dumps(results), mimetype="application/json")
 
 
 @price_blueprint.route("/add", methods=["POST", "OPTIONS"])
