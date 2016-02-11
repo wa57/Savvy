@@ -80,6 +80,8 @@ class UserDB(DB):
         :returns: User object representing the new user.
         :rtype: User
         """
+        from datetime import datetime
+        from bson.timestamp import Timestamp
         hashed_password, salt = hash_password(password)
 
         # Check for users with this username
@@ -99,7 +101,8 @@ class UserDB(DB):
             "password_salt": salt,
             "first_name": first_name,
             "active": False,
-            "roles": ["user"]
+            "roles": ["user"],
+            "created_timestamp": Timestamp(datetime.now(), 1)
         }
         logger.info("Creating new user '{}'.".format(username))
         logger.debug("Details for user '{}': {}".format(username, new_user))

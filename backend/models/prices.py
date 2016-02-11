@@ -124,11 +124,15 @@ class PriceDB(DB):
         from datetime import datetime
         from backend.models.businesses import BusinessDB
         from backend.models.products import ProductDB
+        from backend.utils import get_google_places_by_id
 
         # Add product and tags to DB
         product_db = ProductDB()
         product_id = product_db.add_product(description=product["description"],
                                             tags=product["tags"])
+
+        if isinstance(business, str):
+            business = get_google_places_by_id(business)
 
         # Add business to database
         business_db = BusinessDB()
