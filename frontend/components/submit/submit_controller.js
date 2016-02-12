@@ -10,25 +10,11 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
 
     $scope.submitPrice = function() {
         $scope.message = "processing";
-
-        var price = parseInt($scope.price.toFixed(2)*100);
-
-        if($scope.product.tags.length > 0) {
-            angular.forEach($scope.product.tags, function(tag, index) {
-                $scope.product.tags[index] = stringReplace.replaceAll(tag, " ", "");
-            });
-        }
-
-        var post_data = {
-            product: $scope.product,
-            business: $scope.google_places,
-            user: $scope.makeid(),
-            price: price,
-            product_image: $scope.image
-        };
-
-        productService.saveProduct(post_data).then(function(response){
-            $scope.createReceipt(post_data);
+        $scope.product.price = parseInt($scope.price.toFixed(2)*100);
+        $scope.product.user = makeid();
+        
+        productService.saveProduct($scope.product).then(function(response){
+            $scope.createReceipt($scope.product);
             $scope.product = {};
             $scope.message = "success";
         },
@@ -52,12 +38,12 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
         autocomplete = new google.maps.places.Autocomplete(input, options);
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
-            $scope.google_places = autocomplete.getPlace();
+            $scope.product.place_id = autocomplete.getPlace().place_id;
             $scope.$apply();
         });
     }
 
-    $scope.makeid = function() {
+    function makeid() {
         var text = "testuser";
         var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
@@ -69,18 +55,15 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
     }
 
     $scope.initializeData = function() {
-        $scope.tag = "";
         $scope.product = {
             tags: []
         };
-        $scope.image = "";
         $scope.receipt = {};
         $scope.message = "";
         $scope.messages = {
             tag_message: "",
             save_message: ""
         }
-        $scope.google_places = "";
         $scope.price = "";
         document.getElementById('places').value = "";
     }
@@ -93,7 +76,7 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
             price: $scope.price,
             description: $scope.product.description
         };
-    }
+    };
 
     $scope.addTag = function() {
         var exists_in_array = $scope.product.tags.indexOf($scope.tag);

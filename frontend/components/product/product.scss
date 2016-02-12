@@ -24,6 +24,9 @@ table {
 
 .vote {
     .vote-button-active {
+        &:focus, &:active:focus {
+            outline: none;
+        }
         background-color: $accent_color;
         color: #fff;
     }
