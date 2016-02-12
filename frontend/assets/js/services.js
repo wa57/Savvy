@@ -19,38 +19,6 @@ angular.module('savvy').service('stringReplace', function() { //For removing eve
     };
 });
 
-angular.module('savvy').service('ProductService', ['$http', function($http) {
-    this.saveProduct = function(product) {
-        return $http({
-            method: "POST",
-            url: savvy.api_root + "prices/add",
-            data: post_data,
-            headers: {'Content-Type': 'application/json'}
-        })
-        .success(function(data, status, headers, config) {
-            $scope.createReceipt(data);
-            $scope.product = {};
-            $scope.message = "success";
-        })
-        .error(function(data, status, headers, config) {
-            $scope.status = status;
-            $scope.message = "error";
-        });
-    };
-
-    this.searchGoats = function(query) {
-        return $http.get('/goats/search/' + query);
-    };
-
-    this.getGoats = function() {
-        return $http.get('/goats');
-    };
-
-    this.getGoat = function(name) {
-        return $http.get('/goat/' + name);
-    };
-}]);
-
 angular.module('savvy').service('productService', ['$http', function($http){
     'use strict';
 
@@ -58,7 +26,7 @@ angular.module('savvy').service('productService', ['$http', function($http){
         return $http.get("/api/v1/products/" + product_id).then(function(response) {
             return response.data;
         });
-    }
+    };
 
     this.saveProduct = function(product) {
         return $http({
@@ -69,14 +37,34 @@ angular.module('savvy').service('productService', ['$http', function($http){
         }).then(function(response){
             return response.data;
         });
-    }
+    };
 
-    this.saveVote = function(vote) {
-        /*return $http.post("/api/v1/products/vote/" + vote).then(function(response) {
-            return response.data;
-        });*/
-    }
+    this.saveVote = function(vote, product_id) {
+        if(typeof product_id !== 'undefined') {
+            return $http.post("/api/v1/products/" + product_id + "/thumbs-" + vote).then(function(response) {
+                return response;
+            });
+        }
+    };
 }]);
+
+/*angular.module('savvy').service('googleService', ['$q', 'google', function($q, google) {
+    'use strict';
+
+    this.get = function() {
+        return google;
+    };
+
+    this.getVis = function() {
+        return google.charts.setOnLoadCallback(function(){
+            return google.visualization;
+        });
+    };
+
+    this.getMaps = function() {
+        return google.maps;
+    };
+});*/
 
 angular.module('savvy').service('googleMapService', function() {
     'use strict';
