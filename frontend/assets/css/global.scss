@@ -4,6 +4,10 @@ $highlight_color: #BEEB9F;
 $error_color: #FF6138;
 $border_color: #e5e5e5;
 
+*:focus {
+    outline: none;
+    border-color: #7dc7ed;
+}
 body {
     background: #ebebeb;
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;

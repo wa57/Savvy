@@ -5,10 +5,6 @@ function($scope, $stateParams, productService, geolocationService) {
         $scope.status = { product: 'loading', map: 'loading' };
         $scope.vote = {};
         $scope.product = {};
-
-        fetchProductDetails($stateParams.product_id);
-        fetchUserLocation(geolocationService);
-        initChart();
     })();
 
     $scope.sendVote = function(vote) {
@@ -83,4 +79,8 @@ function($scope, $stateParams, productService, geolocationService) {
             $scope.status.chart = 'ready';
         });
     }
+
+    fetchProductDetails($stateParams.product_id);
+    fetchUserLocation(geolocationService);
+    initChart();
 }]);

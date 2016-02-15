@@ -67,26 +67,32 @@
     <hr>
     <div class="row">
         <div class="col-sm-6">
-            <h2 style="margin-bottom: 15px;">Latest Prices</h2>
-            <table id="latest-prices-table" class="table table-striped" style="border: 1px solid #eee;">
-                <tr>
-                    <th>Location</th>
-                    <th>Purchase Price</th>
-                    <th>Date Purchased</th>
-                </tr>
-                <tr ng-repeat="business in product.businesses">
-                    <td>{{business.name}}</td>
-                    <td>{{1.27 | currency}}</td>
-                    <td>6/21/16</td>
-                </tr>
-            </table>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>Latest Prices</strong>
+                </div>
+                <table class="table">
+                    <tr>
+                        <th>Location</th>
+                        <th>Purchase Price</th>
+                        <th>Date Purchased</th>
+                    </tr>
+                    <tbody>
+                        <tr ng-repeat="business in product.price_submissions">
+                            <td>{{business.name}}</td>
+                            <td>{{1.27 | currency}}</td>
+                            <td>6/21/16</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="col-sm-6">
             <div ng-show="status.map === 'loading'" id="map-loader">
                 <img src="/frontend/assets/images/loader.gif">
                 <span>Loading Map...</span>
             </div>
-            <div id="map" style="width: 100%; height: 500px;"></div>
+            <div id="map" style="width: 100%; height: 400px;"></div>
         </div>
     </div>
     <hr>
