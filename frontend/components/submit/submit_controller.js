@@ -29,7 +29,7 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
             new google.maps.LatLng(39.952584, -75.165222)
         );
 
-        var input = document.getElementById('places');
+        var input = document.getElementById('product-place');
         var options = {
           bounds: defaultBounds,
           types: ['establishment']
@@ -65,7 +65,7 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
             save_message: ""
         }
         $scope.price = "";
-        document.getElementById('places').value = "";
+        document.getElementById('product-place').value = "";
     }
 
     $scope.createReceipt = function(api_response) {
