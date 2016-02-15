@@ -5,6 +5,10 @@ function($scope, $stateParams, productService, geolocationService) {
         $scope.status = { product: 'loading', map: 'loading' };
         $scope.vote = {};
         $scope.product = {};
+
+        fetchProductDetails($stateParams.product_id);
+        fetchUserLocation(geolocationService);
+        initChart();
     })();
 
     $scope.sendVote = function(vote) {
@@ -45,16 +49,18 @@ function($scope, $stateParams, productService, geolocationService) {
     }
 
     function generateBusinessMapMarkers(map) {
-        $scope.product.businesses.forEach(function(value, index) {
-            if(index < 10) {
-                var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
-                new google.maps.Marker({
-                    map: map,
-                    position: lat_long,
-                    title: value.name
-                });
-            }
-        });
+        if(typeof $scope.product.businesses !== "undefined") {
+            $scope.product.businesses.forEach(function(value, index) {
+                if(index < 10) {
+                    var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
+                    new google.maps.Marker({
+                        map: map,
+                        position: lat_long,
+                        title: value.name
+                    });
+                }
+            });
+        }
     }
 
     function initChart() {
@@ -77,8 +83,4 @@ function($scope, $stateParams, productService, geolocationService) {
             $scope.status.chart = 'ready';
         });
     }
-
-    fetchProductDetails($stateParams.product_id);
-    fetchUserLocation(geolocationService);
-    initChart();
 }]);
