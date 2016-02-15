@@ -12,7 +12,7 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
         $scope.message = "processing";
         $scope.product.price = parseInt($scope.price.toFixed(2)*100);
         $scope.product.user = makeid();
-        
+
         productService.saveProduct($scope.product).then(function(response){
             $scope.createReceipt($scope.product);
             $scope.product = {};
@@ -91,6 +91,20 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
         $scope.product.tags.push($scope.tag);
         $scope.tag = "";
         $scope.messages.tag_message = "";
+    };
+
+    $scope.searchProducts = function() {
+        if($scope.product.description) {
+            productService.getProductsByDesc($scope.product.description).then(function(response){
+                $scope.products = response;
+            });
+        } else {
+            $scope.products = [];
+        }
+    };
+
+    $scope.selectProduct = function(selectedProduct) {
+        $scope.product.description = selectedProduct.description;
     }
 
     $scope.initialize();

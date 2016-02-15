@@ -1,31 +1,42 @@
-<div id="submit-price">
+<div class="submit-price">
     <div class="content-header">
         <h4><i class="fa fa-share-square-o"></i> Submit a Price</h4>
     </div>
-    <form ng-submit="submitPrice()"
-            ng-hide="message === 'success'"
-            id="submit-product-form"
-            name="submitForm"
-            role="form">
-        <div style="margin-bottom: 15px;">
-            <button class="btn btn-sm btn-primary">Submit a Single Price</button><!--will be tabular-->
-            <button class="btn btn-sm btn-default">Upload a Receipt</button>
-        </div>
+    <div style="margin-bottom: 15px;">
+        <button class="btn btn-primary">Submit a Single Price</button><!--will be tabular-->
+        <button class="btn btn-default">Upload a Receipt</button>
+    </div>
+    <form ng-submit="submitPrice()" ng-hide="message === 'success'" name="submitForm">
     	<div class="instructions alert alert-info">
-            <small>Complete the required fields below (denoted by a *) then click Submit to add your product or service to Savvy.</small>
+            <i class="fa fa-info-circle"></i>
+            Complete the required (*) fields below then click Submit to add your product or service to Savvy.
         </div>
-        <div style="border-top: 1px solid #d9dadc; text-align: center; line-height: 1px;">
-            <span style="background: #fff; padding: 0 20px;">MANDATORY</span>
-        </div>
-        <label>
-            <p>Product Name <span class="required-asterisk">&ast;</span></p>
+        <div class="product-description">
+            <label for="product-description">
+                <p>
+                    Product Name <span class="required-asterisk">&ast;</span>
+                </p>
+            </label>
             <input type="text"
                     ng-model="product.description"
+                    ng-model-options="{ debounce: 300 }"
+                    ng-change="searchProducts()"
+                    ng-blur="products = []"
                     ng-required="true"
+                    id="product-description"
                     placeholder="The name of the product, e.g. 12oz. Coke Can">
-        </label>
+            <div class="product-list" ng-show="products.length > 0">
+                <div ng-repeat="product in products" ng-click="selectProduct(product)" class="product-result">
+                    {{product.description}}
+                </div>
+            </div>
+        </div>
+
         <label>
-            <p>Place of Purchase <span class="required-asterisk">&ast;</span></p>
+            <p>
+                Place of Purchase
+                <span class="required-asterisk">&ast;</span>
+            </p>
             <input type="text"
                     ng-required="true"
                     id="places"
@@ -33,11 +44,10 @@
             <a>Enter Custom Address</a>
         </label>
         <label>
-        	<p>Price Paid <span class="required-asterisk">&ast;</span></p>
-            <span class="input-addon"
-                style="background-color: #eee; padding: 12px; margin-right: -5px; border-top-left-radius: 2px;
-                border-bottom-left-radius: 2px; border: 1px solid #e5e5e5;">
-            $</span>
+        	<p>
+                Price Paid <span class="required-asterisk">&ast;</span>
+            </p>
+            <span class="input-addon">$</span>
             <input type="number"
                     ng-model="price"
                     id="price-paid"
@@ -46,17 +56,21 @@
                     ng-required="true"
                     placeholder="The price you paid">
         </label>
-        <div style="border-top: 1px solid #d9dadc; text-align: center; line-height: 1px;">
-            <span style="background: #fff; padding: 0 20px;">OPTIONAL</span>
+        <div class="divider">
+            <span>OPTIONAL</span>
         </div>
-        <section>
-            <label id="add-tag-wrapper">
+        <div class="alert alert-info">
+            <i class="fa fa-info-circle"></i>
+            You can add tags here. Click add after entering each tag. You may
+            submit more than one tag.
+        </div>
+        <section class="add-tag">
+            <label>
                 <p>Add A Tag</p>
                 <input type="text"
                         ng-model="tag"
                         ng-enter="addTag()"
                         size="6"
-                        id="add-tag"
                         placeholder="Enter a tag">
                 <button type="button"
                         class="btn btn-primary btn-sm"
@@ -64,16 +78,9 @@
                         Add
                 </button>
             </label>
-            <div class="alert alert-info">
-                <small>You can add tags (words associated with the product or
-                service) here. Click add after entering each tag. You
-                may submit more than one tag.</small>
-            </div>
             <span ng-show="messages.tag_message === 'error-empty-input'" class="error-message">Please enter a tag.</span>
             <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
-            <span ng-repeat="tag in product.tags" class="tag">
-                {{tag}}<!--<span style="margin-left: 2px; padding: 1px; background-color: grey;">X</span>-->
-            </span>
+            <span ng-repeat="tag in product.tags" class="tag">{{tag}}</span>
         </section>
         <label>
             <span>Upload a picture of the product (optional)</span>

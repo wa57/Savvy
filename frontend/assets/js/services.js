@@ -46,6 +46,16 @@ angular.module('savvy').service('productService', ['$http', function($http){
             });
         }
     };
+
+    this.getProductsByDesc = function(description) {
+        if(description !== "") {
+            return $http.get("/api/v1/products/search?query=" + description).then(function(response) {
+                return response.data;
+            });
+        }
+    }
+
+
 }]);
 
 /*angular.module('savvy').service('googleService', ['$q', 'google', function($q, google) {
