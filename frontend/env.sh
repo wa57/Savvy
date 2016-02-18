@@ -11,7 +11,6 @@ sudo npm install browserify watchify -g
 
 #Gulp
 sudo npm install gulp -g
-sudo npm install gulp-uglify gulp-rename --save-dev
-
+sudo npm install -g generator-gulp-angular #yeoman
 
 sudo npm install

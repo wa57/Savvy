@@ -1,91 +1,107 @@
-<div class="content-header">
-    <h4><i class="fa fa-info-circle"></i> Product Information</h4>
-</div>
-<div ng-show="status.product === 'loading'">
-    <img src="/frontend/assets/images/loader.gif">
-    {{status.map}}
-</div>
-<div ng-show="status.product === 'ready'">
-    <div class="row">
-        <div class="col-sm-2">
-            <div class="center" style="padding: 5px 15px;">
-                <p style="width: 100%;">
-                    <span style="font-size: 12px;">Was this information helpful?</span>
-                </p>
-                <div class="vote" style="margin-bottom: 10px;">
-                    <button class="btn btn-outline btn-sm" style="width: 100%; margin-bottom: 5px;">
-                        <i ng-click="vote();" class="fa fa-thumbs-o-up" style="font-size: 14px;"></i> Yes
-                    </button>
-                </div>
-                <div class="vote" style="margin-bottom: 10px;">
-                    <button class="btn btn-outline btn-sm" style="width: 100%;">
-                        <i ng-click="vote();" class="fa fa-thumbs-o-down" style="font-size: 14px;"></i> No
-                    </button>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-5">
-            <div style="margin-left: 15px; padding-left: 20px;">
-                <h1 class="product-description">{{product.description}}</h1>
-                <div class="product-metric">
-                    <h2>{{(product.average_price / 100) | currency}}</h2>
-                    <small>Average Price</small>
-                </div>
-                <div class="product-metric">
-                    <h2>{{product.lowest_price / 100 | currency}}</h2>
-                    <small>Lowest Price</small>
+<div class="product-page">
+    <div class="content-header">
+        <h4><i class="fa fa-info-circle"></i> Product Information</h4>
+    </div>
+    <div ng-show="status.product === 'loading'">
+        <img src="/frontend/assets/images/loader.gif">
+        {{status.map}}
+    </div>
+    <div ng-show="status.product === 'ready'">
+        <div class="row">
+            <div class="col-sm-2">
+                <div class="center" style="padding: 5px 15px;">
+                    <p style="width: 100%;">
+                        <span style="font-size: 12px;">Was this information helpful?</span>
+                    </p>
+                    <!-- add the class 'text-success' if the variable 'awesome' is true -->
+    <!--<div ng-class="{ 'text-success': awesome, 'text-large': giant }">-->
+                    <div class="vote" style="margin-bottom: 10px;">
+                        <button ng-click="sendVote('up');"
+                                ng-class="{'vote-button-active': vote.up}"
+                                class="btn btn-outline btn-sm"
+                                style="width: 100%; margin-bottom: 5px;">
+                            <i class="fa fa-thumbs-o-up" style="font-size: 14px;"></i> Yes
+                        </button>
+                    </div>
+                    <div class="vote" style="margin-bottom: 10px;">
+                        <button ng-click="sendVote('down');"
+                                ng-class="{'vote-button-active': vote.down}"
+                                class="btn btn-outline btn-sm"
+                                style="width: 100%;">
+                            <i class="fa fa-thumbs-o-down" style="font-size: 14px;"></i> No
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-sm-5">
-            <img src="http://ecx.images-amazon.com/images/I/81Cyslf5IwL._SL1500_.jpg" alt="Product Picture"
-                style="display: block; width: 75px; margin: 0 auto;">
-            <label style="margin-bottom: 15px;">
-                <p style="margin: 0;">Top Tags</p>
+            <div class="col-sm-5">
+                <div style="margin-left: 15px; padding-left: 20px;">
+                    <h1 class="product-description">{{product.description}}</h1>
+                    <div class="product-metric">
+                        <h2>{{(product.average_price / 100) | currency}}</h2>
+                        <small>Average Price</small>
+                    </div>
+                    <div class="product-metric">
+                        <h2>{{product.lowest_price / 100 | currency}}</h2>
+                        <small>Lowest Price</small>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <img src="http://ecx.images-amazon.com/images/I/81Cyslf5IwL._SL1500_.jpg" alt="Product Picture"
+                    style="display: block; width: 75px; margin: 0 auto;">
+                <label style="margin-bottom: 15px;">
+                    <p style="margin: 0;">Top Tags</p>
+                    <div>
+                        <span ng-repeat="tag in product.tags track by $index" ng-if="$index < 6" class="tag label label-success">
+                            <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
+                        </span>
+                    </div>
+                </label>
                 <div>
-                    <span ng-repeat="tag in product.tags track by $index" ng-if="$index < 6" class="tag label label-success">
-                        <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
-                    </span>
+                    <input type="text"
+                           placeholder="Enter a new tag"
+                           style="width: 150px; height: 30px;">
+                    <button type="button" class="btn btn-primary btn-sm">Add Tag</button>
                 </div>
-            </label>
-            <div>
-                <input type="text"
-                       placeholder="Enter a new tag"
-                       style="width: 150px; height: 30px;">
-                <button type="button" class="btn btn-primary btn-sm">Add Tag</button>
             </div>
         </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-sm-6">
-            <h2 style="margin-bottom: 15px;">Latest Prices</h2>
-            <table id="latest-prices-table" class="table table-striped" style="border: 1px solid #eee;">
-                <tr>
-                    <th>Location</th>
-                    <th>Purchase Price</th>
-                    <th>Date Purchased</th>
-                </tr>
-                <tr ng-repeat="business in product.businesses">
-                    <td>{{business.name}}</td>
-                    <td>{{1.27 | currency}}</td>
-                    <td>6/21/16</td>
-                </tr>
-            </table>
-        </div>
-        <div class="col-sm-6">
-            <div ng-show="status.map === 'loading'" id="map-loader">
-                <img src="/frontend/assets/images/loader.gif">
-                <span>Loading Map...</span>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3>Latest Prices</h3>
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>Location</th>
+                            <th>Purchase Price</th>
+                            <th>Date Purchased</th>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="submission in product.price_submissions">
+                                <td>{{submission.name}}</td>
+                                <td>{{(submission.price / 100) | currency}}</td>
+                                <td>{{submission.submitted_timestamp | date}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div id="map" style="width: 100%; height: 500px;"></div>
+            <div class="col-sm-6">
+                <div ng-show="status.map === 'loading'" id="map-loader">
+                    <img src="/frontend/assets/images/loader.gif">
+                    <span>Loading Map...</span>
+                </div>
+                <div id="map" style="width: 100%; height: 400px;"></div>
+            </div>
         </div>
-    </div>
-    <hr>
-    <div class="row">
-        <div class="col-sm-12">
-            <h2>Average Price Over Time</h2>
-            <div id="prices-graph"></div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-12">
+                <h2>Average Price Over Time</h2>
+                <div id="prices-graph"></div>
+            </div>
         </div>
     </div>
 </div>

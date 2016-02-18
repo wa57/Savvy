@@ -18,7 +18,8 @@
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
     "vinyl-transform": "^1.0.0",
-    "watchify": "^3.7.0"
+    "watchify": "^3.7.0",
+    "yo": "^1.6.0"
   },
   "main": "index.js",
   "dependencies": {

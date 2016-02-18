@@ -1,23 +1,67 @@
 angular.module('savvy')
-.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService', '$http',
-function($scope, $stateParams, productService, geolocationService, $http) {
-    $scope.status = {
-        product: 'loading',
-        map: 'loading'
-    };
+.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService',
+function($scope, $stateParams, productService, geolocationService) {
+    (function() {
+        $scope.status = { product: 'loading', map: 'loading' };
+        $scope.vote = {};
+        $scope.product = {};
+    })();
 
-    $scope.vote = function(vote) {
-        productService.addVoteToProduct(vote); //yes or no
+    $scope.sendVote = function(vote) {
+        toggleVote(vote);
+        productService.saveVote(vote, $scope.product.product_id);
+    }
+
+    function toggleVote(vote) {
+        if(vote === 'up') {
+            $scope.vote.up = true; $scope.vote.down = false;
+        } else {
+            $scope.vote.up = false; $scope.vote.down = true;
+        }
     }
 
     function fetchProductDetails(product_id) {
         productService.getProductById(product_id).then(function(response){
             $scope.product = response;
+            console.log($scope.product);
+            console.log(Date.parse($scope.product.price_submissions[0].submitted_timestamp));
             $scope.status.product = 'ready';
         });
     }
 
-    function init_graph() {
+
+    function fetchUserLocation(geolocationService) {
+        geolocationService.getCurrentPosition().then(function(response){
+            initMap(response);
+        });
+    }
+
+    function initMap(position) {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: position.coords.latitude, lng: position.coords.longitude},
+            scrollwheel: false,
+            zoom: 12
+        });
+        generateBusinessMapMarkers(map);
+        $scope.status.map = "ready";
+    }
+
+    function generateBusinessMapMarkers(map) {
+        if(typeof $scope.product.businesses !== "undefined") {
+            $scope.product.businesses.forEach(function(value, index) {
+                if(index < 10) {
+                    var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
+                    new google.maps.Marker({
+                        map: map,
+                        position: lat_long,
+                        title: value.name
+                    });
+                }
+            });
+        }
+    }
+
+    function initChart() {
         google.charts.setOnLoadCallback(function(){
             var data = google.visualization.arrayToDataTable([
               ['Date', 'Average Price (USD)'],
@@ -36,36 +80,9 @@ function($scope, $stateParams, productService, geolocationService, $http) {
             chart.draw(data, options);
             $scope.status.chart = 'ready';
         });
-    };
-
-    function init_map(position) {
-        var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: position.coords.latitude, lng: position.coords.longitude},
-            scrollwheel: false,
-            zoom: 12
-        });
-        generateBusinessMapMarkers(map);
-        $scope.status.map = "ready";
     }
 
-    function generateBusinessMapMarkers(map) {
-        $scope.product.businesses.forEach(function(value, index) {
-            var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
-            new google.maps.Marker({
-                map: map,
-                position: lat_long,
-                title: value.name
-            });
-        });
-    }
-
-    function fetchUserLocation(geolocationService) {
-        geolocationService.getCurrentPosition().then(function(response){
-            init_map(response);
-        });
-    }
-
-    init_graph();
     fetchProductDetails($stateParams.product_id);
     fetchUserLocation(geolocationService);
+    initChart();
 }]);

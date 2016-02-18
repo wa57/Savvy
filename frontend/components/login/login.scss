@@ -1,0 +1,17 @@
+@import "./assets/css/global";
+
+.login {
+    input {
+        display: block;
+    }
+
+    label {
+        display: block;
+    }
+
+    form h2 {
+        color: $primary_color;
+        margin-bottom: 20px;
+        font-weight: bold;
+    }
+}
