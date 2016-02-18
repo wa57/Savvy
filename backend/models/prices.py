@@ -90,6 +90,7 @@ class PriceDB(DB):
 
     def get_submissions(self, product_id=None, business_id=None, limit=None, most_recent=False):
         """Returns a list of matching prices."""
+        from backend.models.businesses import BusinessDB
         query = {}
         if product_id:
             query["product_id"] = product_id
@@ -112,9 +113,11 @@ class PriceDB(DB):
             logger.warning("Unable to retrieve average price per day for '{}'".format(product_id))
             results = []
         submissions = []
+        business_db = BusinessDB()
         for submission in results:
             submission["price_id"] = str(submission.pop("_id"))
             submission["submitted_timestamp"] = str(submission["submitted_timestamp"].as_datetime())
+            submission["business_details"] = business_db.get_business(business_id=submission["business_id"])
             submissions.append(submission)
         return submissions
 
