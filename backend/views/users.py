@@ -101,7 +101,7 @@ def api_login():
 
     session["current_user"] = user.user_id
 
-    response = json_success("Login successful. username={}".format(current_user().username),
+    response = json_success("Login successful. username={}".format(current_user.username),
                             token=token)
     response.set_cookie("user_token", token, expires=expires)
     response.set_cookie("username", user.username, expires=expires)
