@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint
 from flask import request, session
 
-from backend.auth import current_user
+from backend.auth import current_user, login_required
 from backend.models.users import UserDB
 from backend.utils import json_error, json_success
 
@@ -101,18 +101,9 @@ def api_login():
 
     session["current_user"] = user.user_id
 
-    user = current_user
+    user_data = current_user.sanatized_dict()
 
-    user_data = {
-        "username": user.username,
-        "email": user.email,
-        "first_name": user.first_name,
-        "user_token": token,
-        "roles": user.roles
-    }
-
-    response = json_success("Login successful.",
-                            user=user_data)
+    response = json_success("Login successful.", user=user_data)
     response.set_cookie("user_token", token, expires=expires)
     response.set_cookie("username", user.username, expires=expires)
     return response
@@ -131,3 +122,11 @@ def api_delete_user():
 @user_blueprint.route("/reset_password", methods=["POST"])
 def api_reset_password():
     pass
+
+
+@user_blueprint.route("/current", methods=["POST"])
+@login_required
+def api_current_user():
+    user_data = current_user.sanatized_dict()
+    response = json_success("Authenticated.", user=user_data)
+    return response

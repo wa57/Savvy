@@ -55,6 +55,22 @@ class User(object):
     def create_auth_token(self):
         return user_db.create_auth_token(self)
 
+    def sanatized_dict(self):
+        if self.auth_token:
+            token, expires = self.auth_token
+            expires = expires.isoformat()
+        else:
+            token, expires = None, None
+        user_data = {
+            "username": self.username,
+            "email": self.email,
+            "first_name": self.first_name,
+            "user_token": token,
+            "user_token_expires": expires,
+            "roles": self.roles
+        }
+        return user_data
+
 
 class AnonymousUser(object):
 
