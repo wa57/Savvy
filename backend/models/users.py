@@ -205,6 +205,15 @@ class UserDB(DB):
                                  })
         return token, expires.as_datetime()
 
+    def clear_auth_token(self, user):
+        self.db.users.update_one({"username": user.username},
+                                 {
+                                     "$set": {
+                                         "auth_token": (None, None)
+                                     }
+                                 })
+        return None
+
     def delete_user(self, user):
         """Deletes the specified user."""
         pass
