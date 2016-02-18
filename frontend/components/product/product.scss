@@ -1,33 +1,35 @@
 @import "./assets/css/global.scss";
 
-.product-description {
-    margin-bottom: 15px;
-}
-
-.product-metric {
-    margin-bottom: 15px;
-}
-
-table {
-    td {
-        font-size: 12px;
+.product-page {
+    .product-description {
+        margin-bottom: 15px;
     }
-    th {
-        font-size: 14px;
+
+    .product-metric {
+        margin-bottom: 15px;
     }
-}
 
-.map-loader {
-    width: 50%;
-    margin: 30px auto;
-}
-
-.vote {
-    .vote-button-active {
-        &:focus, &:active:focus {
-            outline: none;
+    table {
+        td {
+            font-size: 12px;
         }
-        background-color: $accent_color;
-        color: #fff;
+        th {
+            font-size: 14px;
+        }
+    }
+
+    .map-loader {
+        width: 50%;
+        margin: 30px auto;
+    }
+
+    .vote {
+        .vote-button-active {
+            &:focus, &:active:focus {
+                outline: none;
+            }
+            background-color: $accent_color;
+            color: #fff;
+        }
     }
 }

@@ -23,6 +23,8 @@ function($scope, $stateParams, productService, geolocationService) {
     function fetchProductDetails(product_id) {
         productService.getProductById(product_id).then(function(response){
             $scope.product = response;
+            console.log($scope.product);
+            console.log(Date.parse($scope.product.price_submissions[0].submitted_timestamp));
             $scope.status.product = 'ready';
         });
     }

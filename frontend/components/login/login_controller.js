@@ -1,15 +1,19 @@
 angular.module('savvy')
     .controller('login_controller', login_controller)
-    .$inject = ['$scope', '$state'];
+    .$inject = ['$scope', '$state', 'authService', 'Session'];
 
-function login_controller($scope, $state) {
-    $scope.data = {};
+function login_controller($scope, $state, authService, Session) {
+    $scope.login = function(credentials) {
+        if(credentials.email) {
+            var login = authService.login(credentials);
+        }
 
-    $scope.login = function() {
-        LoginService.loginUser($scope.data.username, $scope.data.password).success(function(data) {
-            $state.go('tab.dash');
-        }).error(function(data) {
-            console.log('hi');
-        });
-    }
+        var userData = {
+            userId: "12y3u1hdshjadkas",
+            name: "will",
+            email: "test@test.com"
+        };
+        
+        Session.setUserData(userData);
+    };
 }
