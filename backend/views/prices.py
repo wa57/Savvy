@@ -4,6 +4,7 @@ from flask import Blueprint
 from flask import request
 from flask import Response
 
+from backend.auth import login_required
 from backend.models.prices import PriceDB
 from backend.utils import json_error, json_success, crossdomain
 
@@ -34,6 +35,7 @@ def api_get_prices():
 
 @price_blueprint.route("/add", methods=["POST", "OPTIONS"])
 @crossdomain(origin="*", headers=["accept", "content-type"])
+@login_required
 def api_add_price():
     """Adds a price to the database.
 

@@ -20,7 +20,6 @@ product_blueprint = Blueprint("products", __name__, url_prefix="/api/v1/products
 
 @product_blueprint.route("/<product_id>", methods=["GET"])
 @crossdomain(origin="*")
-@login_required
 def api_get_product(product_id):
     """Returns details about a single product.
 
@@ -50,6 +49,7 @@ def api_get_product(product_id):
 
 @product_blueprint.route("/<product_id>/thumbs-up", methods=["POST", "PUT"])
 @crossdomain(origin="*")
+@login_required
 def api_product_thumbs_up(product_id):
     """Returns details about a single product.
 
@@ -63,6 +63,7 @@ def api_product_thumbs_up(product_id):
 
 @product_blueprint.route("/<product_id>/thumbs-down", methods=["POST", "PUT"])
 @crossdomain(origin="*")
+@login_required
 def api_product_thumbs_down(product_id):
     """Returns details about a single product.
 
@@ -76,7 +77,6 @@ def api_product_thumbs_down(product_id):
 
 @product_blueprint.route("/search", methods=["GET"])
 @crossdomain(origin="*")
-@login_required
 def api_search():
     """Returns details about products.
 
