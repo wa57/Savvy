@@ -7,21 +7,15 @@
 
     label {
         display: block;
-        margin-bottom: 1.5em;
 
         p {
             margin: 0;
             margin-bottom: 5px;
-            font-size: 16px;
         }
-        input {
-            width: 50%;
+    }
 
-            &:focus {
-                outline: none;
-                border-color: #7dc7ed;
-            }
-        }
+    .form-section {
+        margin-bottom: 15px;
     }
 
     .add-tag {
@@ -32,9 +26,13 @@
     }
 
     #price-paid {
-        width: 30%;
+        width: 20%;
         border-top-left-radius: 0;
         border-bottom-left-radius: 0;
+    }
+
+    #product-place {
+        width: 50%;
     }
 
     .input-addon {
@@ -53,7 +51,7 @@
 
     .product-description {
         position: relative;
-        width: 50%;
+        width: 100%;
     }
 
     .product-list {

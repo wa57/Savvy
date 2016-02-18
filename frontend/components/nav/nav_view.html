@@ -60,6 +60,7 @@
                         <a ui-sref="about">About</a>
                     </li>
                 </ul>
+                <ul ng-if=""
                 <ul id="nav-right">
                     <li>
                         <a ui-sref="login">Login</a>
@@ -78,15 +79,23 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <ol class="breadcrumb">
-                        <li><a ui-sref="/">Home</a></li>
-                        <li ng-if="state.current.name === 'submit'" class="active">
-                            Submit
-                        </li>
-                        <li ng-if="state.current.name === 'search'" class="active">
-                            Search
+                    <ol ng-if="state.current.name !== 'product'" class="breadcrumb">
+                        <li><a ui-sref="home">Home</a></li>
+                        <li ng-if="state.current.name !== 'home'" class="active">
+                            {{state.current.title}}
                         </li>
                     </ol>
+                    <ol ng-if="state.current.name === 'product'" class="breadcrumb">
+                        <li><a ui-sref="home">Home</a></li>
+                        <li><a ui-sref="search">Search</a></li>
+                        <li class="active">{{product.description}}</li>
+                    </ol>
+                    <!--<ol ng-switch on="state.current.name" class="breadcrumb">
+                        <li><a ui-sref="home">Home</a></li>
+                        <li ng-switch-when="state.current.name === 'product'"><a ui-sref="search">Search</a></li>
+                        <li ng-switch-when="state.current.name === 'product'" class="active">{{product.description}}</li>
+                        <li ng-switch-default ng-hide="state.current.name === 'home'"class="active">{{state.current.title}}</li>
+                    </ol>-->
                 </div>
             </div>
         </div>

@@ -7,11 +7,13 @@
         <li role="presentation"><a href="#">Upload a Receipt</a></li>
     </ul>
     <form ng-submit="submitPrice()" ng-hide="message === 'success'" name="submitForm">
-    	<div class="instructions alert alert-info" style="width: 75%;">
+    	<div class="instructions alert alert-success" style="width: 75%;">
             <i class="fa fa-info-circle"></i>
             Complete the required (*) fields below then click Submit to add your product or service.
         </div>
-        <div class="product-description">
+
+        <!--Product Description-->
+        <div class="product-description form-section">
             <label for="product-description" style="margin-bottom: 0px;">
                 <p>
                     Product Name <span class="required-asterisk">&ast;</span>
@@ -25,7 +27,7 @@
                     ng-required="true"
                     id="product-description"
                     placeholder="The name of the product, e.g. 12oz. Coke Can"
-                    style="width: 100%;">
+                    style="width: 50%;">
             <div class="product-list" ng-show="products.length > 0">
                 <div ng-repeat="product in products" ng-mousedown="selectProduct(product)" class="product-result">
                     {{product.description}}
@@ -33,38 +35,49 @@
             </div>
         </div>
 
-        <label>
-            <p>
-                Place of Purchase
-                <span class="required-asterisk">&ast;</span>
-            </p>
+        <!--Price Paid-->
+        <div class="product-price form-section">
+            <label for="price-paid">
+            	<p>
+                    Price Paid <span class="required-asterisk">&ast;</span>
+                </p>
+            </label>
+                <span class="input-addon">$</span>
+                <input type="number"
+                        ng-model="price"
+                        id="price-paid"
+                        step="any"
+                        min="0"
+                        ng-required="true"
+                        placeholder="The price you paid">
+        </div>
+
+        <!--Place of Purchase-->
+        <div class="product-place form-section">
+            <label for="product-place">
+                <p>
+                    Place of Purchase <span class="required-asterisk">&ast;</span>
+                </p>
+            </label>
             <input type="text"
                     ng-required="true"
                     id="product-place"
                     placeholder="Where you bought the product">
-        </label>
-        <label>
-        	<p>
-                Price Paid <span class="required-asterisk">&ast;</span>
-            </p>
-            <span class="input-addon">$</span>
-            <input type="number"
-                    ng-model="price"
-                    id="price-paid"
-                    step="any"
-                    min="0"
-                    ng-required="true"
-                    placeholder="The price you paid">
-        </label>
+        </div>
         <!--<div class="divider">
             <span>OPTIONAL</span>
         </div>-->
-        <div class="alert alert-info" style="width: 75%;">
+        <hr>
+
+        <!--Optional Section-->
+        <div class="alert alert-success" style="width: 75%;">
             <i class="fa fa-info-circle"></i>
             You can add tags here. Click add after entering each tag. You may
             submit more than one.
         </div>
-        <section class="add-tag">
+
+        <!--Add Tags-->
+        <section class="add-tag form-section">
             <label>
                 <p>Add A Tag</p>
                 <input type="text"
@@ -82,13 +95,18 @@
             <span ng-show="messages.tag_message === 'error-already-entered'" class="error-message">You already entered that tag!</span>
             <span ng-repeat="tag in product.tags" class="tag">{{tag}}</span>
         </section>
-        <label>
-            <span>Upload a picture of the product</span>
-            <input type="file" ng-model="product.product_image" fileread="product_image">
-        </label>
+
+        <!--Picture Upload-->
+        <div class="form-section">
+            <label>
+                <span>Upload a picture of the product</span>
+                <input type="file" ng-model="product.product_image" fileread="product_image">
+            </label>
+        </div>
+
+        <!--Submit Section-->
         <section>
             <button type="submit" ng-disabled="" class="btn btn-success btn-md">Submit</button>
-			<!-- Add a Go Back button! -->
             <span ng-show="message === 'processing'"><img src="/frontend/assets/images/loader.gif"></span>
             <span ng-show="message === 'success'" class="text-success">Price Saved!</span>
             <span ng-show="message === 'error'" class="alert alert-danger">
@@ -97,6 +115,7 @@
         </section>
     </form>
 
+    <!--Show Receipt-->
     <div ng-show="message === 'success'">
         <div class="alert alert-success">
             <i class="fa fa-check-circle primary-color"></i>

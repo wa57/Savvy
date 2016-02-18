@@ -51,7 +51,7 @@
                     <h5 style="margin-bottom: 10px;">Tags</h5>
                     <div>
                         <span ng-repeat="tag in product.tags track by $index" ng-if="$index < 8" class="tag label label-success">
-                            <a ui-sref="search({search_term: '{{escape(tag)}}' })">{{tag}}</a>
+                            <a ui-sref="search({search_term: '{{tag}}' })">{{tag}}</a>
                         </span>
                     </div>
                 </div>
