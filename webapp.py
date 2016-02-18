@@ -72,7 +72,7 @@ def load_user_from_request():
     return None
 
 
-#@app.errorhandler(500)
+@app.errorhandler(500)
 def json_error(msg, **data):
     import json
     import pprint
