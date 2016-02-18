@@ -109,6 +109,15 @@ def api_login():
     return response
 
 
+@user_blueprint.route("/logout", methods=["GET", "POST"])
+@login_required
+def api_logout():
+    current_user.clear_auth_token()
+    session["current_user"] = None
+    response = json_success("Logout successful.")
+    return response
+
+
 @user_blueprint.route("/change_password", methods=["POST"])
 def api_change_password():
     pass
@@ -124,7 +133,7 @@ def api_reset_password():
     pass
 
 
-@user_blueprint.route("/current", methods=["POST"])
+@user_blueprint.route("/current", methods=["GET"])
 @login_required
 def api_current_user():
     user_data = current_user.sanatized_dict()
