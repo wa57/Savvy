@@ -4,8 +4,8 @@ import logging
 from flask import Blueprint
 from flask import request
 from flask import Response
-from flask.ext.login import login_required
 
+from backend.auth import login_required
 from backend.models.products import ProductDB
 from backend.models.prices import PriceDB
 from backend.models.businesses import BusinessDB
@@ -20,6 +20,7 @@ product_blueprint = Blueprint("products", __name__, url_prefix="/api/v1/products
 
 @product_blueprint.route("/<product_id>", methods=["GET"])
 @crossdomain(origin="*")
+@login_required
 def api_get_product(product_id):
     """Returns details about a single product.
 
@@ -75,7 +76,7 @@ def api_product_thumbs_down(product_id):
 
 @product_blueprint.route("/search", methods=["GET"])
 @crossdomain(origin="*")
-#@login_required
+@login_required
 def api_search():
     """Returns details about products.
 
