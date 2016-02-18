@@ -38,12 +38,13 @@ def api_get_product(product_id):
     """
     product_db = ProductDB()
     price_db = PriceDB()
+    limit = request.args.get("price_limit", 15)
     result = product_db.get(product_id)
     # Get prices
     stats = price_db.price_stats(product_id)
     result.update(stats)
     result["average_price_per_day"] = price_db.average_price_per_day(product_id)
-    result["price_submissions"] = price_db.get_sanitized_submissions(product_id=product_id, limit=15, most_recent=True)
+    result["price_submissions"] = price_db.get_sanitized_submissions(product_id=product_id, limit=limit, most_recent=True)
     return Response(json.dumps(result), mimetype="application/json")
 
 
