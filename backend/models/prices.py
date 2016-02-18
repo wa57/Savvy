@@ -117,7 +117,7 @@ class PriceDB(DB):
         for submission in results:
             submission["price_id"] = str(submission.pop("_id"))
             submission["submitted_timestamp"] = str(submission["submitted_timestamp"].as_datetime())
-            submission["business_details"] = business_db.get_business(business_id=submission["business_id"])
+            submission["business_details"] = business_db.get_business(business_id=submission.pop("business_id"))
             submissions.append(submission)
         return submissions
 
