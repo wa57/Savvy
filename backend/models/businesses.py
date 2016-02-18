@@ -26,9 +26,13 @@ class BusinessDB(DB):
         return results
 
     def get_business(self, business_id):
-        result = self.db.businesses.find_one({"_id": business_id})
-        result["business_id"] = str(result.pop("_id"))
-        return result
+        from bson.objectid import ObjectId
+        try:
+            business = dict(self.db.businesses.find({"_id": ObjectId(business_id)}).next())
+        except StopIteration:
+            raise Exception("Product with ID '{}' not found.".format(business_id))
+        business["business_id"] = str(business.pop("_id"))
+        return business
 
     def add_business(self, name, address=None, phone_number=None, open_time=None, close_time=None,
                      google_places=None):
