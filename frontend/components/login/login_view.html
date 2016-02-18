@@ -4,21 +4,31 @@
     <div style="border-bottom: 1px solid #ebebeb; height: 1px; margin-top: 20px; margin-left: -15px; margin-right: -15px;">
 
     </div>
-    <form style="width: 50%; margin: 0 auto; margin-top: 20px;">
-        <h3 style="color: #00A079; margin-bottom: 20px; font-weight: bold;">Login</h3>
-		<p>
-			Enter your email address and password you used to sign up for Savvy.
-		</p>
-        <label>
-            <p>Email Address</p>
-            <input type="text" ng-model="data.email" style="width: 100%; margin-bottom: 20px;">
-        </label>
-        <label>
-            <p>Password</p>
-            <input type="text" ng-model="data.password" style="width: 100%; margin-bottom: 20px;">
-        </label>
+    <form ng-submit="login(credentials)" name="loginForm" style="width: 50%; margin: 0 auto; margin-top: 20px;">
+        <h2>Login</h2>
+        <div ng-show="status.submit" ng-switch on="status.submit" class="alert alert-danger">
+            <span ng-switch-when="status.submit === 'auth-failed'">Login Failed</span>
+            <span>Invalid Credentials</span>
+        </div>
+		<div class="alert alert-success">
+            <i class="fa fa-info-circle"></i>
+			Enter the email address and password you used to sign up for Savvy.
+		</div>
+        <div>
+            <label for="email">
+                <span>Email Address</span>
+            </label>
+            <input type="email" ng-model="credentials.email" id="email" style="width: 100%; margin-bottom: 20px;">
+        </div>
+        <div>
+            <label for="password">
+                <span>Password</span>
+            </label>
+            <input type="password" ng-model="credentials.password" id="password" style="width: 100%; margin-bottom: 20px;">
+        </div>
+
+        {{credentials}}
         <button
-            ng-click="loginUser();"
             class="btn btn-success btn-lg btn-block"
             style="margin-bottom: 20px;">
         <i class="fa fa-lock"></i>

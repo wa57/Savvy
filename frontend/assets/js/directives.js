@@ -58,3 +58,43 @@ angular.module('savvy').directive('ngEnter', function () {
         });
     };
 });
+
+angular.module('savvy').directive('googleChart', ['googleService', function(googleService) {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            scope.options = {
+                curveType: attrs.curveType,
+                legend: { position: attrs.legend }
+            }
+            scope.data = attrs.chartData;
+            console.log(googleService.getVis());
+            googleService.getVis().then().arrayToDataTable();
+            var data = googleService.get().visualization.arrayToDataTable(attrs.chartData);
+            var chart = new google.visualization.LineChart(element);
+            chart.draw(data, options);
+            $scope.status.chart = 'ready';
+        }
+    }
+    google.charts.setOnLoadCallback(function(){
+
+        var options = {
+          curveType: 'function',
+          legend: { position: 'bottom' }
+        };
+
+        var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
+        chart.draw(data, options);
+        $scope.status.chart = 'ready';
+    });
+}]);
+
+/*angular.module('savvy').directive('googleChart', function() {
+    return {
+        restrict: 'E',
+        scope: {
+            text: '='
+        },
+        template: '<div>'
+    }
+});*/
