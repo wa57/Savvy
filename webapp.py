@@ -1,11 +1,10 @@
 import logging
-import traceback
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask import request
-from flask import Response
-from flask.ext.login import LoginManager
+from flask import Response, session
+
 
 from backend.views.users import user_blueprint
 from backend.views.products import product_blueprint
@@ -43,20 +42,37 @@ logger.info("Logging Configured at Level {}".format(logger.getEffectiveLevel()))
 wsgi_app = app.wsgi_app
 
 
-# Configure authentication handler
-login_manager = LoginManager()
-login_manager.init_app(app)
+@app.before_request
+def load_user_from_request():
+    from datetime import datetime
+    from backend.models.users import UserDB, AnonymousUser
+
+    logger.debug("Attempting to authenticate client.")
+
+    session["current_user"] = None
+
+    client_token = request.cookies.get("user_token", None)
+    username = request.cookies.get("username", None)
+    if not client_token or not username:
+        logger.debug("No cookies found.")
+        return None
+    logger.debug("Got client token: {}/{}".format(client_token, username))
+
+    user_db = UserDB()
+    user = user_db.get_user(username=username)
+
+    if user.auth_token:
+        token, expires = user.auth_token
+        if client_token == token and expires > datetime.utcnow():
+            logger.debug("Accepted user token: {}/{}".format(client_token, username))
+            session["current_user"] = user.user_id
+            return None
+
+    logger.debug("Failed token: {}/{}".format(client_token, username))
+    return None
 
 
-@login_manager.user_loader
-def load_user(user_id):
-    from backend.models.users import UserDB
-    db = UserDB()
-    user = db.get_user(user_id=user_id)
-    return user
-
-
-@app.errorhandler(500)
+#@app.errorhandler(500)
 def json_error(msg, **data):
     import json
     import pprint

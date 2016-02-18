@@ -1,7 +1,5 @@
 import logging
 
-from flask.ext.login import UserMixin, current_user
-
 from backend.database import DB
 from backend.utils import hash_password
 
@@ -9,11 +7,12 @@ from backend.utils import hash_password
 logger = logging.getLogger("savvy.models.users")
 
 
-class User(UserMixin):
+class User(object):
     """Class for users."""
 
     def __init__(self, username=None, email=None, hashed_password=None,
-                 password_salt=None, active=False, first_name=None, roles=None, user_id=None):
+                 password_salt=None, active=False, first_name=None, roles=None, user_id=None, created_timestamp=None,
+                 auth_token=None):
         self.username = username
         self.id = self.user_id = user_id
         self.email = email
@@ -22,6 +21,8 @@ class User(UserMixin):
         self.active = active
         self.first_name = first_name
         self.roles = roles or []
+        self.created_timestamp = created_timestamp
+        self.auth_token = auth_token
 
     def has_role(self, role_name):
         """Returns True is a User has a specific role."""
@@ -39,6 +40,7 @@ class User(UserMixin):
 
     @property
     def is_authenticated(self):
+        from backend.auth import current_user
         if current_user and current_user.user_id == self.user_id:
             return True
         return False
@@ -46,6 +48,28 @@ class User(UserMixin):
     @property
     def is_anonymous(self):
         return False
+
+    def get_auth_token(self):
+        return user_db.get_auth_token(self)
+
+    def create_auth_token(self):
+        return user_db.create_auth_token(self)
+
+
+class AnonymousUser(object):
+
+    @property
+    def is_active(self):
+        """Returns True if the user is active."""
+        return False
+
+    @property
+    def is_authenticated(self):
+        return False
+
+    @property
+    def is_anonymous(self):
+        return True
 
 
 class UserDB(DB):
@@ -122,8 +146,9 @@ class UserDB(DB):
 
     def get_user(self, username=None, email=None, user_id=None):
         """Returns a user object for a matching user."""
+        from bson.objectid import ObjectId
         if user_id:
-            result = self.db.users.find_one({"_id": user_id})
+            result = self.db.users.find_one({"_id": ObjectId(user_id)})
         elif username:
             result = self.db.users.find_one({"username": username})
         elif username:
@@ -133,7 +158,36 @@ class UserDB(DB):
         if not result:
             return None
         result["user_id"] = str(result.pop("_id"))
+        if result["auth_token"]:
+            token, expires = result["auth_token"]
+            result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
         return User(**result)
+
+    def get_auth_token(self, user):
+        from datetime import datetime
+        result = self.db.users.find_one({"username": user.username})
+        token, expires = result.get("auth_token", (None, None))
+        if not token or not (expires and expires > datetime.now()):
+            token, expires = self.create_auth_token(user)
+        else:
+            expires.as_datetime()
+        return token, expires
+
+    def create_auth_token(self, user):
+        import os
+        from bson.timestamp import Timestamp
+        from datetime import datetime
+        from hashlib import md5
+        from backend.config import SAVVY_LOGIN_EXPIRATION
+        expires = Timestamp(datetime.now() + SAVVY_LOGIN_EXPIRATION, 1)
+        token = md5(os.urandom(512)).hexdigest()
+        self.db.users.update_one({"username": user.username},
+                                 {
+                                     "$set": {
+                                         "auth_token": (token, expires)
+                                     }
+                                 })
+        return token, expires.as_datetime()
 
     def delete_user(self, user):
         """Deletes the specified user."""
@@ -157,3 +211,5 @@ class UserDB(DB):
         logger.debug(hashed_password)
         logger.debug(user.hashed_password)
         return False
+
+user_db = UserDB()

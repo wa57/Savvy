@@ -1,9 +1,15 @@
-from flask import Blueprint
-from flask import request
-from flask.ext.login import login_user, current_user
+import logging
 
+from flask import Blueprint
+from flask import request, session
+
+from backend.auth import current_user
 from backend.models.users import UserDB
 from backend.utils import json_error, json_success
+
+
+logger = logging.getLogger("savvy.views.users")
+
 
 user_blueprint = Blueprint("users", __name__, url_prefix="/api/v1/users")
 
@@ -89,10 +95,17 @@ def api_login():
     if not user:
         return json_error("Invalid username or password.")
 
-    login_user(user)
+    logger.debug("Authenticated User: {}".format(user))
 
-    return json_success("Login successful {}".format(current_user),
-                        {"token": get})
+    token, expires = user.create_auth_token()
+
+    session["current_user"] = user.user_id
+
+    response = json_success("Login successful. username={}".format(current_user().username),
+                            token=token)
+    response.set_cookie("user_token", token, expires=expires)
+    response.set_cookie("username", user.username, expires=expires)
+    return response
 
 
 @user_blueprint.route("/change_password", methods=["POST"])
