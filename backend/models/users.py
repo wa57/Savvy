@@ -158,7 +158,7 @@ class UserDB(DB):
         if not result:
             return None
         result["user_id"] = str(result.pop("_id"))
-        if result["auth_token"]:
+        if result.get("auth_token", None):
             token, expires = result["auth_token"]
             result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
         return User(**result)
