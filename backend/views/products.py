@@ -38,7 +38,7 @@ def api_get_product(product_id):
     """
     product_db = ProductDB()
     price_db = PriceDB()
-    limit = request.args.get("price_limit", 15)
+    limit = int(request.args.get("price_limit", 15))
     result = product_db.get(product_id)
     # Get prices
     stats = price_db.price_stats(product_id)
