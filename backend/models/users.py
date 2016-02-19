@@ -52,6 +52,9 @@ class User(object):
     def get_auth_token(self):
         return user_db.get_auth_token(self)
 
+    def clear_auth_token(self):
+        return user_db.clear_auth_token(self)
+
     def create_auth_token(self):
         return user_db.create_auth_token(self)
 
@@ -176,7 +179,8 @@ class UserDB(DB):
         result["user_id"] = str(result.pop("_id"))
         if result.get("auth_token", None):
             token, expires = result["auth_token"]
-            result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
+            if token and expires:
+                result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
         return User(**result)
 
     def get_auth_token(self, user):
@@ -209,7 +213,7 @@ class UserDB(DB):
         self.db.users.update_one({"username": user.username},
                                  {
                                      "$set": {
-                                         "auth_token": (None, None)
+                                         "auth_token": None
                                      }
                                  })
         return None

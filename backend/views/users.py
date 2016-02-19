@@ -112,7 +112,8 @@ def api_login():
 @user_blueprint.route("/logout", methods=["GET", "POST"])
 @login_required
 def api_logout():
-    current_user.clear_auth_token()
+    from backend.models.users import UserDB
+    UserDB().clear_auth_token(user=current_user)
     session["current_user"] = None
     response = json_success("Logout successful.")
     return response
