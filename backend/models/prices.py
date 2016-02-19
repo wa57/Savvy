@@ -74,11 +74,13 @@ class PriceDB(DB):
             }
         ])
         try:
-            average_price_per_day = result.next()
+            average_price_per_day = list(result)
             logger.debug("Retrieved average price per day for '{}'".format(product_id))
+            logger.debug(average_price_per_day)
         except StopIteration:
             logger.warning("Unable to retrieve average price per day for '{}'".format(product_id))
             average_price_per_day = []
+        average_price_per_day = [[price["x"], int(price["y"])] for price in average_price_per_day]
         return average_price_per_day
 
     def get_sanitized_submissions(self, *args, **kwargs):
