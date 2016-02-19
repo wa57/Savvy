@@ -1,1 +1,11 @@
 @import "./assets/css/global.scss";
+
+.signup {
+    input {
+        display: block;
+    }
+
+    label {
+        display: block;
+    }
+}

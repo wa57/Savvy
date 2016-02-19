@@ -80,7 +80,12 @@
                         </tr>
                         <tbody>
                             <tr ng-repeat="submission in product.price_submissions">
-                                <td>{{submission.name}}</td>
+                                <td>
+                                    <strong>{{submission.business_details.google_places.name}}</strong>
+                                    <div>
+                                        <small>{{submission.business_details.google_places.vicinity}}</small>
+                                    </div>
+                                </td>
                                 <td>{{(submission.price / 100) | currency}}</td>
                                 <td>{{submission.submitted_timestamp | date}}</td>
                             </tr>

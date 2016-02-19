@@ -1,8 +1,7 @@
 angular.module('savvy')
     .controller('home_controller', home_controller)
-    .$inject = ['$scope', '$state', 'Session'];
+    .$inject = ['$scope', '$state'];
 
-function home_controller($scope, $state, Session) {
-    var userData = Session.getUserData();
-    console.log(userData);
+function home_controller($scope, $state) {
+    console.log($scope.$parent.userData);
 }
