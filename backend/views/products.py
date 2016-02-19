@@ -76,6 +76,24 @@ def api_product_thumbs_down(product_id):
     return json_success("Thumbed it down.")
 
 
+@product_blueprint.route("/<product_id>/tag", methods=["POST", "PUT"])
+@crossdomain(origin="*")
+@login_required
+def api_product_tag(product_id):
+    """Returns details about a single product.
+
+    Input Parameters:
+        product_id       (string): The product ID to get.
+    """
+    product_db = ProductDB()
+    data = request.get_json()
+    tag = data.get("tag", None)
+    result = product_db.add_tag(product_id, tag)
+    if not result:
+        return json_error("Unable to add tag.")
+    return json_success("Tag added successfully.")
+
+
 @product_blueprint.route("/search", methods=["GET"])
 @crossdomain(origin="*")
 def api_search():

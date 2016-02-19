@@ -62,3 +62,12 @@ class ProductDB(DB):
             result = self.db.products.find_one({"description": description})
             product_id = str(result["_id"])
         return product_id
+
+    def add_tag(self, product_id, tag):
+        """Adds a product to the database."""
+        from bson.objectid import ObjectId
+        result = self.db.products.update_one({"_id": ObjectId(product_id)},
+                                             {"$addToSet": {"tags": tag}})
+        if result.matched_count > 0:
+            return True
+        return False
