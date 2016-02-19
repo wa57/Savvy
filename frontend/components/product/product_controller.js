@@ -42,34 +42,35 @@ function($scope, $stateParams, productService, geolocationService) {
             scrollwheel: false,
             zoom: 12
         });
-        generateBusinessMapMarkers(map);
+        generateBusinessMapMarkers(map, $scope.product.price_submissions);
         $scope.status.map = "ready";
     }
 
-    function generateBusinessMapMarkers(map) {
-        if(typeof $scope.product.businesses !== "undefined") {
-            $scope.product.businesses.forEach(function(value, index) {
-                if(index < 10) {
-                    var lat_long = {lat: value.google_places.geometry.location.lat, lng: value.google_places.geometry.location.lng};
-                    new google.maps.Marker({
-                        map: map,
-                        position: lat_long,
-                        title: value.name
-                    });
-                }
+    function generateBusinessMapMarkers(map, price_submissions) {
+        price_submissions.forEach(function(value, index) {
+            new google.maps.Marker({
+                map: map,
+                position: {
+                    lat: value.business_details.google_places.geometry.location.lat,
+                    lng: value.business_details.google_places.geometry.location.lng
+                },
+                title: value.name
             });
-        }
+        });
     }
 
     function initChart() {
         google.charts.setOnLoadCallback(function(){
-            var data = google.visualization.arrayToDataTable([
-              ['Date', 'Average Price (USD)'],
-              ['6/21/16',  1.65],
-              ['6/19/16',  1.46],
-              ['6/18/16',  1.30],
-              ['6/15/16',  1.56]
-            ]);
+            var data = [
+                ['Date', 'Average Price (USD)']
+            ];
+
+            $scope.product.average_price_per_day.forEach(function(value, index) {
+                value[1] = (value[1] / 100);
+                data.push(value);
+            });
+
+            var data = google.visualization.arrayToDataTable(data);
 
             var options = {
               curveType: 'function',

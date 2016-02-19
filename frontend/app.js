@@ -17,9 +17,14 @@ angular.module('savvy', [require('angular-ui-router')])
     });
 
 angular.module('savvy').run(['$rootScope', function($rootScope){
-    /*$rootScope.$on('$stateChangeStart', ['event', 'toState', 'toParams', 'fromState', function(event, toState, toParams, fromState){
+    /*$rootScope.$on('$stateChangeStart', ['event', 'toState', 'toParams', 'fromState', function(event, toState, toParams, fromState) {
         $rootScope.title = "Savvy | " + toState.title;
+        if (toState.authenticate && !AuthService.isAuthenticated()){
+            $state.transitionTo("login");
+            event.preventDefault();
+        }
     }]);*/
+
     google.charts.load('current', {'packages':['corechart']});
 }]);
 

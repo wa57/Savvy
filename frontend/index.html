@@ -7,7 +7,7 @@
     <link href="frontend/build/bundle.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 </head>
-<body>
+<body ng-controller="appController">
     <div ng-include src='"frontend/components/nav/nav_view.html"'></div>
     <section ng-init="initialize()" ui-view id="content" class="container" ng-cloak></section>
 

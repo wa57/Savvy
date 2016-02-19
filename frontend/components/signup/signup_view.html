@@ -18,30 +18,30 @@
         </div>
         <label>
             <p>First Name</p>
-            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+            <input type="text" ng-model="userData.first_name" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
             <p>Username</p>
-            <input type="text" ng-model="data.password" style="display: block; width: 100%; margin-bottom: 20px;">
+            <input type="text" ng-model="userData.username" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
             <p>Email Address</p>
-            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+            <input type="text" ng-model="userData.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
             <p>Confirm Email Address</p>
-            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+            <input type="text" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
             <p>Password</p>
-            <input type="text" ng-model="data.email" style="display: block; width: 100%; margin-bottom: 20px;">
+            <input type="text" ng-model="userData.password" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
             <p>Confirm Password</p>
-            <input type="text" ng-model="data.email" style="width: 100%; margin-bottom: 20px;">
+            <input type="text" style="width: 100%; margin-bottom: 20px;">
         </label>
         <button
-            ng-click="loginUser();"
+            ng-click="createUser(userData);"
             class="btn btn-success btn-lg btn-block"
             style="margin-bottom: 20px;">
         <i class="fa fa-lock"></i>

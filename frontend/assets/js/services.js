@@ -2,7 +2,7 @@ angular.module('savvy').service('productService', ['$http', function($http){
     'use strict';
 
     this.getProductById = function(product_id) {
-        return $http.get("/api/v1/products/" + product_id).then(function(response) {
+        return $http.get("/api/v1/products/" + product_id + "?price_limit=10").then(function(response) {
             return response.data;
         });
     };
@@ -35,8 +35,9 @@ angular.module('savvy').service('productService', ['$http', function($http){
     };
 }]);
 
+
 //https://medium.com/opinionated-angularjs/techniques-for-authentication-in-angularjs-applications-7bbf0346acec#.m8k0vbjmp
-angular.module('savvy').service('authService', ['$http', 'Session', function($http, Session){
+angular.module('savvy').service('authService', ['$http', function($http){
     /*
         ----Overview----
 
@@ -58,7 +59,14 @@ angular.module('savvy').service('authService', ['$http', 'Session', function($ht
     */
 
     this.login = function(credentials) {
-
+        return $http({
+            method: 'POST',
+            url: 'api/v1/users/login',
+            data: credentials,
+            headers: {'Content-Type': 'application/json'}
+        }).then(function(response){
+            return response.data;
+        });
         /*
             1. Will send credentials to the server where they will be validated.
             The credentials will be sent over HTTPS so they will not need to be hashed
@@ -74,6 +82,12 @@ angular.module('savvy').service('authService', ['$http', 'Session', function($ht
 
         //return credentials;
     };
+
+    this.logout = function() {
+        return $http.post('/api/v1/users/logout').then(function(response) {
+            return response.data;
+        });
+    }
 
     this.isAuthenticated = function() {
         return typeof Session.userId !== 'undefined' && typeof Session.userId !== '';
@@ -104,28 +118,23 @@ angular.module('savvy').service('authService', ['$http', 'Session', function($ht
         */
     };
 
+    this.getCurrentUser = function() {
+        return $http.get('/api/v1/users/current').then(function(response) {
+            return response.data;
+        });
+    };
+
+    this.createUser = function(userData) {
+        return $http({
+            method: 'POST',
+            url: 'api/v1/users/create',
+            data: userData,
+            headers: {'Content-Type': 'application/json'}
+        }).then(function(response){
+            return response.data;
+        });
+    };
 }]);
-
-angular.module('savvy').service('Session', function() {
-    this.userData = null;
-
-    this.setUserData = function(userData) {
-        localStorage.setItem('userData', JSON.stringify(userData));
-    };
-
-    this.getUserData = function() {
-        if(!this.userData) {
-            this.userData = JSON.parse(localStorage.getItem('userData'));
-        }
-
-        console.log(this.userData);
-        return this.userData;
-    };
-
-    this.destroyUserData = function() {
-        localStorage.removeItem('userData');
-    };
-});
 
 angular.module('savvy').service('geolocationService', ['$q', '$window', function ($q, $window) {
     'use strict';
