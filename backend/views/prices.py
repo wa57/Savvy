@@ -4,7 +4,7 @@ from flask import Blueprint
 from flask import request
 from flask import Response
 
-from backend.auth import login_required
+from backend.auth import login_required, current_user
 from backend.models.prices import PriceDB
 from backend.utils import json_error, json_success, crossdomain
 
@@ -75,7 +75,8 @@ def api_add_price():
     if not product_description or not place_id or not user or price is None:
         return json_error("Missing a required field.")
     price_db = PriceDB()
-    result = price_db.add_price(product=product, business=place_id, user=user, price=price, image=image)
+    result = price_db.add_price(product=product, business=place_id, user_id=current_user.user_id,
+                                price=price, image=image)
     if not result:
         return json_error("Unable to add price.")
     return json_success("Price added successfully.", id=str(result))

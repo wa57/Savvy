@@ -90,7 +90,7 @@ class PriceDB(DB):
             submissions.append(submission)
         return submissions
 
-    def get_submissions(self, product_id=None, business_id=None, limit=None, most_recent=False):
+    def get_submissions(self, product_id=None, business_id=None, user_id=None, limit=None, most_recent=False):
         """Returns a list of matching prices."""
         from backend.models.businesses import BusinessDB
         query = {}
@@ -98,6 +98,8 @@ class PriceDB(DB):
             query["product_id"] = product_id
         if business_id:
             query["business_id"] = business_id
+        if user_id:
+            query["user_id"] = user_id
         pipeline = [
             {
                 "$match": query
@@ -123,10 +125,11 @@ class PriceDB(DB):
             submissions.append(submission)
         return submissions
 
-    def add_price(self, product, business, price, user, image):
+    def add_price(self, product, business, price, user_id, image):
         """Adds a price record to the database."""
         from bson.timestamp import Timestamp
         from datetime import datetime
+        from backend.auth import current_user
         from backend.models.businesses import BusinessDB
         from backend.models.products import ProductDB
         from backend.utils import get_google_places_by_id
@@ -149,7 +152,7 @@ class PriceDB(DB):
         new_price = {"product_id": product_id,
                      "business_id": business_id,
                      "price": int(price),
-                     "user": user,
+                     "user_id": user_id,
                      "submitted_timestamp": Timestamp(datetime.now(), 1),
                      "image": image}
         result = self.db.prices.insert_one(new_price)
