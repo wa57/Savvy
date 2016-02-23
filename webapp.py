@@ -10,11 +10,13 @@ from backend.views.users import user_blueprint
 from backend.views.products import product_blueprint
 from backend.views.prices import price_blueprint
 from backend.views.businesses import business_blueprint
+from backend.utils import json_error
 
 
 app = Flask(__name__, static_folder="frontend")
 app.config["PROPAGATE_EXCEPTIONS"] = False
 app.config["SECRET_KEY"] = '\x85\xe7\x98?L\xfaKa2\xbdQ\xef\xa5&\x03\x17\x9bj\x17 \xbc\xc8j\xbb'
+app.register_error_handler(500, json_error)
 
 
 # Configure logging
@@ -70,18 +72,6 @@ def load_user_from_request():
 
     logger.debug("Failed token: {}/{}".format(client_token, username))
     return None
-
-
-@app.errorhandler(500)
-def json_error(msg, **data):
-    import json
-    import pprint
-    logger.debug(pprint.pformat(vars(request)))
-    if isinstance(msg, Exception):
-        msg = str(msg)
-    response = {"error": msg}
-    response.update(data)
-    return Response(json.dumps(response), mimetype="application/json"), 500
 
 
 @app.route("/")

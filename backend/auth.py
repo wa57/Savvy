@@ -33,5 +33,5 @@ def login_required(view):
         if current_user.is_authenticated:
             return view(*args, **kwargs)
         else:
-            return json_error("Unauthorized"), 403
+            return json_error("Unauthorized", status_code=403)
     return wrapper
