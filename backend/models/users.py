@@ -65,6 +65,7 @@ class User(object):
         else:
             token, expires = None, None
         user_data = {
+            "user_id": self.user_id,
             "username": self.username,
             "email": self.email,
             "first_name": self.first_name,

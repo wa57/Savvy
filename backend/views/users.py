@@ -5,7 +5,7 @@ from flask import request, session
 
 from backend.auth import current_user, login_required
 from backend.models.users import UserDB
-from backend.utils import json_error, json_success
+from backend.utils import json_success, json_error
 
 
 logger = logging.getLogger("savvy.views.users")
@@ -119,24 +119,37 @@ def api_logout():
     return response
 
 
-@user_blueprint.route("/change_password", methods=["POST"])
-def api_change_password():
-    pass
-
-
-@user_blueprint.route("/delete", methods=["POST"])
-def api_delete_user():
-    pass
-
-
-@user_blueprint.route("/reset_password", methods=["POST"])
-def api_reset_password():
-    pass
-
-
 @user_blueprint.route("/current", methods=["GET"])
 @login_required
 def api_current_user():
     user_data = current_user.sanatized_dict()
     response = json_success("Authenticated.", user=user_data)
     return response
+
+
+@user_blueprint.route("/<user_id>/change_password", methods=["POST"])
+def api_change_password():
+    pass
+
+
+@user_blueprint.route("/<user_id>/submissions", methods=["GET"])
+def api_user_submissions(user_id):
+    from backend.models.prices import PriceDB
+    if not current_user.is_authenticated or not current_user.user_id == user_id:
+        return json_error("Unauthorized", status_code=403)
+    price_db = PriceDB()
+    submissions = price_db.get_submissions(user_id=user_id)
+    return json_success("OK", user_submissions=submissions)
+
+
+@user_blueprint.route("/<user_id>/delete", methods=["POST"])
+def api_delete_user():
+    pass
+
+
+@user_blueprint.route("/<user_id>/reset_password", methods=["POST"])
+def api_reset_password():
+    pass
+
+
+
