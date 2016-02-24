@@ -1,13 +1,26 @@
-angular.module('savvy')
-    .controller('login_controller', login_controller)
-    .$inject = ['$scope', '$state', 'authService'];
+angular.module('savvy').controller('loginCtrl', ['$scope', '$state', 'User', '$rootScope',
+function($scope, $state, User, $rootScope) {
+    console.log($state);
+    var self = this;
+    (function(){
+        self.events = {
+            notAuthorized: $state.params.event
+        }
+    })()
 
-function login_controller($scope, $state, authService) {
-    $scope.login = function(credentials) {
+    self.login = function(credentials) {
         if(credentials.username) {
-            authService.login(credentials).then(function(response) {
+            User.login(credentials).then(function(response) {
                 console.log(response);
             });
         }
     };
-}
+
+    $rootScope.$on('auth-logout-success', function() {
+        self.events.logoutSuccess = true;
+    });
+
+    $rootScope.$on('auth-not-authorized', function() {
+        self.events.notAuthorized = true;
+    });
+}]);

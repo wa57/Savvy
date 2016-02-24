@@ -31,9 +31,13 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
         })
         .state('submit', {
             url: '/submit',
+            name: 'submit',
             templateUrl: 'frontend/components/submit/submit_view.html',
-            controller: 'submit_controller',
+            controller: 'submitCtrl',
+            controllerAs: 'submit',
             title: "Submit Price",
+            authorizedRoles: ['user', 'admin'],
+            requiresAuth: true,
             data: {
                 requireLogin: true
             }
@@ -43,6 +47,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             templateUrl: 'frontend/components/product/product_view.html',
             controller: 'product_controller',
             title: "Product Page",
+            requiresAuth: true,
             params: {
                 product_id: {
                     value: null,
@@ -54,12 +59,17 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             url: '/signup',
             templateUrl: 'frontend/components/signup/signup_view.html',
             controller: 'signup_controller',
+            controllerAs: '',
             title: "Sign Up"
         })
         .state('login', {
             url: '/login',
             templateUrl: 'frontend/components/login/login_view.html',
-            controller: 'login_controller',
+            controller: 'loginCtrl',
+            controllerAs: 'login',
+            params: {
+                event: ""
+            },
             title: "Login"
         })
         .state('admin', {

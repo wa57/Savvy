@@ -1,8 +1,8 @@
 angular.module('savvy')
-    .controller('submit_controller', submit_controller)
-    .$inject = ['$scope', '$state', 'ProductService', 'stringReplace', '$filter'];
+    .controller('submitCtrl', submitCtrl)
+    .$inject = ['$scope', '$state', 'ProductService', 'stringReplace', '$filter', 'User'];
 
-function submit_controller($scope, $state, productService, stringReplace, $filter) {
+function submitCtrl($scope, $state, productService, stringReplace, $filter, User) {
     $scope.initialize = function() {
         $scope.initializeData();
         $scope.initializeGooglePlaces();

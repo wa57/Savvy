@@ -1,17 +1,36 @@
 angular.module('savvy')
-    .controller('nav_controller', nav_controller)
-    .$inject = ['$scope', '$state', 'authService'];
+    .controller('navCtrl', navCtrl)
+    .$inject = ['$scope', '$state', 'User', '$rootScope'];
 
-function nav_controller($scope, $state, authService) {
-    $scope.state = $state;
-    $scope.show_mobile_nav = false;
+function navCtrl($scope, $state, User, $rootScope) {
+    var self = this;
 
-    console.log($scope);
+    function init() {
+        $scope.state = $state;
+        $scope.show_mobile_nav = false;
+        User.getCurrentUser().then(function(response) {
+            self.userData = response.user;
+            self.isLoggedIn = User.isLoggedIn();
+        });
+    }
+
+    $rootScope.$on('auth-logout-success', function() {
+        self.isLoggedIn = false;
+        self.userData = null;
+    });
+
+    $rootScope.$on('auth-login-success', function() {
+        User.getCurrentUser().then(function(response) {
+            self.userData = response.user;
+            self.isLoggedIn = User.isLoggedIn();
+        });
+    });
+
     $scope.search = function() {
         if($scope.search_term !== "" && $scope.search_term) {
             $state.go('search', {search_term: $scope.search_term});
         }
-    }
+    };
 
     $scope.showMobileNav = function() {
         if(!$scope.show_mobile_nav) {
@@ -19,10 +38,11 @@ function nav_controller($scope, $state, authService) {
         } else {
             $scope.show_mobile_nav = false;
         }
-    }
+    };
 
     $scope.logout = function() {
-        authService.logout();
-    }
+        User.logout();
+    };
 
+    init();
 }
