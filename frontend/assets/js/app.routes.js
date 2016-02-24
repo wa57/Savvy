@@ -67,6 +67,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             templateUrl: 'frontend/components/login/login_view.html',
             controller: 'loginCtrl',
             controllerAs: 'login',
+            requiresAuth: false,
             params: {
                 event: ""
             },

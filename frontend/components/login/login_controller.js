@@ -1,6 +1,6 @@
-angular.module('savvy').controller('loginCtrl', ['$scope', '$state', 'User', '$rootScope',
-function($scope, $state, User, $rootScope) {
-    console.log($state);
+angular.module('savvy').controller('loginCtrl',
+['$scope', '$state', 'User', '$rootScope', 'EVENTS',
+function($scope, $state, User, $rootScope, EVENTS) {
     var self = this;
     (function(){
         self.events = {

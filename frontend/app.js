@@ -1,38 +1,68 @@
 require('angular');
 
-angular.module('savvy', [require('angular-ui-router')])
+angular.module('savvy', [require('angular-ui-router'), require('angular-cookies')])
 
 .config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('responseObserver');
 }])
 
-.run(['$rootScope', 'User', 'events', '$state', function($rootScope, User, events, $state) {
-    var isInitialized = false;
+.run(['$rootScope', 'User', 'events', '$state', '$stateParams', function($rootScope, User, EVENTS, $state, $stateParams) {
+    /*var isInitialized = false;
     User.getCurrentUser().then(function(response) {
-        User.isRouteViewable($state);
+        console.log($state.name);
+        console.log($state.authorizedRoles);
+        console.log($state.get('submit').name);
+        if($state.requiresAuth) {
+            console.log(User.isAuthenticated());
+            if(User.isAuthenticated() && !User.isAuthorized($state.authorizedRoles)) {
+                event.preventDefault();
+                $state.go('login', { event: EVENTS.notAuthorized });
+            } else {
+                event.preventDefault();
+                $state.go('login', { event: EVENTS.notAuthorized })
+            }
+        }
         isInitialized = true;
     }, function(err) {
         if($state.current.requiresAuth) {
             event.preventDefault();
-            $state.go('login', { event: events.notAuthorized });
+            $state.go('login', { event: EVENTS.notAuthorized });
         }
         isInitialized = true;
-    });
+    });*/
 
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, $injector) {
-        $rootScope.title = "Savvy | " + toState.title;
-        if(isInitialized) {
-            if(User.isAuthenticated()) {
-                if(User.isRouteViewable(toState)) {
+        User.getCurrentUser().then(function(response) {
+            if(toState.requiresAuth) {
+                if(User.isAuthenticated() && !User.isAuthorized(toState.authorizedRoles)) {
+                    event.preventDefault();
+                    $state.go('login', { event: EVENTS.notAuthorized });
+                }
+            }
+        }, function(err) {
+            if(toState.requiresAuth) {
+                event.preventDefault();
+                $state.go('login', { event: EVENTS.notAuthenticated });
+            }
+        });
 
+        /*if(isInitialized) {
+            console.log('init');
+            if(User.isAuthenticated() && toState.requiresAuth) {
+                console.log('user authenticated');
+                if(User.isAuthorized(toState.authorizedRoles)) {
+
+                } else {
+                    //$state.go('login', { event: EVENTS.notAuthorized });
                 }
             } else {
                 if(toState.requiresAuth) {
                     event.preventDefault();
-                    $state.go('login', { event: events.notAuthorized })
+                    $state.go('login', { event: EVENTS.notAuthorized })
                 }
             }
-        }
+        }*/
+        $rootScope.title = "Savvy | " + toState.title;
 
 
         /*User.getCurrentUser().then(function(response) {
@@ -101,6 +131,13 @@ angular.module('savvy', [require('angular-ui-router')])
     logoutSuccess: 'auth-logout-success',
     loginSuccess: 'auth-login-success',
     notAuthorized: 'auth-not-authorized'
+})
+
+.constant('EVENTS', {
+    logoutSuccess: 'auth-logout-success',
+    loginSuccess: 'auth-login-success',
+    notAuthorized: 'auth-not-authorized',
+    notAuthenticated: 'auth-not-authenticated',
 })
 
 .constant('USER_ROLES', {

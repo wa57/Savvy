@@ -1,8 +1,6 @@
-angular.module('savvy')
-    .controller('navCtrl', navCtrl)
-    .$inject = ['$scope', '$state', 'User', '$rootScope'];
-
-function navCtrl($scope, $state, User, $rootScope) {
+angular.module('savvy').controller('navCtrl', 
+['$scope', '$state', 'User', '$rootScope', 'EVENTS',
+function($scope, $state, User, $rootScope, EVENTS) {
     var self = this;
 
     function init() {
@@ -14,12 +12,12 @@ function navCtrl($scope, $state, User, $rootScope) {
         });
     }
 
-    $rootScope.$on('auth-logout-success', function() {
+    $rootScope.$on(EVENTS.logoutSuccess, function() {
         self.isLoggedIn = false;
         self.userData = null;
     });
 
-    $rootScope.$on('auth-login-success', function() {
+    $rootScope.$on(EVENTS.loginSuccess, function() {
         User.getCurrentUser().then(function(response) {
             self.userData = response.user;
             self.isLoggedIn = User.isLoggedIn();
@@ -45,4 +43,4 @@ function navCtrl($scope, $state, User, $rootScope) {
     };
 
     init();
-}
+}]);
