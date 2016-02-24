@@ -26,22 +26,28 @@ function($scope, $stateParams, productService, geolocationService) {
             console.log($scope.product);
             console.log(Date.parse($scope.product.price_submissions[0].submitted_timestamp));
             $scope.status.product = 'ready';
+            fetchUserLocation(geolocationService);
+            initChart();
         });
     }
 
 
     function fetchUserLocation(geolocationService) {
-        geolocationService.getCurrentPosition().then(function(response){
-            initMap(response);
+        geolocationService.getCurrentPosition().then(function(position){
+            initMap(position);
         });
     }
 
     function initMap(position) {
+        console.log("lat: ", position.coords.latitude, "lng: ", position.coords.longitude);
+
+        //THIS NEEDS TO BE CACHED AND INITIALIZED 
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: position.coords.latitude, lng: position.coords.longitude},
             scrollwheel: false,
             zoom: 12
         });
+        console.log(map);
         generateBusinessMapMarkers(map, $scope.product.price_submissions);
         $scope.status.map = "ready";
     }
@@ -70,20 +76,14 @@ function($scope, $stateParams, productService, geolocationService) {
                 data.push(value);
             });
 
-            var data = google.visualization.arrayToDataTable(data);
-
-            var options = {
-              curveType: 'function',
-              legend: { position: 'bottom' }
-            };
-
             var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
-            chart.draw(data, options);
+            chart.draw(google.visualization.arrayToDataTable(data), {
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            });
             $scope.status.chart = 'ready';
         });
     }
 
     fetchProductDetails($stateParams.product_id);
-    fetchUserLocation(geolocationService);
-    initChart();
 }]);
