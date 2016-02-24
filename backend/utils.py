@@ -10,12 +10,17 @@ from flask import Response
 logger = logging.getLogger("savvy.utils")
 
 
-def json_error(msg, **data):
+def json_error(msg, status_code=500, **data):
     import json
-    response = {"error": msg}
-    response.update(data)
-    logger.warning("JSON Error Msg: {}".format(response))
-    return Response(json.dumps(response), mimetype="application/json")
+    import pprint
+    logger.debug(pprint.pformat(vars(request)))
+    if isinstance(msg, Exception):
+        msg = str(msg)
+    response_data = {"error": msg}
+    response_data.update(data)
+    response = Response(json.dumps(response_data), mimetype="application/json")
+    response.status_code = status_code
+    return response
 
 
 def json_success(msg, **data):
