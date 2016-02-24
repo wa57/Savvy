@@ -39,7 +39,7 @@ angular.module('savvy')
 
 
 //https://medium.com/opinionated-angularjs/techniques-for-authentication-in-angularjs-applications-7bbf0346acec#.m8k0vbjmp
-.factory('User', ['$http', '$q', '$state', '$rootScope', 'events', 'USER_ROLES', function($http, $q, $state, $rootScope, events, USER_ROLES) {
+.factory('User', ['$http', '$q', '$state', '$rootScope', 'EVENTS', '$cookies', function($http, $q, $state, $rootScope, EVENTS, $cookies) {
     function User() {
         var self = this;
         self.userData = null;
@@ -49,26 +49,34 @@ angular.module('savvy')
             if(self.userData !== null) {
                 console.log('cache');
                 deferred.resolve(self.userData);
-            } else {
+            } else if($cookies.getObject('user')) {
+                console.log('cookie');
+                self.userData = $cookies.getObject('user');
+                deferred.resolve(self.userData);
+            } else if($cookies.get('user_token')) {
                 $http.get('/api/v1/users/current').then(function(response) {
                     console.log('server');
-                    self.userData = response.data;
+                    self.userData = response.data.user;
                     deferred.resolve(response.data);
                 }, function(err) {
                     console.log('forbidden');
                     deferred.reject(err);
                     self.userData = null;
                 });
+            } else {
+                console.log('not authenticated');
+                deferred.reject(EVENTS.notAuthenticated);
+                self.userData = null;
             }
 
             return deferred.promise;
         };
 
         self.getUserRoles = function() {
-            return self.userData.user.roles;
+            return self.userData.roles;
         };
 
-        self.getPriceSubmissionHistory = function() {
+        self.getUserPriceSubmissions = function() {
 
         };
 
@@ -91,50 +99,24 @@ angular.module('savvy')
             return self.userData !== null;
         }
 
-        self.isAuthorized = function(toState) {
-            //pass in what roles are authorized
-            //check if the input is an array
-            var authorizedRoles = toState.authorizedRoles;
-            console.log(toState.authorizedRoles, self.getUserRoles());
+        self.isAuthorized = function(authorizedRoles) {
+            var isAuthorized = true;
             if(self.isAuthenticated()) {
-                if(!angular.isArray(toState.authorizedRoles)) {
+                if(!angular.isArray(authorizedRoles)) {
                     authorizedRoles = [authorizedRoles];
-                    //if it isn't then we make it one
                 }
 
                 self.getUserRoles().forEach(function(value, index) {
-                    console.log(index, value);
-                    console.log(authorizedRoles);
                     if(authorizedRoles.indexOf(value) === -1) {
-                        console.log('ur fired');
+                        isAuthorized = false;
                     }
                 });
             } else {
-                return false;
+                isAuthorized = false;
             }
-            //
-            //return (self.isAuthenticated() && authorizedRoles.indexOf(Session.userRole) !== -1);
+            console.log(isAuthorized);
+            return isAuthorized;
         };
-
-        self.isRouteViewable = function(toState) {
-            var authorizedRoles = toState.authorizedRoles;
-            if(self.isAuthenticated()) {
-                var userRoles = self.getUserRoles();
-            }
-
-            if(!angular.isArray(authorizedRoles)) {
-                authorizedRoles = [authorizedRoles];
-                //if it isn't then we make it one
-            }
-            console.log('state roles: ', authorizedRoles);
-            console.log('userRoles: ',userRoles);
-
-            userRoles.forEach(function(value, index) {
-                console.log(value);
-                console.log(authorizedRoles.indexOf(value));
-            });
-            //bump them home
-        }
 
         self.login = function(credentials) {
             return $http({
@@ -142,18 +124,24 @@ angular.module('savvy')
                 url: 'api/v1/users/login',
                 data: credentials,
                 headers: {'Content-Type': 'application/json'}
-            }).then(function(response){
-                self.userData = response.data;
-                $rootScope.$broadcast(events.loginSuccess);
+            }).then(function(response) {
+                $cookies.putObject('user', response.data.user, {
+
+                });
+                self.userData = response.data.user;
+                $rootScope.$broadcast(EVENTS.loginSuccess);
                 $state.go('home');
-                return response.data;
+                return response.data.user;
             });
         };
 
         self.logout = function() {
             return $http.post('/api/v1/users/logout').then(function(response) {
                 self.userData = null;
-                $rootScope.$broadcast(events.logoutSuccess);
+                $cookies.remove('user');
+                $cookies.remove('username');
+                $cookies.remove('user_token');
+                $rootScope.$broadcast(EVENTS.logoutSuccess);
                 $state.go('login');
                 return response.data;
             });
@@ -186,6 +174,20 @@ angular.module('savvy')
     }
 
     return new User();
+}])
+
+.service('Session', ['$cookies', function($cookies) {
+    'use strict';
+    var self = this;
+
+    self.getUserSession = function() {
+        var userSession = $cookies.getObject('user');
+        if(userSession) {
+            return userSession;
+        } else {
+            return null;
+        }
+    };
 }])
 
 .service('geolocationService', ['$q', '$window', function ($q, $window) {
