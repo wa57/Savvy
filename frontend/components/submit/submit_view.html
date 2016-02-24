@@ -30,7 +30,7 @@
                     style="width: 50%;">
             <div class="product-list" ng-show="products.length > 0">
                 <div ng-repeat="product in products" ng-mousedown="selectProduct(product)" class="product-result">
-                    {{product.description}}
+                    <span ng-bind="product.description"></span>
                 </div>
             </div>
         </div>

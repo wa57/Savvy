@@ -1,4 +1,4 @@
-<nav ng-controller="nav_controller" id="nav">
+<nav ng-controller="navCtrl as nav" id="nav">
     <div class="container">
         <div id="nav-header">
             <div class="row">
@@ -31,17 +31,17 @@
                 </li>
             </ul>
             <ul class="pull-right">
-                <li>
-                    <a ui-sref="login">Login</a>
+                <li ng-if="!nav.isLoggedIn">
+                    <a class="btn btn-sm btn-default" ui-sref="signup">Register</a>
                 </li>
-                <li>
-                    <a ui-sref="signup">Sign Up</a>
+                <li ng-if="!nav.isLoggedIn">
+                    <a class="btn btn-sm btn-success" ui-sref="login">Sign In</a>
                 </li>
-                <li style="color: #fff;">
-                    Hello {{$parent.userData.user.first_name}}!
+                <li ng-if="nav.isLoggedIn" style="color: #fff;">
+                    Hello, {{nav.userData.first_name}}
                 </li>
-                <li>
-                    <a ng-click="logout()">Logout</a>
+                <li ng-if="nav.isLoggedIn">
+                    <a class="btn btn-sm btn-danger" ng-click="logout()">Logout</a>
                 </li>
                 <!--<li>
                     <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
