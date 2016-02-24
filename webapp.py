@@ -1,9 +1,10 @@
 import logging
+from functools import partial
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask import request
-from flask import Response, session
+from flask import session
 
 
 from backend.views.users import user_blueprint
@@ -16,6 +17,8 @@ from backend.utils import json_error
 app = Flask(__name__, static_folder="frontend")
 app.config["PROPAGATE_EXCEPTIONS"] = False
 app.config["SECRET_KEY"] = '\x85\xe7\x98?L\xfaKa2\xbdQ\xef\xa5&\x03\x17\x9bj\x17 \xbc\xc8j\xbb'
+
+json_error_500 = partial(json_error, status_code=500)
 app.register_error_handler(500, json_error)
 
 
