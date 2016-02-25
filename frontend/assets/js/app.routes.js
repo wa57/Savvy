@@ -1,4 +1,6 @@
-angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
+angular.module('savvy').config(
+    ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
 
     $urlRouterProvider.otherwise('/');
     $urlMatcherFactoryProvider.strictMode(false);
@@ -17,6 +19,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             controller: 'home_controller',
             title: "Home"
         })
+
         .state('search', {
             url: '/search/:search_term',
             templateUrl: 'frontend/components/search/search_view.html',
@@ -29,6 +32,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
                 }
             }
         })
+
         .state('submit', {
             url: '/submit',
             name: 'submit',
@@ -39,6 +43,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             authorizedRoles: ['user', 'admin'],
             requiresAuth: true,
         })
+
         .state('product', {
             url: '/product/:product_id',
             templateUrl: 'frontend/components/product/product_view.html',
@@ -53,6 +58,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
                 }
             }
         })
+
         .state('signup', {
             url: '/signup',
             templateUrl: 'frontend/components/signup/signup_view.html',
@@ -60,6 +66,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             controllerAs: '',
             title: "Sign Up"
         })
+
         .state('login', {
             url: '/login',
             templateUrl: 'frontend/components/login/login_view.html',
@@ -67,16 +74,30 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             controllerAs: 'login',
             requiresAuth: false,
             params: {
-                event: ""
+                event: "",
+                returnUrl: "",
+                redirect: false,
             },
             title: "Login"
         })
+
         .state('admin', {
             url: '/',
             templateUrl: 'frontend/components/admin/admin_view.html',
             controller: 'admin_controller',
             title: "Admin"
         })
+
+        .state('profile', {
+            url: '/profile',
+            templateUrl: 'frontend/components/profile/profile_view.html',
+            controller: 'profileCtrl',
+            controllerAs: 'profile',
+            requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
+            title: "Profile"
+        })
+
         .state('faq', {
             url: '/faq',
             templateUrl: 'frontend/components/faq/faq_view.html',

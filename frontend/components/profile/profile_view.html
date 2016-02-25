@@ -1,0 +1,29 @@
+<header class="content-header">
+    <h4><i class="fa fa-user"></i> <span ng-bind="profile.user.first_name"></span>'s Profile</h4>
+</header>
+<div class="profile">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3>Latest Prices</h3>
+        </div>
+        <table class="table">
+            <tr>
+                <th>Location</th>
+                <th>Purchase Price</th>
+                <th>Date Purchased</th>
+            </tr>
+            <tbody>
+                <tr ng-repeat="submission in profile.user_submissions">
+                    <td>
+                        <strong>{{submission.business_details.google_places.name}}</strong>
+                        <div>
+                            <small>{{submission.business_details.google_places.vicinity}}</small>
+                        </div>
+                    </td>
+                    <td>{{(submission.price / 100) | currency}}</td>
+                    <td>{{submission.submitted_timestamp | date}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
