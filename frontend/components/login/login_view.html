@@ -14,9 +14,9 @@
             <i class="fa fa-exclamation-triangle"></i>
             You are now logged out.
         </div>
-        <div ng-show="login.events.notAuthorized" class="alert alert-danger">
+        <div ng-show="login.events.notAuthenticated" class="alert alert-danger">
             <i class="fa fa-exclamation-triangle"></i>
-            Please sign in to use that feature.
+            Please log in to use that feature.
         </div>
 		<div class="alert alert-success">
             <i class="fa fa-info-circle"></i>
@@ -34,7 +34,7 @@
             </label>
             <input type="password" ng-model="login.credentials.password" id="password" style="width: 100%; margin-bottom: 20px;">
         </div>
-        
+
         <button
             class="btn btn-success btn-lg btn-block"
             style="margin-bottom: 20px;">

@@ -6,7 +6,7 @@ angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'
     $httpProvider.interceptors.push('responseObserver');
 }])
 
-.run(['$rootScope', 'User', 'events', '$state', '$stateParams', function($rootScope, User, EVENTS, $state, $stateParams) {
+.run(['$rootScope', 'User', 'EVENTS', '$state', '$stateParams', function($rootScope, User, EVENTS, $state, $stateParams) {
     $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, $injector) {
         User.getCurrentUser().then(function(response) {
             if(toState.requiresAuth) {
@@ -18,7 +18,11 @@ angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'
         }, function(err) {
             if(toState.requiresAuth) {
                 event.preventDefault();
-                $state.go('login', { event: EVENTS.notAuthenticated });
+                $state.go('login', {
+                    event: EVENTS.notAuthenticated,
+                    returnUrl: toState.name,
+                    redirect: true
+                });
             }
         });
 

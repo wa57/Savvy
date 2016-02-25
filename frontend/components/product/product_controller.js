@@ -1,5 +1,5 @@
-angular.module('savvy')
-.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService', '$timeout',
+angular.module('savvy').controller('product_controller', 
+['$scope', '$stateParams', 'productService', 'geolocationService', '$timeout',
 function($scope, $stateParams, productService, geolocationService, $timeout) {
     (function() {
         $scope.status = { product: 'loading', map: 'loading' };
