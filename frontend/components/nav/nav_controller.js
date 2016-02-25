@@ -1,4 +1,4 @@
-angular.module('savvy').controller('navCtrl', 
+angular.module('savvy').controller('navCtrl',
 ['$scope', '$state', 'User', '$rootScope', 'EVENTS',
 function($scope, $state, User, $rootScope, EVENTS) {
     var self = this;
@@ -6,27 +6,27 @@ function($scope, $state, User, $rootScope, EVENTS) {
     function init() {
         $scope.state = $state;
         $scope.show_mobile_nav = false;
-        User.getCurrentUser().then(function(response) {
-            self.userData = response.user;
-            self.isLoggedIn = User.isLoggedIn();
+        User.getCurrentUser().then(function(user) {
+            self.userData = user;
+            self.isAuthenticated = User.isAuthenticated();
         });
     }
 
     $rootScope.$on(EVENTS.logoutSuccess, function() {
-        self.isLoggedIn = false;
+        self.isAuthenticated = false;
         self.userData = null;
     });
 
     $rootScope.$on(EVENTS.loginSuccess, function() {
-        User.getCurrentUser().then(function(response) {
-            self.userData = response.user;
-            self.isLoggedIn = User.isLoggedIn();
+        User.getCurrentUser().then(function(user) {
+            self.userData = user;
+            self.isAuthenticated = User.isAuthenticated();
         });
     });
 
-    $scope.search = function() {
-        if($scope.search_term !== "" && $scope.search_term) {
-            $state.go('search', {search_term: $scope.search_term});
+    self.search = function() {
+        if(self.search_term !== "" && self.search_term) {
+            $state.go('search', {search_term: self.search_term});
         }
     };
 

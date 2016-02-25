@@ -91,10 +91,6 @@ angular.module('savvy')
             });
         };
 
-        self.isLoggedIn = function() {
-            return self.userData !== null;
-        };
-
         self.isAuthenticated = function() {
             return self.userData !== null;
         }
@@ -125,9 +121,12 @@ angular.module('savvy')
                 data: credentials,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response) {
+                var expireDate = new Date();
+                expireDate.setDate(expireDate.getDate() + 1);
                 $cookies.putObject('user', response.data.user, {
-
+                    expires: expireDate
                 });
+
                 self.userData = response.data.user;
                 $rootScope.$broadcast(EVENTS.loginSuccess);
                 $state.go('home');
@@ -146,54 +145,14 @@ angular.module('savvy')
                 return response.data;
             });
         };
-
-        // Need a function to check for individual page access if required
-        //self.isAuthorized = function(authorizedRoles) {
-            /*
-                Check in with server to determine access by sending just the userId and page identifier.
-                Server will respond with allowed or denied along with page specific data if allowed.
-
-                Server will determine things like user role and access. For example,
-                visiting the admin page will send the userId to the server where it will check
-                for access and send the protected data with the response.
-
-                If the server denies access then no data will be sent.
-            */
-
-            /*
-                var userData = Session.getData('userData');
-
-                // Send userData.userId to server for authorization
-                $http.get('apiendpoint')
-
-                // Server responds with allowed/denied and data for page
-
-                return response.data;
-            */
-        //};
     }
 
     return new User();
 }])
 
-.service('Session', ['$cookies', function($cookies) {
-    'use strict';
-    var self = this;
-
-    self.getUserSession = function() {
-        var userSession = $cookies.getObject('user');
-        if(userSession) {
-            return userSession;
-        } else {
-            return null;
-        }
-    };
-}])
-
 .service('geolocationService', ['$q', '$window', function ($q, $window) {
     'use strict';
     var self = this;
-
     self.currentPosition = null;
 
     self.getCurrentPosition = function() {
@@ -201,11 +160,22 @@ angular.module('savvy')
 
         if ($window.navigator.geolocation) {
             if(self.currentPosition !== null) {
+                console.log('from cache');
                 deferred.resolve(self.currentPosition);
+            } else if($window.sessionStorage.getItem('coordinates')) {
+                console.log('from sessionStorage');
+                self.currentPosition = JSON.parse($window.sessionStorage.getItem('coordinates'));
+                deferred.resolve(JSON.parse($window.sessionStorage.getItem('coordinates')));
             } else {
-                $window.navigator.geolocation.getCurrentPosition( function (position) {
-                    self.currentPosition = position;
-                    deferred.resolve(position);
+                $window.navigator.geolocation.getCurrentPosition(function(position) {
+                    console.log('from navigator');
+                    var coordinates = {
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude
+                    };
+                    self.currentPosition = coordinates;
+                    $window.sessionStorage.setItem('coordinates', JSON.stringify(coordinates));
+                    deferred.resolve(self.currentPosition);
                 },
                 function (err) {
                     deferred.reject(err);
@@ -213,6 +183,31 @@ angular.module('savvy')
             }
         } else {
             deferred.reject('Geolocation not supported.');
+        }
+
+        return deferred.promise;
+    }
+}])
+
+.service('maps', ['$window', function($window) {
+    var self = this;
+    self.map = null;
+
+    self.getMap = function() {
+        if(self.map !== null) {
+            deferred.resolve(self.map);
+        } else if($window.sessionStorage.getItem('map')) {
+            self.map = $window.sessionStorage.getItem('map');
+            deferred.resolve(JSON.parse($window.sessionStorage.getItem('map')));
+        } else {
+            var map = new $window.google.maps.Map(document.getElementById('map'), {
+                center: {lat: 39.9568218, lng: -75.189576},
+                scrollwheel: false,
+                zoom: 12
+            });
+            self.map = map;
+            $window.sessionStorage.setItem('map', JSON.stringify(map));
+            deferred.resolve(self.map);
         }
 
         return deferred.promise;
