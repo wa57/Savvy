@@ -10,6 +10,7 @@ function($scope, $stateParams, productService, geolocationService, $timeout) {
     $scope.sendVote = function(vote) {
         toggleVote(vote);
         productService.saveVote(vote, $scope.product.product_id);
+        console.log('vote sent');
     }
 
     function toggleVote(vote) {
