@@ -33,7 +33,7 @@ gulp.task('js', function() {
         .pipe(source('bundle.js'))
         .pipe(annotate())
         .pipe(buffer())
-        .pipe(uglify()).on('error', function(e){
+        .pipe(uglify({'ascii-only': true})).on('error', function(e){
             console.log(e);
          })
         .pipe(gulp.dest('build'));
