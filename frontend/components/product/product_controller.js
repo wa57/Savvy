@@ -1,6 +1,6 @@
 angular.module('savvy')
-.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService', 'NgMap', 'maps', '$timeout',
-function($scope, $stateParams, productService, geolocationService, NgMap, maps, $timeout) {
+.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService', '$timeout',
+function($scope, $stateParams, productService, geolocationService, $timeout) {
     (function() {
         $scope.status = { product: 'loading', map: 'loading' };
         $scope.vote = {};
@@ -52,7 +52,7 @@ function($scope, $stateParams, productService, geolocationService, NgMap, maps, 
         $timeout(function() {
             google.maps.event.trigger(map, 'resize');
             map.setCenter(center);
-        }, 500);
+        }, 300);
     }
 
     function generateBusinessMapMarkers(map, price_submissions) {

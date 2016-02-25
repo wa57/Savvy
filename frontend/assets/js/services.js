@@ -189,31 +189,6 @@ angular.module('savvy')
     }
 }])
 
-.service('maps', ['$window', function($window) {
-    var self = this;
-    self.map = null;
-
-    self.getMap = function() {
-        if(self.map !== null) {
-            deferred.resolve(self.map);
-        } else if($window.sessionStorage.getItem('map')) {
-            self.map = $window.sessionStorage.getItem('map');
-            deferred.resolve(JSON.parse($window.sessionStorage.getItem('map')));
-        } else {
-            var map = new $window.google.maps.Map(document.getElementById('map'), {
-                center: {lat: 39.9568218, lng: -75.189576},
-                scrollwheel: false,
-                zoom: 12
-            });
-            self.map = map;
-            $window.sessionStorage.setItem('map', JSON.stringify(map));
-            deferred.resolve(self.map);
-        }
-
-        return deferred.promise;
-    }
-}])
-
 /*module.service('Search', ['$rootScope', '$injector', '$state' function($rootScope, $injector, $state) {
     var service = {
         search: function(search_term) {
