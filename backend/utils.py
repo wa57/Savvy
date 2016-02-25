@@ -10,7 +10,7 @@ from flask import Response
 logger = logging.getLogger("savvy.utils")
 
 
-def json_error(msg, status_code=500, **data):
+def json_error(msg, status_code=200, **data):
     import json
     import pprint
     logger.debug(pprint.pformat(vars(request)))
@@ -23,12 +23,14 @@ def json_error(msg, status_code=500, **data):
     return response
 
 
-def json_success(msg, **data):
+def json_success(msg, status_code=200, **data):
     import json
-    response = {"success": msg}
-    response.update(data)
-    logger.debug("JSON Success Msg: {}".format(response))
-    return Response(json.dumps(response), mimetype="application/json")
+    response_data = {"success": msg}
+    response_data.update(data)
+    logger.debug("JSON Success Msg: {}".format(response_data))
+    response = Response(json.dumps(response_data), mimetype="application/json")
+    response.status_code = status_code
+    return response
 
 
 def hash_password(passwd, salt=None):
