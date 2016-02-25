@@ -11,7 +11,7 @@ function($scope, $state, User, $rootScope, EVENTS) {
     self.login = function(credentials) {
         if(credentials.username) {
             User.login(credentials).then(function(response) {
-                console.log(response);
+
             });
         }
     };

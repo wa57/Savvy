@@ -1,6 +1,6 @@
 angular.module('savvy')
-.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService',
-function($scope, $stateParams, productService, geolocationService) {
+.controller('product_controller', ['$scope', '$stateParams', 'productService', 'geolocationService', 'NgMap', 'maps', '$timeout',
+function($scope, $stateParams, productService, geolocationService, NgMap, maps, $timeout) {
     (function() {
         $scope.status = { product: 'loading', map: 'loading' };
         $scope.vote = {};
@@ -23,8 +23,6 @@ function($scope, $stateParams, productService, geolocationService) {
     function fetchProductDetails(product_id) {
         productService.getProductById(product_id).then(function(response){
             $scope.product = response;
-            console.log($scope.product);
-            console.log(Date.parse($scope.product.price_submissions[0].submitted_timestamp));
             $scope.status.product = 'ready';
             fetchUserLocation(geolocationService);
             initChart();
@@ -33,23 +31,28 @@ function($scope, $stateParams, productService, geolocationService) {
 
 
     function fetchUserLocation(geolocationService) {
-        geolocationService.getCurrentPosition().then(function(position){
-            initMap(position);
+        geolocationService.getCurrentPosition().then(function(coordinates){
+            initMap(coordinates);
         });
     }
 
-    function initMap(position) {
-        console.log("lat: ", position.coords.latitude, "lng: ", position.coords.longitude);
-
-        //THIS NEEDS TO BE CACHED AND INITIALIZED 
+    function initMap(coordinates) {
         var map = new google.maps.Map(document.getElementById('map'), {
-            center: {lat: position.coords.latitude, lng: position.coords.longitude},
+            center: {lat: coordinates.latitude, lng: coordinates.longitude},
             scrollwheel: false,
             zoom: 12
         });
-        console.log(map);
+        resetMapCenter(map);
         generateBusinessMapMarkers(map, $scope.product.price_submissions);
         $scope.status.map = "ready";
+    }
+
+    function resetMapCenter(map) {
+        var center = map.getCenter();
+        $timeout(function() {
+            google.maps.event.trigger(map, 'resize');
+            map.setCenter(center);
+        }, 500);
     }
 
     function generateBusinessMapMarkers(map, price_submissions) {
@@ -75,7 +78,6 @@ function($scope, $stateParams, productService, geolocationService) {
                 value[1] = (value[1] / 100);
                 data.push(value);
             });
-
             var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
             chart.draw(google.visualization.arrayToDataTable(data), {
                 curveType: 'function',

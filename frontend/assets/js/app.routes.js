@@ -38,9 +38,6 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             title: "Submit Price",
             authorizedRoles: ['user', 'admin'],
             requiresAuth: true,
-            data: {
-                requireLogin: true
-            }
         })
         .state('product', {
             url: '/product/:product_id',
@@ -48,6 +45,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             controller: 'product_controller',
             title: "Product Page",
             requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
             params: {
                 product_id: {
                     value: null,
