@@ -55,10 +55,10 @@ def api_product_thumbs_up(product_id):
     """Votes a product down.
 
     Input Parameters:
-        product_id       (string): The product ID to get.
+        product_id       (string): The product ID to affect.
     """
     voting_db = VotingDB()
-    vote = voting_db.vote(user_id=current_user.user_id, product_id=product_id, vote=-1)
+    vote = voting_db.vote(user_id=current_user.user_id, product_id=product_id, vote=1)
     return json_success("Thumbed it up.", vote=vote)
 
 
@@ -69,21 +69,35 @@ def api_product_thumbs_down(product_id):
     """Votes a product up.
 
     Input Parameters:
-        product_id       (string): The product ID to get.
+        product_id       (string): The product ID to affect.
     """
     voting_db = VotingDB()
     vote = voting_db.vote(user_id=current_user.user_id, product_id=product_id, vote=-1)
     return json_success("Thumbed it down.", vote=vote)
 
 
+@product_blueprint.route("/<product_id>/no-thumbs", methods=["POST", "PUT"])
+@crossdomain(origin="*")
+@login_required
+def api_product_no_thumbs(product_id):
+    """Removes a vote for a product.
+
+    Input Parameters:
+        product_id       (string): The product ID to affect.
+    """
+    voting_db = VotingDB()
+    vote = voting_db.vote(user_id=current_user.user_id, product_id=product_id, vote=0)
+    return json_success("Removed thumbs (Ow!).", vote=vote)
+
+
 @product_blueprint.route("/<product_id>/tag", methods=["POST", "PUT"])
 @crossdomain(origin="*")
 @login_required
 def api_product_tag(product_id):
-    """Returns details about a single product.
+    """Add a single tag to a product.
 
     Input Parameters:
-        product_id       (string): The product ID to get.
+        product_id       (string): The product ID to alter.
     """
     product_db = ProductDB()
     data = request.get_json()
