@@ -30,16 +30,6 @@ class ProductDB(DB):
         product["product_id"] = str(product.pop("_id"))
         return product
 
-    def thumbs_up(self, product_id):
-        from bson.objectid import ObjectId
-        self.db.products.update_one({"_id": ObjectId(product_id)},
-                                    {"$inc": {"thumbs_up": 1}})
-
-    def thumbs_down(self, product_id):
-        from bson.objectid import ObjectId
-        self.db.products.update_one({"_id": ObjectId(product_id)},
-                                    {"$inc": {"thumbs_down": 1}})
-
     def search(self, query):
         """Returns a list of matching products."""
         import re
