@@ -142,6 +142,15 @@ def api_user_submissions(user_id):
     return json_success("OK", user_submissions=submissions)
 
 
+@user_blueprint.route("/<user_id>/voting-history", methods=["GET"])
+def api_user_voting_history(user_id):
+    from backend.models.voting import VotingDB
+    if not current_user.is_authenticated or not current_user.user_id == user_id:
+        return json_error("Unauthorized", status_code=403)
+    history = VotingDB().get_user_history(user_id=current_user.user_id)
+    return json_success("OK", voting_history=history)
+
+
 @user_blueprint.route("/<user_id>/delete", methods=["POST"])
 def api_delete_user():
     pass
