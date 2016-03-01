@@ -6,6 +6,8 @@ function($scope, $state, User, $rootScope, EVENTS) {
     function init() {
         $scope.state = $state;
         $scope.show_mobile_nav = false;
+        self.isAuthenticated = false;
+        self.userData = null;
         User.getCurrentUser().then(function(user) {
             self.userData = user;
             self.isAuthenticated = User.isAuthenticated();
@@ -14,6 +16,7 @@ function($scope, $state, User, $rootScope, EVENTS) {
 
     $rootScope.$on(EVENTS.logoutSuccess, function() {
         self.isAuthenticated = false;
+        console.log(self.isAuthenticated);
         self.userData = null;
     });
 

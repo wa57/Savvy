@@ -1,4 +1,4 @@
-angular.module('savvy').controller('product_controller', 
+angular.module('savvy').controller('product_controller',
 ['$scope', '$stateParams', 'productService', 'geolocationService', '$timeout',
 function($scope, $stateParams, productService, geolocationService, $timeout) {
     (function() {
@@ -22,7 +22,7 @@ function($scope, $stateParams, productService, geolocationService, $timeout) {
     }
 
     function fetchProductDetails(product_id) {
-        productService.getProductById(product_id).then(function(response){
+        productService.getProductById(product_id, 10).then(function(response){
             $scope.product = response;
             $scope.status.product = 'ready';
             fetchUserLocation(geolocationService);
@@ -32,7 +32,7 @@ function($scope, $stateParams, productService, geolocationService, $timeout) {
 
 
     function fetchUserLocation(geolocationService) {
-        geolocationService.getCurrentPosition().then(function(coordinates){
+        geolocationService.getCurrentPosition().then(function(coordinates) {
             initMap(coordinates);
         });
     }
@@ -58,13 +58,14 @@ function($scope, $stateParams, productService, geolocationService, $timeout) {
 
     function generateBusinessMapMarkers(map, price_submissions) {
         price_submissions.forEach(function(value, index) {
+            console.log(value);
             new google.maps.Marker({
                 map: map,
                 position: {
                     lat: value.business_details.google_places.geometry.location.lat,
                     lng: value.business_details.google_places.geometry.location.lng
                 },
-                title: value.name
+                title: value.business_details.name
             });
         });
     }
@@ -79,11 +80,16 @@ function($scope, $stateParams, productService, geolocationService, $timeout) {
                 value[1] = (value[1] / 100);
                 data.push(value);
             });
-            var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
-            chart.draw(google.visualization.arrayToDataTable(data), {
+
+            var options = {
+                width: '900',
+                height: '200',
                 curveType: 'function',
                 legend: { position: 'bottom' }
-            });
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
+            chart.draw(google.visualization.arrayToDataTable(data), options);
             $scope.status.chart = 'ready';
         });
     }

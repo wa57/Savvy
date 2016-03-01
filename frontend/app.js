@@ -1,6 +1,6 @@
 require('angular');
 
-angular.module('savvy', [require('angular-ui-router'), require('angular-cookies')])
+angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'), 'googlechart'])
 
 .config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('responseObserver');
@@ -14,7 +14,10 @@ angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'
                     event.preventDefault();
                     $state.go('login', { event: EVENTS.notAuthorized });
                 }
-            }
+            } /*else if(toState.name === 'login' || toState.name === 'signup') {
+                event.preventDefault();
+                $state.go('home');
+            }*/
         }, function(err) {
             if(toState.requiresAuth) {
                 event.preventDefault();
@@ -25,11 +28,10 @@ angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'
                 });
             }
         });
-
         $rootScope.title = "Savvy | " + toState.title;
     });
 
-    google.charts.load('current', {'packages':['corechart']});
+    google.charts.load('43', {'packages':['corechart', 'controls']});
 }])
 
 .constant('events', {
