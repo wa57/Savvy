@@ -12,7 +12,7 @@ class User(object):
 
     def __init__(self, username=None, email=None, hashed_password=None,
                  password_salt=None, active=False, first_name=None, roles=None, user_id=None, created_timestamp=None,
-                 auth_token=None):
+                 auth_token=None, voting_history=None):
         self.username = username
         self.id = self.user_id = user_id
         self.email = email
@@ -23,6 +23,7 @@ class User(object):
         self.roles = roles or []
         self.created_timestamp = created_timestamp
         self.auth_token = auth_token
+        self.voting_history = voting_history or []
 
     def has_role(self, role_name):
         """Returns True is a User has a specific role."""
@@ -71,7 +72,8 @@ class User(object):
             "first_name": self.first_name,
             "user_token": token,
             "user_token_expires": expires,
-            "roles": self.roles
+            "roles": self.roles,
+            "voting_history": self.voting_history
         }
         return user_data
 
@@ -167,6 +169,7 @@ class UserDB(DB):
     def get_user(self, username=None, email=None, user_id=None):
         """Returns a user object for a matching user."""
         from bson.objectid import ObjectId
+        from backend.models.voting import VotingDB
         if user_id:
             result = self.db.users.find_one({"_id": ObjectId(user_id)})
         elif username:
@@ -182,7 +185,8 @@ class UserDB(DB):
             token, expires = result["auth_token"]
             if token and expires:
                 result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
-        return User(**result)
+        voting_history = VotingDB().get_user_history(user_id=result["user_id"])
+        return User(**result, voting_history=voting_history)
 
     def get_auth_token(self, user):
         from datetime import datetime
