@@ -74,9 +74,13 @@ class VotingDB(DB):
         return score
 
     def get_user_history(self, user_id):
-        result = self.db.voting.find({
-            "user_id": user_id
-        })
+        result = self.db.voting.find(
+            {"user_id": user_id},
+            {
+                "_id": 0,   # Remove _id field
+                "submitted_timestamp": 0    # Remove timestamp field
+            }
+        )
         try:
             results = list(result)
             logger.debug("Retrieved voting history for user '{}'".format(user_id))
@@ -86,9 +90,13 @@ class VotingDB(DB):
         return results
 
     def get_product_history(self, product_id):
-        result = self.db.voting.find({
-            "product_id": product_id
-        })
+        result = self.db.voting.find(
+            {"product_id": product_id},
+            {
+                "_id": 0,   # Remove _id field
+                "submitted_timestamp": 0    # Remove timestamp field
+            }
+        )
         try:
             results = list(result)
             logger.debug("Retrieved voting history for product '{}'".format(product_id))
