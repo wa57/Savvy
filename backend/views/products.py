@@ -5,10 +5,10 @@ from flask import Blueprint
 from flask import request
 from flask import Response
 
-from backend.auth import login_required
+from backend.auth import login_required, current_user
 from backend.models.products import ProductDB
 from backend.models.prices import PriceDB
-from backend.models.businesses import BusinessDB
+from backend.models.voting import VotingDB
 from backend.utils import json_success, json_error, crossdomain
 
 
@@ -52,28 +52,28 @@ def api_get_product(product_id):
 @crossdomain(origin="*")
 @login_required
 def api_product_thumbs_up(product_id):
-    """Returns details about a single product.
+    """Votes a product down.
 
     Input Parameters:
         product_id       (string): The product ID to get.
     """
-    product_db = ProductDB()
-    product_db.thumbs_up(product_id)
-    return json_success("Thumbed it up.")
+    voting_db = VotingDB()
+    vote = voting_db.vote(user_id=current_user.user_id, product_id=product_id, vote=-1)
+    return json_success("Thumbed it up.", vote=vote)
 
 
 @product_blueprint.route("/<product_id>/thumbs-down", methods=["POST", "PUT"])
 @crossdomain(origin="*")
 @login_required
 def api_product_thumbs_down(product_id):
-    """Returns details about a single product.
+    """Votes a product up.
 
     Input Parameters:
         product_id       (string): The product ID to get.
     """
-    product_db = ProductDB()
-    product_db.thumbs_down(product_id)
-    return json_success("Thumbed it down.")
+    voting_db = VotingDB()
+    vote = voting_db.vote(user_id=current_user.user_id, product_id=product_id, vote=-1)
+    return json_success("Thumbed it down.", vote=vote)
 
 
 @product_blueprint.route("/<product_id>/tag", methods=["POST", "PUT"])
