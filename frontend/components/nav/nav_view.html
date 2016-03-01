@@ -7,9 +7,9 @@
                         <a ui-sref="home"><img src="/frontend/assets/images/savvy.png"></a>
                     </div>
                 </div>
-                <form ng-submit="search()" class="col-md-8" handle-submit>
+                <form ng-submit="nav.search()" class="col-md-8" handle-submit>
                     <input type="search"
-                           ng-model="search_term"
+                           ng-model="nav.search_term"
                            id="search-box"
                            placeholder="Search for products or services e.g. Coffee, Car Repair">
                     <button type="submit" id="search-box-button">
@@ -23,7 +23,7 @@
                 <li>
                     <a ui-sref="home">Home</a>
                 </li>
-                <li>
+                <li ng-show="nav.isAuthenticated">
                     <a ui-sref="submit">Submit Price</a>
                 </li>
                 <li>
@@ -31,16 +31,16 @@
                 </li>
             </ul>
             <ul class="pull-right">
-                <li ng-if="!nav.isLoggedIn">
-                    <a class="btn btn-sm btn-default" ui-sref="signup">Register</a>
+                <li ng-if="!nav.isAuthenticated">
+                    <a class="btn btn-sm btn-default" ui-sref="signup">Sign Up</a>
                 </li>
-                <li ng-if="!nav.isLoggedIn">
-                    <a class="btn btn-sm btn-success" ui-sref="login">Sign In</a>
+                <li ng-if="!nav.isAuthenticated">
+                    <a class="btn btn-sm btn-success" ui-sref="login">Log In</a>
                 </li>
-                <li ng-if="nav.isLoggedIn" style="color: #fff;">
-                    Hello, {{nav.userData.first_name}}
+                <li ng-if="nav.isAuthenticated" style="color: #fff;">
+                    <a ui-sref="profile">Hello, <span ng-bind="nav.userData.first_name"></span></a>
                 </li>
-                <li ng-if="nav.isLoggedIn">
+                <li ng-if="nav.isAuthenticated">
                     <a class="btn btn-sm btn-danger" ng-click="logout()">Logout</a>
                 </li>
                 <!--<li>
