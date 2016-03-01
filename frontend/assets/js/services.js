@@ -3,8 +3,8 @@ angular.module('savvy')
 .service('productService', ['$http', function($http){
     'use strict';
 
-    this.getProductById = function(product_id) {
-        return $http.get("/api/v1/products/" + product_id + "?price_limit=10").then(function(response) {
+    this.getProductById = function(product_id, price_limit) {
+        return $http.get("/api/v1/products/" + product_id + "?price_limit=" + price_limit).then(function(response) {
             return response.data;
         });
     };
@@ -73,14 +73,13 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 
         self.getPriceSubmissions = function(user_id) {
             var deferred = $q.defer();
+            
             $http.get('api/v1/users/' + user_id + '/submissions').then(function(response) {
                 deferred.resolve(response.data.user_submissions);
             }, function(err) {
                 deferred.reject('api error');
                 console.log(err);
             });
-
-            console.log(deferred.promise);
 
             return deferred.promise;
         };

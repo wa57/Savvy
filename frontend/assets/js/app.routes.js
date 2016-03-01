@@ -95,7 +95,12 @@ angular.module('savvy').config(
             controllerAs: 'profile',
             requiresAuth: true,
             authorizedRoles: ['user', 'admin'],
-            title: "Profile"
+            title: "Profile",
+            resolve: {
+                userData: function(User) {
+                    return User.getCurrentUser();
+                }
+            }
         })
 
         .state('faq', {

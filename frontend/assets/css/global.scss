@@ -164,6 +164,7 @@ h1, h2, h3, h4, h5 {
 
 .btn-primary {
     background-color: #6283AD;
+    color: #fff;
     border: none;
     border-radius: 2px;
 
@@ -202,15 +203,13 @@ h1, h2, h3, h4, h5 {
     color: $primary_color;
 }
 
-/* BUTTONS */
-
-.btn-danger {
-    border-color: #ff5a5f;
-    border-bottom-color: #e00007;
-    background-color: #ff5a5f;
-    color: #fff;
-    border-radius:0.3em;
+.panel {
+    border-radius: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
 }
+
+/* BUTTONS */
 
 .btn {
     border-radius: 2px;

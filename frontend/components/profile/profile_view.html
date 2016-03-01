@@ -1,19 +1,26 @@
 <header class="content-header">
     <h4><i class="fa fa-user"></i> <span ng-bind="profile.user.first_name"></span>'s Profile</h4>
 </header>
-<div class="profile">
+<div>
+    <img ng-hide="profile.status.price_history === 'ready'" src="/frontend/assets/images/loader.gif">
+</div>
+<div class="profile" ng-show="profile.status.price_history === 'ready'">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3>Latest Prices</h3>
+            <h3>Your Submitted Price History</h3>
         </div>
         <table class="table">
             <tr>
+                <th>Product Name</th>
                 <th>Location</th>
                 <th>Purchase Price</th>
                 <th>Date Purchased</th>
             </tr>
             <tbody>
                 <tr ng-repeat="submission in profile.user_submissions">
+                    <td>
+                        {{submission.product.description}}
+                    </td>
                     <td>
                         <strong>{{submission.business_details.google_places.name}}</strong>
                         <div>
