@@ -5,7 +5,7 @@
 
     </div>
     <form ng-submit="login.login(login.credentials)" name="loginForm" style="width: 50%; margin: 0 auto; margin-top: 20px;">
-        <h2>Login</h2>
+        <h2>Log In</h2>
         <div ng-show="status.submit" ng-switch on="status.submit" class="alert alert-danger">
             <span ng-switch-when="status.submit === 'auth-failed'">Login Failed</span>
             <span>Invalid Credentials</span>
@@ -14,19 +14,19 @@
             <i class="fa fa-exclamation-triangle"></i>
             You are now logged out.
         </div>
-        <div ng-show="login.events.notAuthorized" class="alert alert-danger">
+        <div ng-show="login.events.notAuthenticated" class="alert alert-danger">
             <i class="fa fa-exclamation-triangle"></i>
-            Please sign in to use that feature.
+            Please log in to use that feature.
         </div>
 		<div class="alert alert-success">
             <i class="fa fa-info-circle"></i>
 			Enter the email address and password you used to sign up for Savvy.
 		</div>
         <div>
-            <label for="email">
-                <span>Email Address</span>
+            <label for="username">
+                <span>Username</span>
             </label>
-            <input type="text" ng-model="login.credentials.username" id="email" style="width: 100%; margin-bottom: 20px;">
+            <input type="text" ng-model="login.credentials.username" id="username" style="width: 100%; margin-bottom: 20px;">
         </div>
         <div>
             <label for="password">
@@ -34,12 +34,12 @@
             </label>
             <input type="password" ng-model="login.credentials.password" id="password" style="width: 100%; margin-bottom: 20px;">
         </div>
-        
+
         <button
             class="btn btn-success btn-lg btn-block"
             style="margin-bottom: 20px;">
         <i class="fa fa-lock"></i>
-        Login
+        Log In
         </button>
         <div class="center">
             <p style="margin-bottom: 20px;">Don't have an account? <a ui-sref="signup">Sign Up</a></p>

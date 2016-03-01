@@ -1,34 +1,35 @@
-angular.module('savvy')
-    .controller('navCtrl', navCtrl)
-    .$inject = ['$scope', '$state', 'User', '$rootScope'];
-
-function navCtrl($scope, $state, User, $rootScope) {
+angular.module('savvy').controller('navCtrl',
+['$scope', '$state', 'User', '$rootScope', 'EVENTS',
+function($scope, $state, User, $rootScope, EVENTS) {
     var self = this;
 
     function init() {
         $scope.state = $state;
         $scope.show_mobile_nav = false;
-        User.getCurrentUser().then(function(response) {
-            self.userData = response.user;
-            self.isLoggedIn = User.isLoggedIn();
+        self.isAuthenticated = false;
+        self.userData = null;
+        User.getCurrentUser().then(function(user) {
+            self.userData = user;
+            self.isAuthenticated = User.isAuthenticated();
         });
     }
 
-    $rootScope.$on('auth-logout-success', function() {
-        self.isLoggedIn = false;
+    $rootScope.$on(EVENTS.logoutSuccess, function() {
+        self.isAuthenticated = false;
+        console.log(self.isAuthenticated);
         self.userData = null;
     });
 
-    $rootScope.$on('auth-login-success', function() {
-        User.getCurrentUser().then(function(response) {
-            self.userData = response.user;
-            self.isLoggedIn = User.isLoggedIn();
+    $rootScope.$on(EVENTS.loginSuccess, function() {
+        User.getCurrentUser().then(function(user) {
+            self.userData = user;
+            self.isAuthenticated = User.isAuthenticated();
         });
     });
 
-    $scope.search = function() {
-        if($scope.search_term !== "" && $scope.search_term) {
-            $state.go('search', {search_term: $scope.search_term});
+    self.search = function() {
+        if(self.search_term !== "" && self.search_term) {
+            $state.go('search', {search_term: self.search_term});
         }
     };
 
@@ -45,4 +46,4 @@ function navCtrl($scope, $state, User, $rootScope) {
     };
 
     init();
-}
+}]);
