@@ -21,7 +21,7 @@ class VotingDB(DB):
 
         :param str user_id: A user_id string.
         :param str product_id: A product_id string.
-        :param str vote: 1, -1, or 0.
+        :param int vote: 1, -1, or 0.
 
         :returns: The current vote integer if vote is not supplied or the updated vote if vote is supplied
         :rtype: bool
