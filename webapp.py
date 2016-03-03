@@ -19,7 +19,7 @@ app.config["PROPAGATE_EXCEPTIONS"] = False
 app.config["SECRET_KEY"] = '\x85\xe7\x98?L\xfaKa2\xbdQ\xef\xa5&\x03\x17\x9bj\x17 \xbc\xc8j\xbb'
 
 json_error_500 = partial(json_error, status_code=500)
-app.register_error_handler(500, json_error)
+app.register_error_handler(500, json_error_500)
 
 
 # Configure logging
