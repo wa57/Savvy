@@ -99,7 +99,7 @@ def api_login():
 
     token, expires = user.create_auth_token()
 
-    session["current_user"] = user.user_id
+    request.current_user = user
 
     user_data = current_user.sanatized_dict()
 
