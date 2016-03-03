@@ -50,7 +50,7 @@ wsgi_app = app.wsgi_app
 @app.before_request
 def load_user_from_request():
     from datetime import datetime
-    from backend.models.users import UserDB, AnonymousUser
+    from backend.models.users import UserDB
 
     logger.debug("Attempting to authenticate client.")
 
@@ -66,11 +66,15 @@ def load_user_from_request():
     user_db = UserDB()
     user = user_db.get_user(username=username)
 
+    if not user:
+        logger.debug("Invalid username '{}'".format(username))
+        return None
+
     if user.auth_token:
         token, expires = user.auth_token
         if client_token == token and expires > datetime.utcnow():
             logger.debug("Accepted user token: {}/{}".format(client_token, username))
-            session["current_user"] = user.user_id
+            setattr(request, "current_user", user)
             return None
 
     logger.debug("Failed token: {}/{}".format(client_token, username))

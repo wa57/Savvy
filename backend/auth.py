@@ -13,18 +13,9 @@ current_user = LocalProxy(lambda: _get_user())
 
 
 def _get_user():
-    from flask import session
-    from backend.models.users import UserDB, AnonymousUser
-    user_id = session.get("current_user", None)
-    if not user_id:
-        logger.debug("No user_id in session.")
-        return AnonymousUser()
-    user = UserDB().get_user(user_id=user_id)
-    if not user:
-        logger.debug("No user matching ID '{}'.".format(user_id))
-        return AnonymousUser()
-    logger.debug("Matched user '{}'".format(user.username))
-    return user
+    from flask import request
+    from backend.models.users import AnonymousUser
+    return getattr(request, "current_user", None) or AnonymousUser()
 
 
 def login_required(view):
