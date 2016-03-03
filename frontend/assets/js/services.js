@@ -32,7 +32,7 @@ angular.module('savvy')
         vote = 'up'
         if(vote === -1) {
             vote = 'down';
-        } 
+        }
 
         if(typeof product_id !== 'undefined') {
             return $http.post("/api/v1/products/" + product_id + "/thumbs-" + vote).then(function(response) {
@@ -133,7 +133,6 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             } else {
                 isAuthorized = false;
             }
-            console.log(isAuthorized);
             return isAuthorized;
         };
 
@@ -200,15 +199,12 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
         }
 
         if(self.currentPosition !== null) {
-            console.log('from cache');
             deferred.resolve(self.currentPosition);
         } else if(coordinates) {
-            console.log('from sessionStorage');
             self.currentPosition = coordinates;
             deferred.resolve(self.currentPosition);
         } else {
             $window.navigator.geolocation.getCurrentPosition(function(position) {
-                console.log('from navigator');
                 var coordinates = {
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
