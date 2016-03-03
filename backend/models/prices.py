@@ -33,6 +33,9 @@ class PriceDB(DB):
         ])
         try:
             stats = result.next()
+            stats["average_price"] = int(stats["average_price"])
+            stats["lowest_price"] = int(stats["lowest_price"])
+            stats["highest_price"] = int(stats["highest_price"])
             logger.debug("Retrieved price stats for '{}' = {}".format(product_id, stats))
         except StopIteration:
             logger.warning("Unable to retrieve average price for '{}'".format(product_id))
