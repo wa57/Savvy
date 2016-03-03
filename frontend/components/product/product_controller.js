@@ -19,15 +19,19 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
     $scope.sendVote = function(vote) {
         toggleVote(vote);
         productService.saveVote(vote, $scope.product.product_id);
-    }
+    };
 
     self.getVoteForCurrentProduct = function(votingHistory) {
         votingHistory.forEach(function(vote, index) {
             if(vote.product_id === $stateParams.product_id) {
-                toggleVote(vote.vote);
+                toggleVote(vote.vote, '');
             }
         })
     };
+
+    $scope.addTag = function(tag, product_id) {
+        productService.saveTag(tag, product_id);
+    }
 
     function toggleVote(vote) {
         if(vote === 1) {
@@ -36,6 +40,10 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
             $scope.vote.up = false; $scope.vote.down = true;
         }
     }
+
+    $scope.calcVote = function(vote) {
+        $scope.product.score = $scope.product.score + vote;
+    };
 
     function fetchProductDetails(product_id) {
         productService.getProductById(product_id, 10).then(function(response){
