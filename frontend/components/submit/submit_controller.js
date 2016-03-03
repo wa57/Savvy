@@ -50,7 +50,8 @@ function submitCtrl($scope, productService, $filter) {
     $scope.submitPrice = function() {
         $scope.message = "processing";
         $scope.product.price = parseInt($scope.price.toFixed(2)*100);
-        $scope.product.user = '';
+        $scope.product.user = '1';
+        console.log($scope.product);
         productService.saveProduct($scope.product).then(function(response){
             $scope.product = {};
             $scope.message = "success";

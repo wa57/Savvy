@@ -1,28 +1,45 @@
 angular.module('savvy').controller('product_controller',
-['$scope', '$stateParams', 'productService', 'geolocationService', '$timeout',
-function($scope, $stateParams, productService, geolocationService, $timeout) {
+['$scope', '$stateParams', 'productService', 'geolocationService', '$timeout', 'User',
+function($scope, $stateParams, productService, geolocationService, $timeout, User) {
+    var self = this;
     (function() {
         $scope.status = { product: 'loading', map: 'loading' };
         $scope.vote = {};
         $scope.product = {};
+        User.getCurrentUser()
+            .then(function(user) {
+                console.log(user);
+                return User.getVotingHistory(user.user_id);
+            })
+            .then(function(votingHistory) {
+                self.getVoteForCurrentProduct(votingHistory);
+            })
     })();
 
     $scope.sendVote = function(vote) {
         toggleVote(vote);
         productService.saveVote(vote, $scope.product.product_id);
-        console.log('vote sent');
     }
 
+    self.getVoteForCurrentProduct = function(votingHistory) {
+        votingHistory.forEach(function(vote, index) {
+            if(vote.product_id === $stateParams.product_id) {
+                toggleVote(vote.vote);
+            }
+        })
+    };
+
     function toggleVote(vote) {
-        if(vote === 'up') {
+        if(vote === 1) {
             $scope.vote.up = true; $scope.vote.down = false;
-        } else {
+        } else if(vote === -1){
             $scope.vote.up = false; $scope.vote.down = true;
         }
     }
 
     function fetchProductDetails(product_id) {
         productService.getProductById(product_id, 10).then(function(response){
+            console.log(response);
             $scope.product = response;
             $scope.status.product = 'ready';
             fetchUserLocation(geolocationService);
@@ -58,7 +75,6 @@ function($scope, $stateParams, productService, geolocationService, $timeout) {
 
     function generateBusinessMapMarkers(map, price_submissions) {
         price_submissions.forEach(function(value, index) {
-            console.log(value);
             new google.maps.Marker({
                 map: map,
                 position: {

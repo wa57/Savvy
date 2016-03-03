@@ -1,6 +1,6 @@
 require('angular');
 
-angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'), 'googlechart'])
+angular.module('savvy', [require('angular-ui-router'), require('angular-cookies')])
 
 .config(['$httpProvider', function($httpProvider) {
     $httpProvider.interceptors.push('responseObserver');
