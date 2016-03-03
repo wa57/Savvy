@@ -19,16 +19,18 @@
             <tbody>
                 <tr ng-repeat="submission in profile.user_submissions">
                     <td>
-                        {{submission.product.description}}
+                        <a ui-sref="product({product_id: '{{submission.product.product_id}}'})">
+                            {{submission.product.description}}
+                        </a>
                     </td>
                     <td>
-                        <strong>{{submission.business_details.google_places.name}}</strong>
+                        <strong ng-bind="submission.business_details.google_places.name"></strong>
                         <div>
-                            <small>{{submission.business_details.google_places.vicinity}}</small>
+                            <small ng-bind="submission.business_details.google_places.vicinity"></small>
                         </div>
                     </td>
-                    <td>{{(submission.price / 100) | currency}}</td>
-                    <td>{{submission.submitted_timestamp | date}}</td>
+                    <td ng-bind="submission.price / 100"></td>
+                    <td ng-bind="submission.submitted_timestamp | date"></td>
                 </tr>
             </tbody>
         </table>
