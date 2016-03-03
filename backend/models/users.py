@@ -186,7 +186,7 @@ class UserDB(DB):
             if token and expires:
                 result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
         voting_history = VotingDB().get_user_history(user_id=result["user_id"])
-        return User(**result, voting_history=voting_history)
+        return User(voting_history=voting_history, **result)
 
     def get_auth_token(self, user):
         from datetime import datetime
