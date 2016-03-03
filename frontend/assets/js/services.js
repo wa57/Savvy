@@ -73,7 +73,7 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 
         self.getPriceSubmissions = function(user_id) {
             var deferred = $q.defer();
-            
+
             $http.get('api/v1/users/' + user_id + '/submissions').then(function(response) {
                 deferred.resolve(response.data.user_submissions);
             }, function(err) {
@@ -82,6 +82,12 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             });
 
             return deferred.promise;
+        };
+
+        self.getVotingHistory = function(user_id) {
+            return $http.get('api/v1/users/' + user_id + '/voting-history').then(function(response) {
+                return response.data.voting_history;
+            });
         };
 
         self.createUser = function(userData) {

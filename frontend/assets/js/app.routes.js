@@ -48,6 +48,7 @@ angular.module('savvy').config(
             url: '/product/:product_id',
             templateUrl: 'frontend/components/product/product_view.html',
             controller: 'product_controller',
+            controllerAs: 'product',
             title: "Product Page",
             requiresAuth: true,
             authorizedRoles: ['user', 'admin'],

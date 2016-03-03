@@ -17,7 +17,7 @@
                     <!-- add the class 'text-success' if the variable 'awesome' is true -->
     <!--<div ng-class="{ 'text-success': awesome, 'text-large': giant }">-->
                     <div class="vote" style="margin-bottom: 10px;">
-                        <button ng-click="sendVote('up');"
+                        <button ng-click="sendVote(1);"
                                 ng-class="{'vote-button-active': vote.up}"
                                 class="btn btn-outline btn-sm"
                                 style="width: 100%; margin-bottom: 5px;">
@@ -25,7 +25,7 @@
                         </button>
                     </div>
                     <div class="vote" style="margin-bottom: 10px;">
-                        <button ng-click="sendVote('down');"
+                        <button ng-click="sendVote(-1);"
                                 ng-class="{'vote-button-active': vote.down}"
                                 class="btn btn-outline btn-sm"
                                 style="width: 100%;">
@@ -38,7 +38,7 @@
                 <div style="margin-left: 15px; padding-left: 20px;">
                     <h1 class="product-description">{{product.description}}</h1>
                     <div class="product-metric">
-                        <h2 ng-bind="product.average_price / 100 | currency: '&#36;'"></h2>
+                        <h2>${{product.average_price / 100}}</h2>
                         <small>Average Price</small>
                     </div>
                     <div class="product-metric">
@@ -88,7 +88,7 @@
                                         <small>{{submission.business_details.google_places.vicinity}}</small>
                                     </div>
                                 </td>
-                                <td>{{(submission.price / 100) | currency}}</td>
+                                <td>${{submission.price / 100}}</td>
                                 <td>{{submission.submitted_timestamp | date}}</td>
                             </tr>
                         </tbody>
