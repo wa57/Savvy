@@ -29,12 +29,25 @@ angular.module('savvy')
     };
 
     this.saveVote = function(vote, product_id) {
+        vote = 'up'
+        if(vote === -1) {
+            vote = 'down';
+        } 
+
         if(typeof product_id !== 'undefined') {
             return $http.post("/api/v1/products/" + product_id + "/thumbs-" + vote).then(function(response) {
                 return response;
             });
         }
     };
+
+    this.saveTag = function(tag, product_id) {
+        if(tag && tag !== "") {
+            return $http.post('/api/v1/products/' + product_id + '/tag/' + tag).then(function(response) {
+                return response;
+            });
+        }
+    }
 }])
 
 .factory('User',
