@@ -30,7 +30,9 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
     };
 
     $scope.addTag = function(tag, product_id) {
-        productService.saveTag(tag, product_id);
+        productService.saveTag(tag, product_id).then(function(response) {
+            $scope.product.tags.push(tag);
+        });
     }
 
     function toggleVote(vote) {

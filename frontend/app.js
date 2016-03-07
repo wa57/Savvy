@@ -14,10 +14,11 @@ angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'
                     event.preventDefault();
                     $state.go('login', { event: EVENTS.notAuthorized });
                 }
-            } /*else if(toState.name === 'login' || toState.name === 'signup') {
+            } else if(toState.name === 'login' || toState.name === 'signup') {
                 event.preventDefault();
                 $state.go('home');
-            }*/
+                toState.title = "Home";
+            }
         }, function(err) {
             if(toState.requiresAuth) {
                 event.preventDefault();

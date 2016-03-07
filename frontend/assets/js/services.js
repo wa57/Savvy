@@ -42,8 +42,8 @@ angular.module('savvy')
     };
 
     this.saveTag = function(tag, product_id) {
-        if(tag && tag !== "") {
-            return $http.post('/api/v1/products/' + product_id + '/tag/' + tag).then(function(response) {
+        if(tag && tag !== '') {
+            return $http.post('/api/v1/products/' + product_id + '/tag', { 'tag': tag }).then(function(response) {
                 return response;
             });
         }
@@ -144,7 +144,7 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response) {
                 $cookies.putObject('user', response.data.user, {
-                    expires: response.data.user.user_token_expires
+                    expires: cookieHandler.getExpireDate()
                 });
                 self.userData = response.data.user;
                 $rootScope.$broadcast(EVENTS.loginSuccess);
