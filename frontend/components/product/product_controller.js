@@ -8,7 +8,6 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
         $scope.product = {};
         User.getCurrentUser()
             .then(function(user) {
-                console.log(user);
                 return User.getVotingHistory(user.user_id);
             })
             .then(function(votingHistory) {
@@ -24,7 +23,7 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
     self.getVoteForCurrentProduct = function(votingHistory) {
         votingHistory.forEach(function(vote, index) {
             if(vote.product_id === $stateParams.product_id) {
-                toggleVote(vote.vote, '');
+                toggleVote(vote.vote);
             }
         })
     };
@@ -36,6 +35,12 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
     }
 
     function toggleVote(vote) {
+        console.log($scope.vote.up, vote);
+        if($scope.vote.up === true && vote === 1) {
+            console.log('inside');
+            $scope.vote.up = false;
+        }
+
         if(vote === 1) {
             $scope.vote.up = true; $scope.vote.down = false;
         } else if(vote === -1){
@@ -44,12 +49,14 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
     }
 
     $scope.calcVote = function(vote) {
+        if($scope.vote.up) {
+
+        }
         $scope.product.score = $scope.product.score + vote;
     };
 
     function fetchProductDetails(product_id) {
-        productService.getProductById(product_id, 10).then(function(response){
-            console.log(response);
+        productService.getProductById(product_id, 5).then(function(response){
             $scope.product = response;
             $scope.status.product = 'ready';
             fetchUserLocation(geolocationService);
@@ -98,24 +105,33 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
 
     function initChart() {
         google.charts.setOnLoadCallback(function(){
-            var data = [
-                ['Date', 'Average Price (USD)']
-            ];
-
+            var chartLabels = ['Date', 'Average Price (USD)'];
+            var data = [];
             $scope.product.average_price_per_day.forEach(function(value, index) {
                 value[1] = (value[1] / 100);
+                console.log(value);
                 data.push(value);
             });
+            console.log(data);
+            data.reverse().unshift(chartLabels);
+            console.log(data);
 
             var options = {
                 width: '900',
-                height: '200',
+                height: '300',
                 curveType: 'function',
+                hAxis: {
+                    title: "Time"
+                },
+                vAxis: {
+                    title: "Average Price (USD)"
+                },
+                colors: ['#00A388'],
                 legend: { position: 'bottom' }
             };
 
-            var chart = new google.visualization.LineChart(document.getElementById('prices-graph'));
-            chart.draw(google.visualization.arrayToDataTable(data), options);
+            var chart = new google.charts.Line(document.getElementById('prices-graph'));
+            chart.draw(google.visualization.arrayToDataTable(data), google.charts.Line.convertOptions(options));
             $scope.status.chart = 'ready';
         });
     }

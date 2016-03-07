@@ -32,7 +32,7 @@ angular.module('savvy', [require('angular-ui-router'), require('angular-cookies'
         $rootScope.title = "Savvy | " + toState.title;
     });
 
-    google.charts.load('43', {'packages':['corechart', 'controls']});
+    google.charts.load('current', {'packages':['line']});
 }])
 
 .constant('events', {
