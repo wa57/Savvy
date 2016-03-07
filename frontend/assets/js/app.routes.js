@@ -109,4 +109,10 @@ angular.module('savvy').config(
             templateUrl: 'frontend/components/faq/faq_view.html',
             title: "FAQs"
         })
+
+        .state('demo', {
+            url: '/demo',
+            templateUrl: 'frontend/components/demo/demo_view.html',
+            title: 'Demo'
+        })
 }]);

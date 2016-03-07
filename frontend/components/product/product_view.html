@@ -10,6 +10,7 @@
     <div ng-show="status.product === 'ready'">
         <div style="margin-bottom: 20px;">
             <h1>{{product.description}}</h1>
+            <hr>
         </div>
         <div class="row">
             <div class="col-sm-3">
@@ -73,18 +74,18 @@
         <hr>
 
         <div class="row">
-            <div class="col-sm-6">
+            <div class="col-sm-5">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h3>Latest Prices</h3>
                     </div>
-                    <table class="table">
-                        <tr>
-                            <th>Location</th>
-                            <th>Purchase Price</th>
-                            <th>Date Purchased</th>
-                        </tr>
+                    <table class="table table-striped">
                         <tbody>
+                            <tr>
+                                <th>Location</th>
+                                <th>Purchase Price</th>
+                                <th>Date Purchased</th>
+                            </tr>
                             <tr ng-repeat="submission in product.price_submissions">
                                 <td>
                                     <strong>{{submission.business_details.google_places.name}}</strong>
@@ -99,7 +100,7 @@
                     </table>
                 </div>
             </div>
-            <div class="col-sm-6">
+            <div class="col-sm-7">
                 <div ng-show="status.map === 'loading'" id="map-loader">
                     <img src="/frontend/assets/images/loader.gif">
                     <span>Loading Map...</span>
@@ -111,8 +112,8 @@
             </div>
         </div>
         <hr>
-        <h2>Average Price Over Time</h2>
-        <div style="">
+        <h2 style="margin-bottom: 15px;">Average Price By Day</h2>
+        <div>
             <div id="prices-graph" style="">
             </div>
         </div>
