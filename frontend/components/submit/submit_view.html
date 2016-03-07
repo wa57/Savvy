@@ -132,8 +132,9 @@
         <p>Place of Purchase: <strong>{{product.business_name}}</strong></p>
         <p>Price Paid: <strong>${{product.price / 100}}</strong></p>
         <p>Tags: <strong>{{product.tags}}</strong></p>
+        <p>Product Image: {{product.image}}</p>
         <div>
-            <button ng-click="initializeData()" class="btn btn-link" style="padding: 0">Submit Another Price</button>
+            <button ng-click="clearProduct(product)" class="btn btn-link" style="padding: 0">Submit Another Price</button>
         </div>
     </div>
 </div>

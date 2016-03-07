@@ -36,30 +36,22 @@ function submitCtrl($scope, productService, $filter) {
         });
     }
 
-    function makeid() {
-        var text = "testuser";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        for( var i=0; i < 5; i++ ) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-
-        return text;
-    }
-
     $scope.submitPrice = function() {
         $scope.message = "processing";
         $scope.product.price = parseInt($scope.price.toFixed(2)*100);
         $scope.product.user = '1';
         console.log($scope.product);
         productService.saveProduct($scope.product).then(function(response){
-            $scope.product = {};
             $scope.message = "success";
         },
         function(){
             $scope.message = "error";
         });
-    }
+    };
+
+    $scope.clearProduct = function(product) {
+        product = {};
+    };
 
     $scope.addTag = function() {
         var exists_in_array = $scope.product.tags.indexOf($scope.tag);

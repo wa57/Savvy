@@ -63,8 +63,8 @@ angular.module('savvy').config(
         .state('signup', {
             url: '/signup',
             templateUrl: 'frontend/components/signup/signup_view.html',
-            controller: 'signup_controller',
-            controllerAs: '',
+            controller: 'signupCtrl',
+            controllerAs: 'signup',
             title: "Sign Up"
         })
 

@@ -1,14 +1,23 @@
-angular.module('savvy')
-    .controller('signup_controller', signup_controller)
-    .$inject = ['$scope', '$state', 'User'];
-
-function signup_controller($scope, $state, User) {
+angular.module('savvy').controller('signupCtrl',
+['$scope', '$state', 'User',
+function($scope, $state, User) {
     //username password email first_name
     //authService.createNewUser(newUserData);
+    var self = this;
 
     $scope.createUser = function(userData) {
         User.createUser(userData).then(function(response) {
             console.log(response);
         });
     };
-}
+
+    self.compareInput = function(input, confirm) {
+        var valid = (input === confirm) && input;
+        if((input === confirm) && input) {
+            return true;
+        }
+        return false;
+    };
+
+
+}]);
