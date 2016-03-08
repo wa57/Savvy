@@ -31,7 +31,9 @@ function submitCtrl($scope, productService, $filter) {
         });
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            console.log(autocomplete.getPlace());
             $scope.product.place_id = autocomplete.getPlace().place_id;
+            $scope.product.business_name = autocomplete.getPlace().name;
             $scope.$apply();
         });
     }

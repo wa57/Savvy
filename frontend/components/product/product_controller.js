@@ -75,7 +75,7 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
         var map = new google.maps.Map(document.getElementById('map'), {
             center: {lat: coordinates.latitude, lng: coordinates.longitude},
             scrollwheel: false,
-            zoom: 12
+            zoom: 13
         });
         resetMapCenter(map);
         generateBusinessMapMarkers(map, $scope.product.price_submissions);

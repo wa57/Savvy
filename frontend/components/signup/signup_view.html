@@ -29,25 +29,26 @@
             <p>Email Address</p>
             <input type="text" ng-model="userData.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
-        <!--<label>
+        <label>
             <p>Confirm Email Address</p>
             <input type="text" style="display: block; width: 100%; margin-bottom: 20px;">
-        </label>-->
+        </label>
         <label>
             <p>Password</p>
             <input type="password" ng-model="userData.password" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
-        <!--<label>
+        <label>
             <p>Confirm Password</p>
-            <input type="password" ng-model="password_confirmation" style="width: 90%; margin-bottom: 20px;">
-            <i class="fa fa-check text-success"></i>
+            <input type="password" ng-model="password_confirmation" style="width: 100%; margin-bottom: 20px;">
+            <!--<input type="password" style="width: 90%; margin-bottom: 20px;">-->
+            <!--<i class="fa fa-check text-success"></i>
             <div ng-show="!signup.compareInput(userData.password, password_confirmation)" class="text-danger">
                 Password does not match
             </div>
             <div ng-show="signup.compareInput(userData.password, password_confirmation)">
 
-            </div>
-        </label>-->
+            </div>-->
+        </label>
         <button
             ng-click="createUser(userData);"
             class="btn btn-success btn-lg btn-block"
