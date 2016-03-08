@@ -6,9 +6,10 @@ function($scope, $state, User) {
     var self = this;
 
     $scope.createUser = function(userData) {
-        User.createUser(userData).then(function(response) {
-            console.log(response);
-        });
+        User.createUser(userData)
+            .then(function(response) {
+                return User.login(userData);
+            });
     };
 
     self.compareInput = function(input, confirm) {
