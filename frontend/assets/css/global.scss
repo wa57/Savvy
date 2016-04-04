@@ -3,6 +3,7 @@ $accent_color: #79BD8F;
 $highlight_color: #BEEB9F;
 $error_color: #FF6138;
 $border_color: #e5e5e5;
+$text_color: rgb(35, 47, 62);
 
 *:focus {
     outline: none;
@@ -13,7 +14,7 @@ body {
     font-family: 'Open Sans', Helvetica, Arial, sans-serif;
     font-size: 14px;
     font-weight: 400;
-    color: rgb(35, 47, 62);
+    color: $text_color;
 }
 
 h1 { font-size: 2em; }
@@ -155,14 +156,20 @@ h1, h2, h3, h4, h5 {
 .success, .btn-success, .btn-success:active, .btn-success:focus, .btn-success:active:focus {
     background-color: $primary_color;
     border-radius: 2px;
+    border: none;
     outline: 0;
+    color: #fff !important;
+}
+
+.btn-default {
+    color: $text_color !important;
 }
 
 .btn {
     border-radius: 0;
 }
 .btn-success:hover {
-    background-color: $primary_color;
+    background-color: #009179;
 }
 
 .btn-primary {
@@ -210,6 +217,11 @@ h1, h2, h3, h4, h5 {
     border-radius: none;
     -webkit-box-shadow: none;
     box-shadow: none;
+    margin-bottom: 0;
+}
+
+.text-success {
+    color: $primary_color;
 }
 
 /* BUTTONS */

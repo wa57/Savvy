@@ -17,9 +17,9 @@
                 <th>Date Purchased</th>
             </tr>
             <tbody>
-                <tr ng-repeat="submission in profile.user_submissions">
+                <tr ng-repeat="submission in profile.user_submissions | orderBy: submission.submitted_timestamp: true">
                     <td>
-                        <a ui-sref="product({product_id: '{{submission.product.product_id}}'})">
+                        <a ui-sref="product({product_id: submission.product.product_id})">
                             {{submission.product.description}}
                         </a>
                     </td>

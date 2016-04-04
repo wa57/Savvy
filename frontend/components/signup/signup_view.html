@@ -5,12 +5,13 @@
 
     </div>
     <form style="width: 50%; margin: 0 auto; margin-top: 20px;">
-        <h3 style="color: #00A079; margin-bottom: 20px; font-weight: bold;">Sign Up</h3>
+        <h2 style="color: #00A079; margin-bottom: 20px; font-weight: bold;">Sign Up</h2>
         <div>
-            <p>
+            <p class="alert alert-success">
+                <i class="fa fa-info-circle"></i>
     			Complete all fields below to create your Savvy account.
             </p>
-            <p>
+            <p style="margin-bottom: 15px;">
     			Creating a Savvy account will allow you to submit prices
                 for products and services as well as adding products and
                 services to a price watch list.
@@ -38,7 +39,15 @@
         </label>
         <label>
             <p>Confirm Password</p>
-            <input type="password" style="width: 100%; margin-bottom: 20px;">
+            <input type="password" ng-model="password_confirmation" style="width: 100%; margin-bottom: 20px;">
+            <!--<input type="password" style="width: 90%; margin-bottom: 20px;">-->
+            <!--<i class="fa fa-check text-success"></i>
+            <div ng-show="!signup.compareInput(userData.password, password_confirmation)" class="text-danger">
+                Password does not match
+            </div>
+            <div ng-show="signup.compareInput(userData.password, password_confirmation)">
+
+            </div>-->
         </label>
         <button
             ng-click="createUser(userData);"

@@ -31,20 +31,11 @@ function submitCtrl($scope, productService, $filter) {
         });
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            console.log(autocomplete.getPlace());
             $scope.product.place_id = autocomplete.getPlace().place_id;
+            $scope.product.business_name = autocomplete.getPlace().name;
             $scope.$apply();
         });
-    }
-
-    function makeid() {
-        var text = "testuser";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        for( var i=0; i < 5; i++ ) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-
-        return text;
     }
 
     $scope.submitPrice = function() {
@@ -53,13 +44,16 @@ function submitCtrl($scope, productService, $filter) {
         $scope.product.user = '1';
         console.log($scope.product);
         productService.saveProduct($scope.product).then(function(response){
-            $scope.product = {};
             $scope.message = "success";
         },
         function(){
             $scope.message = "error";
         });
-    }
+    };
+
+    $scope.clearProduct = function(product) {
+        product = {};
+    };
 
     $scope.addTag = function() {
         var exists_in_array = $scope.product.tags.indexOf($scope.tag);
