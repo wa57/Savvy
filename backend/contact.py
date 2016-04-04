@@ -21,4 +21,5 @@ REGISTRATION_TEMPLATE = \
 </html>
 """
 
-def send_registration_email(user, require_confirmation=False, from=None):
+def send_registration_email(user, require_confirmation=False):
+    pass
