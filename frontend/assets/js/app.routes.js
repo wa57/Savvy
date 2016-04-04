@@ -63,8 +63,8 @@ angular.module('savvy').config(
         .state('signup', {
             url: '/signup',
             templateUrl: 'frontend/components/signup/signup_view.html',
-            controller: 'signup_controller',
-            controllerAs: '',
+            controller: 'signupCtrl',
+            controllerAs: 'signup',
             title: "Sign Up"
         })
 
@@ -108,5 +108,11 @@ angular.module('savvy').config(
             url: '/faq',
             templateUrl: 'frontend/components/faq/faq_view.html',
             title: "FAQs"
+        })
+
+        .state('demo', {
+            url: '/demo',
+            templateUrl: 'frontend/components/demo/demo_view.html',
+            title: 'Demo'
         })
 }]);

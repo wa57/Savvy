@@ -101,9 +101,9 @@
             <label>
                 <span>Upload a picture of the product</span>
                 <input type="file" fileread="product.image">
-                <div ng-show="product.product_image">
+                <div ng-show="product.image">
                     <p>Image Preview</p>
-                    <img src="{{product.product_image}}" style="width: 40%;">
+                    <img ng-src="{{product.image}}" style="width: 20%;">
                 </div>
             </label>
         </div>
@@ -132,8 +132,9 @@
         <p>Place of Purchase: <strong>{{product.business_name}}</strong></p>
         <p>Price Paid: <strong>${{product.price / 100}}</strong></p>
         <p>Tags: <strong>{{product.tags}}</strong></p>
+        <p>Product Image: <img ng-src="{{product.image}}" style="width: 20%;"></p>
         <div>
-            <button ng-click="initializeData()" class="btn btn-link" style="padding: 0">Submit Another Price</button>
+            <button ng-click="clearProduct(product)" class="btn btn-link" style="padding: 0">Submit Another Price</button>
         </div>
     </div>
 </div>
