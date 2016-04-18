@@ -12,6 +12,7 @@ ocr_blueprint = Blueprint("ocr", __name__, url_prefix="/api/v1/ocr")
 
 @ocr_blueprint.route("/process", methods=["GET"])
 @crossdomain(origin="*")
+@login_required
 def api_process_image():
     """Run OCR on an image."""
     import requests
