@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint
 from flask import request, session
 
-from backend.auth import current_user, login_required
+from backend.auth import current_user, login_required, user_is_authenticated
 from backend.models.users import UserDB
 from backend.utils import json_success, json_error
 
@@ -128,14 +128,16 @@ def api_current_user():
 
 
 @user_blueprint.route("/<user_id>/change_password", methods=["POST"])
-def api_change_password():
+def api_change_password(user_id):
+    if not user_is_authenticated(user_id=user_id):
+        return json_error("Unauthorized", status_code=403)
     pass
 
 
 @user_blueprint.route("/<user_id>/submissions", methods=["GET"])
 def api_user_submissions(user_id):
     from backend.models.prices import PriceDB
-    if not current_user.is_authenticated or not current_user.user_id == user_id:
+    if not user_is_authenticated(user_id=user_id):
         return json_error("Unauthorized", status_code=403)
     price_db = PriceDB()
     submissions = price_db.get_submissions(user_id=user_id)
@@ -145,19 +147,23 @@ def api_user_submissions(user_id):
 @user_blueprint.route("/<user_id>/voting-history", methods=["GET"])
 def api_user_voting_history(user_id):
     from backend.models.voting import VotingDB
-    if not current_user.is_authenticated or not current_user.user_id == user_id:
+    if not user_is_authenticated(user_id=user_id):
         return json_error("Unauthorized", status_code=403)
     history = VotingDB().get_user_history(user_id=current_user.user_id)
     return json_success("OK", voting_history=history)
 
 
 @user_blueprint.route("/<user_id>/delete", methods=["POST"])
-def api_delete_user():
+def api_delete_user(user_id):
+    if not user_is_authenticated(user_id=user_id):
+        return json_error("Unauthorized", status_code=403)
     pass
 
 
 @user_blueprint.route("/<user_id>/reset_password", methods=["POST"])
-def api_reset_password():
+def api_reset_password(user_id):
+    if not user_is_authenticated(user_id=user_id):
+        return json_error("Unauthorized", status_code=403)
     pass
 
 

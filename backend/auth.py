@@ -26,3 +26,11 @@ def login_required(view):
         else:
             return json_error("Unauthorized", status_code=403)
     return wrapper
+
+
+def user_is_authenticated(user_id, allow_admin=True):
+    if allow_admin and current_user.is_admin:
+        return True
+    if current_user.is_authenticated and current_user.user_id == user_id:
+        return True
+    return False
