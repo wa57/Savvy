@@ -28,11 +28,15 @@ class User(object):
     def has_role(self, role_name):
         """Returns True is a User has a specific role."""
         for role in self.roles:
-            if role_name == role.name:
+            if role_name == role:
                 return True
 
     def get_id(self):
         return self.user_id
+
+    @property
+    def is_admin(self):
+        return self.has_role("admin")
 
     @property
     def is_active(self):
@@ -223,9 +227,9 @@ class UserDB(DB):
                                  })
         return None
 
-    def delete_user(self, user):
+    def delete_user(self, user_id):
         """Deletes the specified user."""
-        pass
+
 
     def change_password(self, new_password):
         """Changes the password to the new password."""
