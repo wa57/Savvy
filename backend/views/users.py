@@ -127,13 +127,6 @@ def api_current_user():
     return response
 
 
-@user_blueprint.route("/<user_id>/change_password", methods=["POST"])
-def api_change_password(user_id):
-    if not user_is_authenticated(user_id=user_id):
-        return json_error("Unauthorized", status_code=403)
-    pass
-
-
 @user_blueprint.route("/<user_id>/submissions", methods=["GET"])
 def api_user_submissions(user_id):
     from backend.models.prices import PriceDB
@@ -155,16 +148,60 @@ def api_user_voting_history(user_id):
 
 @user_blueprint.route("/<user_id>/delete", methods=["POST"])
 def api_delete_user(user_id):
+    from backend.models.users import UserDB
     if not user_is_authenticated(user_id=user_id):
         return json_error("Unauthorized", status_code=403)
-    pass
+    user_db = UserDB()
+    user = user_db.get_user(user_id=user_id)
+    user_db.delete_user(user)
+    return json_success("User '{}' deleted.".format(user.username))
 
 
-@user_blueprint.route("/<user_id>/reset_password", methods=["POST"])
-def api_reset_password(user_id):
+@user_blueprint.route("/<email_address>/send-reset-code", methods=["POST"])
+def api_send_reset_code(email_address):
+    from backend.contact import send_password_reset_code
+    user_db = UserDB()
+    user = user_db.get_user(email=email_address)
+    if user:
+        logger.debug("Sending password reset token for user '{}'.".format(user.username))
+        token, expires = user_db.create_password_reset_token(user)
+        send_password_reset_code(email_address=user.email, first_name=user.first_name, reset_code=token)
+    else:
+        logger.warning("No user matched email '{}'.".format(email_address))
+    return json_success("Password reset email sent.")
+
+
+@user_blueprint.route("/reset-password", methods=["POST"])
+def api_reset_password():
+    data = request.get_json()
+
+    reset_code = data.get("reset_code", None)
+    if reset_code is None:
+        return json_error("reset_code is required.")
+
+    new_password = data.get("new_password", None)
+    if new_password is None:
+        return json_error("new_password is required.")
+
+    UserDB().reset_password(reset_code=reset_code, new_password=new_password)
+    return json_success("Password reset successfully!.")
+
+
+@user_blueprint.route("/<user_id>/change-password", methods=["POST"])
+def api_change_password(user_id):
     if not user_is_authenticated(user_id=user_id):
         return json_error("Unauthorized", status_code=403)
-    pass
+
+    data = request.get_json()
+
+    new_password = data.get("new_password", None)
+    if new_password is None:
+        return json_error("A new password is required.")
+
+    user_db = UserDB()
+    user = user_db.get_user(user_id=user_id)
+    user_db.change_password(user, new_password=new_password)
+    return json_success("Password changed for user '{}'.".format(user.username))
 
 
 
