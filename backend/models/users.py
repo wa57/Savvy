@@ -86,9 +86,15 @@ class User(object):
 
 class AnonymousUser(object):
 
+    def has_role(self):
+        return False
+
     @property
     def is_active(self):
-        """Returns True if the user is active."""
+        return False
+
+    @property
+    def is_admin(self):
         return False
 
     @property
