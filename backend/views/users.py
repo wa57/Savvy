@@ -3,7 +3,7 @@ import logging
 from flask import Blueprint
 from flask import request, session
 
-from backend.auth import current_user, login_required, user_is_authenticated
+from backend.auth import current_user, login_required, user_is_authenticated, admin_required
 from backend.models.users import UserDB
 from backend.utils import json_success, json_error
 
@@ -46,6 +46,27 @@ def api_users():
     user_db = UserDB()
     user = user_db.get_user(username)
     return
+
+
+@user_blueprint.route("/all", methods=["GET"])
+@admin_required
+def api_get_all_users():
+    """Gets a list of all users.
+
+    Example Request:
+        HTTP GET /api/v1/users/all
+
+    Example Response:
+        {
+            success: "OK",
+            users: [
+                ...
+            ]
+        }
+    """
+    from backend.models.users import UserDB
+    users = [user.sanatized_dict() for user in UserDB().get_all_users()]
+    return json_success("OK", users=users)
 
 
 @user_blueprint.route("/create", methods=["POST"])

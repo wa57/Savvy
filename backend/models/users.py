@@ -195,6 +195,21 @@ class UserDB(DB):
         voting_history = VotingDB().get_user_history(user_id=result["user_id"])
         return User(voting_history=voting_history, **result)
 
+    def get_all_users(self):
+        """Returns a user object for a matching user."""
+        from backend.models.voting import VotingDB
+        users = []
+        results = self.db.users.find({})
+        for result in results:
+            result["user_id"] = str(result.pop("_id"))
+            if result.get("auth_token", None):
+                token, expires = result["auth_token"]
+                if token and expires:
+                    result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
+            voting_history = VotingDB().get_user_history(user_id=result["user_id"])
+            users.append(User(voting_history=voting_history, **result))
+        return users
+
     def get_auth_token(self, user):
         from datetime import datetime
         result = self.db.users.find_one({"username": user.username})
