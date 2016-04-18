@@ -15,6 +15,7 @@ user_blueprint = Blueprint("users", __name__, url_prefix="/api/v1/users")
 
 
 @user_blueprint.route("/", methods=["GET"])
+@admin_required
 def api_users():
     """Returns details about users.
 
@@ -45,7 +46,9 @@ def api_users():
         return json_error("Invalid username.")
     user_db = UserDB()
     user = user_db.get_user(username)
-    return
+    if user:
+        return json_success("OK", user=user.sanatized_dict())
+    return json_error("Uknown user.")
 
 
 @user_blueprint.route("/all", methods=["GET"])
@@ -71,6 +74,22 @@ def api_get_all_users():
 
 @user_blueprint.route("/create", methods=["POST"])
 def api_create_user():
+    """Creates a new user.
+
+    Example Request:
+        HTTP POST /api/v1/users/create
+        {
+            "username": "johndoe",
+            "password": "Password1",
+            "email": "johndoe@example.com",
+            "first_name": "John"
+        }
+
+    Example Response:
+        {
+          "success": "User 'johndoe' created successfully."
+        }
+    """
     data = request.get_json()
 
     username = data.get("username", None)
@@ -100,6 +119,32 @@ def api_create_user():
 
 @user_blueprint.route("/login", methods=["POST"])
 def api_login():
+    """Logs a user in.
+
+    Example Request:
+        HTTP POST /api/v1/users/login
+        {
+            "username": "johndoe",
+            "password": "Password1",
+        }
+
+    Example Response:
+        {
+          "success": "Authenticated.",
+          "user": {
+            "email": "john.doe@example.com",
+            "user_id": "56cd1187d6545b2144f4ae25",
+            "first_name": "John",
+            "user_token_expires": "2016-04-19T17:22:15",
+            "roles": [
+              "user"
+            ],
+            "voting_history": [],
+            "username": "johndoe",
+            "user_token": "6be12e73fb356595665c4afcc0bfaee5"
+          }
+        }
+    """
     data = request.get_json()
 
     username = data.get("username", None)
