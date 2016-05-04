@@ -83,10 +83,24 @@ angular.module('savvy').config(
         })
 
         .state('admin', {
-            url: '/',
-            templateUrl: 'frontend/components/admin/admin_view.html',
-            controller: 'admin_controller',
-            title: "Admin"
+            url: '/admin/dashboard',
+            templateUrl: 'frontend/components/admin/dash/dash_view.html',
+            title: "Admin Dashboard"
+        })
+
+        .state('adminPriceHistory', {
+            url: '/admin/price-history',
+            templateUrl: 'frontend/components/admin/price_history/price_history_view.html',
+            controller: 'priceHistoryCtrl',
+            title: "Admin User Price Submission History"
+        })
+
+        .state('userInfo', {
+            url: '/admin/user-info',
+            templateUrl: 'frontend/components/admin/user_info/user_info_view.html',
+            controller: 'userInfoCtrl',
+            controllerAs: 'userInfo',
+            title: 'User Information'
         })
 
         .state('profile', {
@@ -114,5 +128,13 @@ angular.module('savvy').config(
             url: '/demo',
             templateUrl: 'frontend/components/demo/demo_view.html',
             title: 'Demo'
+        })
+
+        .state('receipt', {
+            url: '/receipt',
+            templateUrl: 'frontend/components/receipt/receipt_view.html',
+            title: 'Upload Receipt',
+            requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
         })
 }]);

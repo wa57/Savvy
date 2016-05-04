@@ -1,0 +1,55 @@
+<div class="content-header">
+    <h4><i class="fa  fa-shield"></i> User Information</h4>
+</div>
+
+<div>
+    <label>
+        <p>Search for a user by name, id, or email</p>
+        <input type="search">
+    <label>
+    <ul>
+        <li>
+            Click the reset password link in the table below to send a user
+            an email with instructions to reset their password.
+        </li>
+        <li>
+            Tick Make Admin if you wish to make a user an administrator of the site.
+        </li>
+    </ul>
+</div>
+<table class="table table-striped table-bordered table-condensed" style="width: 60%; margin: 0 auto;">
+    <thead>
+        <tr>
+            <th>User ID</th>
+            <th>First Name</th>
+            <th>Email Address</th>
+            <th>Username</th>
+            <th>Send Reset Code</th>
+            <th>Make Admin</th>
+            <th>Delete User</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="user in userInfo.allUsers">
+            <td ng-bind="user.user_id"></td>
+            <td ng-bind="user.first_name"></td>
+            <td ng-bind="user.email"></td>
+            <td ng-bind="user.username"></td>
+            <td>
+                <button
+                    ng-click="userInfo.sendResetCode(user.email)"
+                    class="btn btn-warning btn-sm">
+                    Send Reset Code
+                </button>
+            </td>
+            <td><input type="checkbox"></td>
+            <td>
+                <button
+                    ng-click="userInfo.deleteUser(user.user_id)"
+                    class="btn btn-danger btn-sm">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </tbody>
+</table>
