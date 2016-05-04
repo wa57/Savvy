@@ -11,8 +11,11 @@ function($scope, $state, User, $rootScope, EVENTS, $stateParams) {
     self.login = function(credentials) {
         if(credentials.username) {
             User.login(credentials).then(function(response) {
-                console.log($stateParams);
-                $state.go($stateParams.redirectUrl);
+                if(response['error']) {
+                    console.log(response['error']);
+                    self.events.loginFailed = response['error'];
+                }
+                //$state.go($stateParams.redirectUrl);
             });
         }
     };

@@ -50,6 +50,22 @@ angular.module('savvy')
     }
 }])
 
+.service('adminService', ['$http', function($http){
+    var self = this;
+
+    self.getAllUsers = function() {
+        return $http.get('/api/v1/users/all').then(function(response) {
+            return response.data.users;
+        })
+    };
+
+    self.deleteUser = function(user_id) {
+        return $http.post('/api/v1/users/' + user_id + '/delete').then(function(response) {
+            return response;
+        })
+    }
+}])
+
 .factory('User',
 ['$http', '$q', '$state', '$rootScope', 'EVENTS', '$cookies', 'cookieHandler',
 function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
@@ -136,6 +152,10 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             return isAuthorized;
         };
 
+        self.isAdmin = function() {
+            return self.userData.roles.indexOf('admin') !== -1;
+        };
+
         self.login = function(credentials) {
             return $http({
                 method: 'POST',
@@ -143,13 +163,18 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 data: credentials,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response) {
-                $cookies.putObject('user', response.data.user, {
-                    expires: cookieHandler.getExpireDate()
-                });
-                self.userData = response.data.user;
-                $rootScope.$broadcast(EVENTS.loginSuccess);
-                $state.go('home');
-                return response.data.user;
+                if(response.data['error']) {
+                    return response.data;
+                } else {
+                    $cookies.putObject('user', response.data.user, {
+                        expires: cookieHandler.getExpireDate()
+                    });
+                    self.userData = response.data.user;
+                    $rootScope.$broadcast(EVENTS.loginSuccess);
+                    $state.go('home');
+                    return response.data;
+                }
+
             });
         };
 

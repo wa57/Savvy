@@ -18,6 +18,10 @@
             <i class="fa fa-exclamation-triangle"></i>
             Please log in to use that feature.
         </div>
+        <div ng-show="login.events.loginFailed" class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle"></i>
+            {{login.events.loginFailed}}
+        </div>
 		<div class="alert alert-success">
             <i class="fa fa-info-circle"></i>
 			Enter the username and password you used to sign up for Savvy.
