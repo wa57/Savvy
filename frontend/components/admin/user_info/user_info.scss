@@ -1,0 +1,35 @@
+#userInfo {
+    table {
+        width: 100%;
+        border-radius: 1px;
+    }
+    table input[type=text] {
+        padding: 5px;
+        width: 100%;
+    }
+
+    table tr td, table button {
+        font-size: 14px;
+    }
+
+    table th {
+        font-size: 14px;
+    }
+
+    .table tbody>tr>td.center-align {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    .alert-sm {
+        padding: 5px;
+        margin-bottom: 5px;
+        margin-top: 5px;
+        border-radius: 1px;
+    }
+
+}
