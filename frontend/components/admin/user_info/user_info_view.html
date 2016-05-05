@@ -1,55 +1,97 @@
-<div class="content-header">
-    <h4><i class="fa  fa-shield"></i> User Information</h4>
-</div>
+<div id="userInfo">
+    <div class="content-header">
+        <h4><i class="fa  fa-shield"></i> User Information</h4>
+    </div>
 
-<div>
-    <label>
-        <p>Search for a user by name, id, or email</p>
-        <input type="search">
-    <label>
-    <ul>
-        <li>
-            Click the reset password link in the table below to send a user
-            an email with instructions to reset their password.
-        </li>
-        <li>
-            Tick Make Admin if you wish to make a user an administrator of the site.
-        </li>
-    </ul>
+    <div>
+        <form>
+            <div class="form-group">
+                <div class="input-group">
+                    <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                    <input type="text" ng-model="searchUsers" class="form-control" placeholder="Search for a user">
+                </div>
+            </div>
+        </form>
+        <h3>Usage Instructions</h3>
+        <ul>
+            <li>
+                Click the reset password link in the table below to send a user
+                an email with instructions to reset their password.
+            </li>
+            <li>
+                Tick Make Admin if you wish to make a user an administrator of the site.
+            </li>
+            <li>
+                Hover over a User ID to see the full ID
+            </li>
+        </ul>
+    </div>
+    <div>
+        <button ng-click="userInfo.displayNewUserFields(true)" class="btn btn-success">Create New User</button>
+        <button ng-click="userInfo.displayNewUserFields(false)" ng-show="userInfo.showCancelNewUserButton" class="btn btn-danger">Cancel Create New User</button>
+    </div>
+    <div>
+        <div ng-show="userInfo.message.show" class="alert alert-{{userInfo.message.status}} alert-sm">
+            <i ng-show="userInfo.message.status === 'danger'" class="fa fa-exclamation-triangle"></i>
+            <i ng-show="userInfo.message.status === 'success'" class="fa fa-check"></i>
+            <span ng-bind="userInfo.message.text"><span>
+        </div>
+    </div>
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>First Name</th>
+                <th>Email Address</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Admin</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-show="userInfo.showNewUser">
+                <td></td>
+                <td>
+                    <input type="text" ng-model="userInfo.newUser.first_name" placeholder="First Name">
+                </td>
+                <td>
+                    <input type="text" ng-model="userInfo.newUser.email" placeholder="Email">
+                </td>
+                <td>
+                    <input type="text" ng-model="userInfo.newUser.username" placeholder="Username">
+                </td>
+                <td>
+                    <input type="text" ng-model="userInfo.newUser.password" placeholder="Password">
+                </td>
+                <td class="center-align">
+                    <input type="checkbox">
+                </td>
+                <td class="center-align">
+                    <button ng-click="userInfo.createUser(userInfo.newUser)" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
+                </td>
+            </tr>
+            <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers">
+                <td ng-bind="userInfo.truncateString(user.user_id, 12, '...')" title="{{user.user_id}}"></td>
+                <td ng-bind="user.first_name"></td>
+                <td ng-bind="user.email"></td>
+                <td ng-bind="user.username"></td>
+                <td>
+                    <button
+                        ng-click="userInfo.sendResetCode(user.email)"
+                        class="btn btn-warning btn-xs full-width">
+                        Send Reset Code
+                    </button>
+                </td>
+                <td class="center-align"><input type="checkbox"></td>
+                <td class="center-align">
+                    <button
+                        ng-click="userInfo.deleteUser(user.user_id)"
+                        class="btn btn-danger btn-xs">
+                        <i class="fa fa-trash"></i>
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
-<table class="table table-striped table-bordered table-condensed" style="width: 60%; margin: 0 auto;">
-    <thead>
-        <tr>
-            <th>User ID</th>
-            <th>First Name</th>
-            <th>Email Address</th>
-            <th>Username</th>
-            <th>Send Reset Code</th>
-            <th>Make Admin</th>
-            <th>Delete User</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="user in userInfo.allUsers">
-            <td ng-bind="user.user_id"></td>
-            <td ng-bind="user.first_name"></td>
-            <td ng-bind="user.email"></td>
-            <td ng-bind="user.username"></td>
-            <td>
-                <button
-                    ng-click="userInfo.sendResetCode(user.email)"
-                    class="btn btn-warning btn-sm">
-                    Send Reset Code
-                </button>
-            </td>
-            <td><input type="checkbox"></td>
-            <td>
-                <button
-                    ng-click="userInfo.deleteUser(user.user_id)"
-                    class="btn btn-danger btn-sm">
-                    Delete
-                </button>
-            </td>
-        </tr>
-    </tbody>
-</table>

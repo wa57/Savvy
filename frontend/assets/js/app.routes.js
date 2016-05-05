@@ -85,7 +85,9 @@ angular.module('savvy').config(
         .state('admin', {
             url: '/admin/dashboard',
             templateUrl: 'frontend/components/admin/dash/dash_view.html',
-            title: "Admin Dashboard"
+            title: "Admin Dashboard",
+            //requiresAuth: true,
+            //authorizedRoles: ['admin']
         })
 
         .state('adminPriceHistory', {
@@ -100,7 +102,9 @@ angular.module('savvy').config(
             templateUrl: 'frontend/components/admin/user_info/user_info_view.html',
             controller: 'userInfoCtrl',
             controllerAs: 'userInfo',
-            title: 'User Information'
+            title: 'User Information',
+            //requiresAuth: true,
+            //authorizedRoles: ['admin']
         })
 
         .state('profile', {

@@ -142,6 +142,8 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 }
 
                 self.getUserRoles().forEach(function(value, index) {
+                    console.log(authorizedRoles);
+                    console.log(value, authorizedRoles.indexOf(value));
                     if(authorizedRoles.indexOf(value) === -1) {
                         isAuthorized = false;
                     }
@@ -149,6 +151,7 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             } else {
                 isAuthorized = false;
             }
+
             return isAuthorized;
         };
 
@@ -185,6 +188,12 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 $rootScope.$broadcast(EVENTS.logoutSuccess);
                 $state.go('login');
                 return response.data;
+            });
+        };
+
+        self.sendResetCode = function(email) {
+            return $http.post('/api/v1/users/' + email + '/send-reset-code').then(function(response) {
+                return response;
             });
         };
     }
@@ -265,6 +274,11 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 
     this.replaceAll = function(str, find, replace) {
         return str.replace(new RegExp(this.escapeRegExp(find), 'g'), replace);
+    };
+
+    this.truncateString = function(str, max, add) {
+        add = add || '...';
+        return (typeof str === 'string' && str.length > max ? str.substring(0,max)+add : str);
     };
 })
 
