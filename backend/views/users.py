@@ -389,6 +389,3 @@ def api_change_password(user_id):
     user = user_db.get_user(user_id=user_id)
     user_db.change_password(user, new_password=new_password)
     return json_success("Password changed for user '{}'.".format(user.username))
-
-
-

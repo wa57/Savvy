@@ -39,7 +39,7 @@
         <i ng-show="userInfo.message.status === 'success'" class="fa fa-check"></i>
         <span ng-bind="userInfo.message.text"><span>
     </div>
-    <table class="table table-striped table-bordered table-condensed">
+    <table class="table table-striped table-bordered table-condensed table-hover">
         <thead>
             <tr>
                 <th>User ID</th>
@@ -73,11 +73,13 @@
                     <button ng-click="userInfo.createUser(userInfo.newUser)" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
                 </td>
             </tr>
-            <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers">
+            <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers" ng-click="userInfo.displayDetailedUserInfo(user)">
                 <td ng-bind="userInfo.truncateString(user.user_id, 12, '...')" title="{{user.user_id}}"></td>
                 <td ng-bind="user.first_name"></td>
                 <td ng-bind="user.email"></td>
-                <td ng-bind="user.username"></td>
+                <td>
+                    <a ui-sref="profile({username: '{{user.username}}'})">{{user.username}}</a>
+                </td>
                 <td>
                     <button
                         ng-click="userInfo.sendResetCode(user.email)"
@@ -96,4 +98,18 @@
             </tr>
         </tbody>
     </table>
+
+    <div>
+        This whole section should be hidden until one of the rows in the table is clicked
+        <h2>Selected User: <span ng-bind="userInfo.selectedUser.username"></span></h2>
+        <p><strong>User ID:</strong> <span ng-bind="userInfo.selectedUser.user_id"></span><p>
+        <div>Change password: <input type="text"></div>
+        <button>Send password reset code</button>
+        <button>Delete user</button>
+        <div>change user information</div>
+        <div>View price history (limited to like 5, hidden by default unless clicked and then the results would be fetched and displayed)</div>
+        <div>View voting history (limited to like 5, same as above)</div>
+        <p>The user profile page will just be for the "current" user and they will be able to edit information, change their password, and view submission history and whatnot</p>
+        <button>Save changes</button>
+    </div>
 </div>

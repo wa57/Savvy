@@ -90,11 +90,18 @@ angular.module('savvy').config(
             //authorizedRoles: ['admin']
         })
 
-        .state('adminPriceHistory', {
-            url: '/admin/price-history',
-            templateUrl: 'frontend/components/admin/price_history/price_history_view.html',
-            controller: 'priceHistoryCtrl',
-            title: "Admin User Price Submission History"
+        .state('detailedUserInfo', {
+            url: '/admin/detailed-user-info/:username',
+            templateUrl: 'frontend/components/admin/detailed_user_info/detailed_user_info.html',
+            controller: 'detailedUserInfoCtrl',
+            controllerAs: 'detUserInfo',
+            title: "Admin Detailed User Information",
+            params: {
+                username: {
+                    value: null,
+                    squash: true
+                }
+            }
         })
 
         .state('userInfo', {
@@ -108,16 +115,17 @@ angular.module('savvy').config(
         })
 
         .state('profile', {
-            url: '/profile',
+            url: '/profile/:username',
             templateUrl: 'frontend/components/profile/profile_view.html',
             controller: 'profileCtrl',
             controllerAs: 'profile',
             requiresAuth: true,
             authorizedRoles: ['user', 'admin'],
             title: "Profile",
-            resolve: {
-                userData: function(User) {
-                    return User.getCurrentUser();
+            params: {
+                username: {
+                    value: null,
+                    squash: true
                 }
             }
         })
