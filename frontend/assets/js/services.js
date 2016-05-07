@@ -155,8 +155,9 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             return isAuthorized;
         };
 
-        self.isAdmin = function() {
-            return self.userData.roles.indexOf('admin') !== -1;
+        self.isAdmin = function(user) {
+            //return self.userData.roles.indexOf('admin') !== -1;
+            return user.roles.indexOf('admin') !== -1;
         };
 
         self.login = function(credentials) {

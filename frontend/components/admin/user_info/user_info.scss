@@ -28,8 +28,15 @@
     .alert-sm {
         padding: 5px;
         margin-bottom: 5px;
-        margin-top: 5px;
         border-radius: 1px;
     }
 
+    #usage-instructions {
+        margin: 15px 0;
+    }
+
+    #usage-instructions .panel-body {
+        padding: 5px 0;
+        margin-top: 10px;
+    }
 }

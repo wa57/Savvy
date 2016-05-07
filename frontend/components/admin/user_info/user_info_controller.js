@@ -5,8 +5,9 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
 
     function init() {
         getAllUsers();
-        initMessage();
-        initNewUser();
+        self.message = setMessage(null, null, false);
+        self.newUser = initNewUser();
+        self.newUserButton = setNewUserButton('Create New User', 'success');
     }
 
     init();
@@ -15,13 +16,17 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
         return stringReplace.truncateString(str, max, add);
     }
 
+    self.isAdmin = function(user) {
+        return User.isAdmin(user);
+    };
+
     self.createUser = function(newUser) {
         if(!validateNewUser(newUser)) {
             User.createUser(newUser).then(function(response) {
                 getAllUsers();
-                initNewUser();
-                self.displayNewUserFields(false);
-                self.setMessage('User successfully created!', 'success', true);
+                self.newUser = initNewUser();
+                //self.displayNewUserFields(false);
+                self.message = setMessage('User successfully created!', 'success', true);
             });
         } else {
             self.setMessage('Please fill in all fields to create a new user', 'danger', true);
@@ -31,26 +36,25 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
     self.deleteUser = function(user_id) {
         adminService.deleteUser(user_id).then(function(response) {
             getAllUsers();
-            self.setMessage('User successfully deleted!', 'success', true);
+            self.message = self.setMessage('User successfully deleted!', 'success', true);
         })
     };
 
     self.sendResetCode = function(email) {
         User.sendResetCode(email).then(function(response) {
-            self.setMessage('Email sent to' + email, 'success', true);
+            self.message = setMessage('Password reset code sent to ' + email, 'success', true);
         });
     };
 
-    self.setMessage = function(text, status, show) {
-        self.message.text = text;
-        self.message.status = status;
-        self.message.show = show;
-    };
-
-    self.displayNewUserFields = function(display) {
-        self.showNewUser = display;
-        self.showCreateNewUserButton = display;
-        self.showCancelNewUserButton = !display;
+    self.displayNewUserFields = function() {
+        if(self.newUserButton.status === 'success') {
+            self.newUserButton = setNewUserButton('Cancel Create New User', 'danger');
+            self.showNewUser = true;
+        } else if(self.newUserButton.status === 'danger') {
+            self.newUserButton = setNewUserButton('Create New User', 'success');
+            self.showNewUser = false;
+        }
+        self.newUser = initNewUser();
     };
 
     function validateNewUser(newUser) {
@@ -61,8 +65,6 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
                 console.log(key);
             }
         }
-
-        console.log(issueExists);
         return issueExists;
     }
 
@@ -81,19 +83,28 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
         });
     }
 
-    function initMessage() {
-        self.message = {};
-        self.message.text = null;
-        self.message.show = false;
-        self.message.status = null;
+    function setMessage(text, status, show) {
+        var message = {};
+        message.text = text;
+        message.status = status;
+        message.show = show;
+        return message;
+    }
+
+    function setNewUserButton(text, status) {
+        var button = {};
+        button.text = text;
+        button.status = status;
+        return button;
     }
 
     function initNewUser() {
-        self.newUser = {};
-        self.newUser.first_name = null;
-        self.newUser.email = null;
-        self.newUser.username = null;
-        self.newUser.password = null;
+        var newUser = {};
+        newUser.first_name = null;
+        newUser.email = null;
+        newUser.username = null;
+        newUser.password = null;
+        return newUser;
     }
 
 }]);
