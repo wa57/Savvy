@@ -8,6 +8,7 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
         self.message = setMessage(null, null, false);
         self.newUser = initNewUser();
         self.newUserButton = setNewUserButton('Create New User', 'success');
+        self.selectedUser = null;
     }
 
     init();
@@ -27,16 +28,18 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
                 self.newUser = initNewUser();
                 //self.displayNewUserFields(false);
                 self.message = setMessage('User successfully created!', 'success', true);
+                self.newUserButton = setNewUserButton('Create New User', 'success');
+                self.showNewUser = false;
             });
         } else {
-            self.setMessage('Please fill in all fields to create a new user', 'danger', true);
+            self.message = setMessage('Please fill in all fields to create a new user', 'danger', true);
         }
     };
 
     self.deleteUser = function(user_id) {
         adminService.deleteUser(user_id).then(function(response) {
             getAllUsers();
-            self.message = self.setMessage('User successfully deleted!', 'success', true);
+            self.message = setMessage('User successfully deleted!', 'success', true);
         })
     };
 
@@ -57,12 +60,15 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
         self.newUser = initNewUser();
     };
 
+    self.displayDetailedUserInfo = function(user) {
+        self.selectedUser = user;
+    };
+
     function validateNewUser(newUser) {
         var issueExists = false;
         for(var key in newUser) {
             if(newUser[key] === null) {
                 issueExists = true;
-                console.log(key);
             }
         }
         return issueExists;

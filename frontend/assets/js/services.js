@@ -63,7 +63,19 @@ angular.module('savvy')
         return $http.post('/api/v1/users/' + user_id + '/delete').then(function(response) {
             return response;
         })
-    }
+    };
+
+    self.getUserByUsername = function(username) {
+        return $http({
+            method: "GET",
+            url: "/api/v1/users/",
+            params: {'username': username}
+        }).then(function(response){
+            return response.data.user;
+        }, function(error) {
+            return error;
+        });
+    };
 }])
 
 .factory('User',
