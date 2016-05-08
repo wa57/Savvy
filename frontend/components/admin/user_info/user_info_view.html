@@ -16,6 +16,7 @@
                     Hover over a User ID to see the full ID
                 </li>
                 <li>Click the Create New User button to create a new user within the table</li>
+                <li>Click on a row in the table to view more detailed information about that user</li>
             </ul>
         </div>
     </div>
@@ -71,6 +72,7 @@
                 </td>
                 <td class="center-align">
                     <button ng-click="userInfo.createUser(userInfo.newUser)" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
+                    <!--<button class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>-->
                 </td>
             </tr>
             <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers" ng-click="userInfo.displayDetailedUserInfo(user)">
@@ -91,25 +93,106 @@
                 <td class="center-align">
                     <button
                         ng-click="userInfo.deleteUser(user.user_id)"
-                        class="btn btn-danger btn-xs">
+                        class="btn btn-danger btn-xs"
+                        alt="Delete">
                         <i class="fa fa-trash"></i>
                     </button>
+                    <!--<button
+                        ng-click="userInfo.deleteUser(user.user_id)"
+                        class="btn btn-primary btn-xs">
+                        <i class="fa fa-pencil"></i>
+                    </button>-->
                 </td>
             </tr>
         </tbody>
     </table>
 
-    <div>
-        This whole section should be hidden until one of the rows in the table is clicked
-        <h2>Selected User: <span ng-bind="userInfo.selectedUser.username"></span></h2>
-        <p><strong>User ID:</strong> <span ng-bind="userInfo.selectedUser.user_id"></span><p>
-        <div>Change password: <input type="text"></div>
-        <button>Send password reset code</button>
-        <button>Delete user</button>
-        <div>change user information</div>
-        <div>View price history (limited to like 5, hidden by default unless clicked and then the results would be fetched and displayed)</div>
-        <div>View voting history (limited to like 5, same as above)</div>
-        <p>The user profile page will just be for the "current" user and they will be able to edit information, change their password, and view submission history and whatnot</p>
-        <button>Save changes</button>
+    <div id="detailed-user-info">
+        <h3>
+            Selected User:
+            <strong><span ng-bind="userInfo.selectedUser.username"></span></strong>
+        </h3>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div>
+                    <strong>User ID:</strong> <span ng-bind="userInfo.selectedUser.user_id"></span>
+                <div>
+                <label>
+                    <span>First Name</span>
+                    <input type="text" ng-model="userInfo.selectedUser.first_name">
+                </label>
+                <label>
+                    <span>Email</span>
+                    <input type="text" ng-model="userInfo.selectedUser.email">
+                </label>
+                <label>
+                    <p>Username</p>
+                    <input type="text" ng-model="userInfo.selectedUser.username" disabled="disabled">
+                </label>
+                Change password
+
+                    <!--This whole section should be hidden until one of the rows in the table is clicked-->
+
+                    <!--<button class="btn btn-warning btn-xs">Send password reset code</button>
+                    <button class="btn btn-danger btn-xs">Delete user</button>
+                    <div>change user information</div>
+                    <div>View price history (limited to like 5, hidden by default unless clicked and then the results would be fetched and displayed)</div>
+                    <div>View voting history (limited to like 5, same as above)</div>
+                    <p>The user profile page will just be for the "current" user and they will be able to edit information, change their password, and view submission history and whatnot</p>
+                    <button class="btn btn-success">Save changes</button>-->
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h3>Vote History</h3>
+                        <button ng-click="userInfo.getUserVoteHistory()" class="btn btn-link">Get Vote History</button>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Vote</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="vote in userInfo.selectedUser.detailed_voting_history">
+                                    <td ng-bind="vote.description"></td>
+                                    <td ng-bind="vote.vote"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <h3>Price Submission History</h3>
+                        <button ng-click="userInfo.getUserPriceHistory(userInfo.selectedUser.user_id)" class="btn btn-link">Get Price History</button>
+                        <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th>Product Name</th>
+                                    <th>Location</th>
+                                    <th>Purchase Price</th>
+                                    <th>Date Purchased</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="submission in userInfo.selectedUser.price_history">
+                                    <td ng-bind="submission.description"></td>
+                                    <td>
+                                        <strong><span ng-bind="submission.business_details.google_places.name"></span></strong>
+                                        <div>
+                                            <small ng-bind="submission.business_details.google_places.vicinity"></small>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        $<span ng-bind="submission.price / 100"></span>
+                                    </td>
+                                    <td ng-bind="submission.submitted_timestamp"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
     </div>
 </div>

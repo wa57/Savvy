@@ -117,8 +117,8 @@ function($scope, $stateParams, productService, geolocationService, $timeout, Use
             console.log(data);
 
             var options = {
-                width: '900',
-                height: '300',
+                width: '750',
+                height: '250',
                 curveType: 'function',
                 hAxis: {
                     title: "Time"
