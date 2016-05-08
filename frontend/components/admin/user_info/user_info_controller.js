@@ -1,6 +1,6 @@
 angular.module('savvy').controller('userInfoCtrl',
-['$scope', '$state', 'User', '$rootScope', 'EVENTS', 'adminService', 'stringReplace',
-function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) {
+['$scope', '$state', 'User', '$rootScope', 'EVENTS', 'adminService', 'stringReplace', 'productService',
+function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, productService) {
     var self = this;
 
     function init() {
@@ -64,6 +64,20 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
         self.selectedUser = user;
     };
 
+    self.getUserPriceHistory = function(user_id) {
+        User.getPriceSubmissions(user_id).then(function(userSubmissions) {
+            productService.getUniqueProductsByIds(userSubmissions).then(function(mergedProducts) {
+                self.selectedUser.price_history = mergedProducts;
+            });
+        });
+    };
+
+    self.getUserVoteHistory = function() {
+        productService.getUniqueProductsByIds(self.selectedUser.voting_history).then(function(mergedProducts) {
+            self.selectedUser.detailed_voting_history = mergedProducts;
+        });
+    };
+
     function validateNewUser(newUser) {
         var issueExists = false;
         for(var key in newUser) {
@@ -72,14 +86,6 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace) 
             }
         }
         return issueExists;
-    }
-
-    function removeUser(user_id) {
-        for(var i = 0; i < self.allUsers.length; i++) {
-            if(user_id === self.allUsers[i].user_id) {
-                self.allUsers.splice(i, 1);
-            }
-        }
     }
 
     function getAllUsers() {
