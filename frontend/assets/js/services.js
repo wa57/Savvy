@@ -225,9 +225,29 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             });
         };
 
-        self.sendResetCode = function(email) {
+        self.sendPasswordResetCode = function(email) {
             return $http.post('/api/v1/users/' + email + '/send-reset-code').then(function(response) {
                 return response;
+            });
+        };
+
+        self.resetPassword = function(reset_code, new_password) {
+            return $http({
+                method: 'POST',
+                url: '/api/v1/users/reset-password',
+                data: {'reset_code': reset_code, 'new_password': new_password},
+            }).then(function(response) {
+                console.log(response);
+            });
+        }
+
+        self.changePassword = function(user_id, new_password) {
+            return $http({
+                method: 'POST',
+                url: '/api/v1/users/' + user_id + '/change-password',
+                data: {'new_password': new_password},
+            }).then(function(response) {
+                console.log(response);
             });
         };
     }
@@ -318,7 +338,7 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 
 .service('utilityService', function() {
     var self = this;
-    
+
     self.removeMatchFromArray = function(key, array) {
         for(var i = 0; i < array.length; i++) {
             if(key === array[i][key]) {

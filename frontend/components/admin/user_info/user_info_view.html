@@ -2,7 +2,7 @@
     <div class="content-header">
         <h4><i class="fa  fa-shield"></i> User Information</h4>
     </div>
-    <div id="usage-instructions" class="panel panel-default">
+    <!--<div id="usage-instructions" class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">Usage Instructions</h3>
         </div>
@@ -19,7 +19,7 @@
                 <li>Click on a row in the table to view more detailed information about that user</li>
             </ul>
         </div>
-    </div>
+    </div>-->
     <div id="user-options" class="row">
         <div class="col-sm-4">
             <form>
@@ -67,21 +67,16 @@
                 <td>
                     <input type="text" ng-model="userInfo.newUser.password" placeholder="Password">
                 </td>
-                <td class="center-align">
-                    <!--<input type="checkbox" disabled="disabled">-->
-                </td>
+                <td class="center-align"></td>
                 <td class="center-align">
                     <button ng-click="userInfo.createUser(userInfo.newUser)" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
-                    <!--<button class="btn btn-xs btn-danger"><i class="fa fa-times"></i></button>-->
                 </td>
             </tr>
-            <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers" ng-click="userInfo.displayDetailedUserInfo(user)">
+            <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers" ng-click="userInfo.displayDetailedUserInfo(user)" ng-class="{selected: user===userInfo.selectedUser}">
                 <td ng-bind="userInfo.truncateString(user.user_id, 12, '...')" title="{{user.user_id}}"></td>
                 <td ng-bind="user.first_name"></td>
                 <td ng-bind="user.email"></td>
-                <td>
-                    <a ui-sref="profile({username: '{{user.username}}'})">{{user.username}}</a>
-                </td>
+                <td ng-bind="user.username"></td>
                 <td>
                     <button
                         ng-click="userInfo.sendResetCode(user.email)"
@@ -97,11 +92,6 @@
                         alt="Delete">
                         <i class="fa fa-trash"></i>
                     </button>
-                    <!--<button
-                        ng-click="userInfo.deleteUser(user.user_id)"
-                        class="btn btn-primary btn-xs">
-                        <i class="fa fa-pencil"></i>
-                    </button>-->
                 </td>
             </tr>
         </tbody>
@@ -129,25 +119,18 @@
                     <p>Username</p>
                     <input type="text" ng-model="userInfo.selectedUser.username" disabled="disabled">
                 </label>
-                Change password
+                <input type="text" ng-model="userInfo.selectedUser.new_password" placeholder="Change Password">
+                <button ng-click="userInfo.changePassword(userInfo.selectedUser.user_id, userInfo.selectedUser.new_password)">Change Password</button>
 
-                    <!--This whole section should be hidden until one of the rows in the table is clicked-->
-
-                    <!--<button class="btn btn-warning btn-xs">Send password reset code</button>
-                    <button class="btn btn-danger btn-xs">Delete user</button>
-                    <div>change user information</div>
-                    <div>View price history (limited to like 5, hidden by default unless clicked and then the results would be fetched and displayed)</div>
-                    <div>View voting history (limited to like 5, same as above)</div>
-                    <p>The user profile page will just be for the "current" user and they will be able to edit information, change their password, and view submission history and whatnot</p>
-                    <button class="btn btn-success">Save changes</button>-->
+                <!--This whole section should be hidden until one of the rows in the table is clicked-->
                 <div class="row">
                     <div class="col-sm-6">
                         <h3>Vote History</h3>
                         <button ng-click="userInfo.getUserVoteHistory()" class="btn btn-link">Get Vote History</button>
-                        <table class="table table-condensed">
+                        <table class="table table-striped table-bordered table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Product Name</th>
+                                    <th>Product</th>
                                     <th>Vote</th>
                                 </tr>
                             </thead>
@@ -162,13 +145,13 @@
                     <div class="col-sm-6">
                         <h3>Price Submission History</h3>
                         <button ng-click="userInfo.getUserPriceHistory(userInfo.selectedUser.user_id)" class="btn btn-link">Get Price History</button>
-                        <table class="table table-condensed">
+                        <table class="table table-striped table-bordered table-condensed">
                             <thead>
                                 <tr>
-                                    <th>Product Name</th>
+                                    <th>Product</th>
                                     <th>Location</th>
-                                    <th>Purchase Price</th>
-                                    <th>Date Purchased</th>
+                                    <th>Price</th>
+                                    <th>Date</th>
                                 </tr>
                             </thead>
                             <tbody>

@@ -26,7 +26,6 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
             User.createUser(newUser).then(function(response) {
                 getAllUsers();
                 self.newUser = initNewUser();
-                //self.displayNewUserFields(false);
                 self.message = setMessage('User successfully created!', 'success', true);
                 self.newUserButton = setNewUserButton('Create New User', 'success');
                 self.showNewUser = false;
@@ -43,8 +42,8 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
         })
     };
 
-    self.sendResetCode = function(email) {
-        User.sendResetCode(email).then(function(response) {
+    self.sendPasswordResetCode = function(email) {
+        User.sendPasswordResetCode(email).then(function(response) {
             self.message = setMessage('Password reset code sent to ' + email, 'success', true);
         });
     };
@@ -76,6 +75,12 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
         productService.getUniqueProductsByIds(self.selectedUser.voting_history).then(function(mergedProducts) {
             self.selectedUser.detailed_voting_history = mergedProducts;
         });
+    };
+
+    self.changePassword = function(user_id, new_password) {
+        User.changePassword(user_id, new_password).then(function(response) {
+            console.log(response);
+        })
     };
 
     function validateNewUser(newUser) {

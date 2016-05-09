@@ -16,6 +16,14 @@
         font-size: 14px;
     }
 
+    .table-hover tbody tr:hover, .selected {
+        background-color: #E8E8E8;
+    }
+
+    .table tbody:hover {
+        cursor: pointer;
+    }
+
     .table tbody>tr>td.center-align {
         vertical-align: middle;
         text-align: center;
