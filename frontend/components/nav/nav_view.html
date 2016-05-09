@@ -44,7 +44,7 @@
                     <a ui-sref="profile({username: '{{nav.userData.username}}'})">Hello, <span ng-bind="nav.userData.first_name"></span></a>
                 </li>
                 <li ng-if="nav.isAuthenticated && nav.isAdmin">
-                    <a ui-sref="admin">Admin Dashboard</a>
+                    <a ui-sref="userInfo">User Information</a>
                 </li>
                 <li ng-if="nav.isAuthenticated">
                     <a class="btn btn-sm btn-danger" ng-click="logout()">Logout</a>

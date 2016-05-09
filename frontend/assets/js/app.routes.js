@@ -90,18 +90,12 @@ angular.module('savvy').config(
             //authorizedRoles: ['admin']
         })
 
-        .state('detailedUserInfo', {
-            url: '/admin/detailed-user-info/:username',
-            templateUrl: 'frontend/components/admin/detailed_user_info/detailed_user_info.html',
-            controller: 'detailedUserInfoCtrl',
-            controllerAs: 'detUserInfo',
-            title: "Admin Detailed User Information",
-            params: {
-                username: {
-                    value: null,
-                    squash: true
-                }
-            }
+        .state('resetPassword', {
+            url: '/reset_password',
+            templateUrl: 'frontend/components/reset_password/reset_password.html',
+            controller: 'resetPassCtrl',
+            controllerAs: 'resetPass',
+            title: "Reset Your Password",
         })
 
         .state('userInfo', {

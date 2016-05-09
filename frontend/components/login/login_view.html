@@ -36,7 +36,8 @@
             <label for="password">
                 <span>Password</span>
             </label>
-            <input type="password" ng-model="login.credentials.password" id="password" style="width: 100%; margin-bottom: 20px;">
+            <input type="password" ng-model="login.credentials.password" id="password" style="width: 100%;">
+            <p style="margin-bottom: 20px; margin-top: 5px; text-align: right;"><a ui-sref="resetPassword">Forgot your password?</a></p>
         </div>
 
         <button
@@ -47,7 +48,6 @@
         </button>
         <div class="center">
             <p style="margin-bottom: 20px;">Don't have an account? <a ui-sref="signup">Sign Up</a></p>
-            <p><a ui-sref="account-recovery">Forgot your password?</a></p>
         </div>
     </form>
 </div>
