@@ -11,19 +11,25 @@ function($scope, $state, User, $rootScope, EVENTS) {
         User.getCurrentUser().then(function(user) {
             self.userData = user;
             self.isAuthenticated = User.isAuthenticated();
+            self.isAdmin = User.isAdmin(user);
         });
     }
 
     $rootScope.$on(EVENTS.logoutSuccess, function() {
         self.isAuthenticated = false;
-        console.log(self.isAuthenticated);
+        self.isAdmin = false;
         self.userData = null;
     });
+
+    $rootScope.$on(EVENTS.loginFailure, function() {
+
+    })
 
     $rootScope.$on(EVENTS.loginSuccess, function() {
         User.getCurrentUser().then(function(user) {
             self.userData = user;
             self.isAuthenticated = User.isAuthenticated();
+            self.isAdmin = User.isAdmin(user);
         });
     });
 

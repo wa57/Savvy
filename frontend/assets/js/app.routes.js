@@ -83,23 +83,43 @@ angular.module('savvy').config(
         })
 
         .state('admin', {
-            url: '/',
-            templateUrl: 'frontend/components/admin/admin_view.html',
-            controller: 'admin_controller',
-            title: "Admin"
+            url: '/admin/dashboard',
+            templateUrl: 'frontend/components/admin/dash/dash_view.html',
+            title: "Admin Dashboard",
+            //requiresAuth: true,
+            //authorizedRoles: ['admin']
+        })
+
+        .state('resetPassword', {
+            url: '/reset_password',
+            templateUrl: 'frontend/components/reset_password/reset_password.html',
+            controller: 'resetPassCtrl',
+            controllerAs: 'resetPass',
+            title: "Reset Your Password",
+        })
+
+        .state('userInfo', {
+            url: '/admin/user-info',
+            templateUrl: 'frontend/components/admin/user_info/user_info_view.html',
+            controller: 'userInfoCtrl',
+            controllerAs: 'userInfo',
+            title: 'User Information',
+            //requiresAuth: true,
+            //authorizedRoles: ['admin']
         })
 
         .state('profile', {
-            url: '/profile',
+            url: '/profile/:username',
             templateUrl: 'frontend/components/profile/profile_view.html',
             controller: 'profileCtrl',
             controllerAs: 'profile',
             requiresAuth: true,
             authorizedRoles: ['user', 'admin'],
             title: "Profile",
-            resolve: {
-                userData: function(User) {
-                    return User.getCurrentUser();
+            params: {
+                username: {
+                    value: null,
+                    squash: true
                 }
             }
         })
@@ -114,5 +134,13 @@ angular.module('savvy').config(
             url: '/demo',
             templateUrl: 'frontend/components/demo/demo_view.html',
             title: 'Demo'
+        })
+
+        .state('receipt', {
+            url: '/receipt',
+            templateUrl: 'frontend/components/receipt/receipt_view.html',
+            title: 'Upload Receipt',
+            requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
         })
 }]);

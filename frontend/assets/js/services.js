@@ -1,13 +1,37 @@
 angular.module('savvy')
 
-.service('productService', ['$http', function($http){
+.service('productService', ['$http' ,'$q', 'utilityService', function($http, $q, utilityService){
     'use strict';
+    var self = this;
 
-    this.getProductById = function(product_id, price_limit) {
+    self.getProductById = function(product_id, price_limit) {
+        if(typeof price_limit === 'undefined') {
+            price_limit = 10;
+        }
+
         return $http.get("/api/v1/products/" + product_id + "?price_limit=" + price_limit).then(function(response) {
             return response.data;
         });
     };
+
+    self.getProductsByIds = function(product_ids) {
+        var promises = [];
+        for(var i = 0; i < product_ids.length; i++) {
+            var productPromise = self.getProductById(product_ids[i], 5);
+            promises.push(productPromise);
+        }
+
+        return $q.all(promises).then(function success(products){
+            return products;
+        });
+    };
+
+    self.getUniqueProductsByIds = function(baseArray) {
+        var uniqueProductIds = utilityService.getUniqueArray('product_id', baseArray);
+        return self.getProductsByIds(uniqueProductIds).then(function(products) {
+            return utilityService.compareAndMergeObjectsByKey('product_id', baseArray, products);
+        });
+    }
 
     this.getProductsByDesc = function(description) {
         if(description !== "") {
@@ -29,7 +53,7 @@ angular.module('savvy')
     };
 
     this.saveVote = function(vote, product_id) {
-        vote = 'up'
+        vote = 'up';
         if(vote === -1) {
             vote = 'down';
         }
@@ -47,7 +71,35 @@ angular.module('savvy')
                 return response;
             });
         }
-    }
+    };
+}])
+
+.service('adminService', ['$http', function($http){
+    var self = this;
+
+    self.getAllUsers = function() {
+        return $http.get('/api/v1/users/all').then(function(response) {
+            return response.data.users;
+        });
+    };
+
+    self.deleteUser = function(user_id) {
+        return $http.post('/api/v1/users/' + user_id + '/delete').then(function(response) {
+            return response;
+        });
+    };
+
+    self.getUserByUsername = function(username) {
+        return $http({
+            method: "GET",
+            url: "/api/v1/users/",
+            params: {'username': username}
+        }).then(function(response){
+            return response.data.user;
+        }, function(error) {
+            return error;
+        });
+    };
 }])
 
 .factory('User',
@@ -86,14 +138,11 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 
         self.getPriceSubmissions = function(user_id) {
             var deferred = $q.defer();
-
             $http.get('api/v1/users/' + user_id + '/submissions').then(function(response) {
                 deferred.resolve(response.data.user_submissions);
             }, function(err) {
                 deferred.reject('api error');
-                console.log(err);
             });
-
             return deferred.promise;
         };
 
@@ -126,6 +175,8 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 }
 
                 self.getUserRoles().forEach(function(value, index) {
+                    console.log(authorizedRoles);
+                    console.log(value, authorizedRoles.indexOf(value));
                     if(authorizedRoles.indexOf(value) === -1) {
                         isAuthorized = false;
                     }
@@ -133,7 +184,13 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             } else {
                 isAuthorized = false;
             }
+
             return isAuthorized;
+        };
+
+        self.isAdmin = function(user) {
+            //return self.userData.roles.indexOf('admin') !== -1;
+            return user.roles.indexOf('admin') !== -1;
         };
 
         self.login = function(credentials) {
@@ -143,13 +200,18 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 data: credentials,
                 headers: {'Content-Type': 'application/json'}
             }).then(function(response) {
-                $cookies.putObject('user', response.data.user, {
-                    expires: cookieHandler.getExpireDate()
-                });
-                self.userData = response.data.user;
-                $rootScope.$broadcast(EVENTS.loginSuccess);
-                $state.go('home');
-                return response.data.user;
+                if(response.data['error']) {
+                    return response.data;
+                } else {
+                    $cookies.putObject('user', response.data.user, {
+                        expires: cookieHandler.getExpireDate()
+                    });
+                    self.userData = response.data.user;
+                    $rootScope.$broadcast(EVENTS.loginSuccess);
+                    $state.go('home');
+                    return response.data;
+                }
+
             });
         };
 
@@ -160,6 +222,32 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 $rootScope.$broadcast(EVENTS.logoutSuccess);
                 $state.go('login');
                 return response.data;
+            });
+        };
+
+        self.sendPasswordResetCode = function(email) {
+            return $http.post('/api/v1/users/' + email + '/send-reset-code').then(function(response) {
+                return response;
+            });
+        };
+
+        self.resetPassword = function(reset_code, new_password) {
+            return $http({
+                method: 'POST',
+                url: '/api/v1/users/reset-password',
+                data: {'reset_code': reset_code, 'new_password': new_password},
+            }).then(function(response) {
+                console.log(response);
+            });
+        }
+
+        self.changePassword = function(user_id, new_password) {
+            return $http({
+                method: 'POST',
+                url: '/api/v1/users/' + user_id + '/change-password',
+                data: {'new_password': new_password},
+            }).then(function(response) {
+                console.log(response);
             });
         };
     }
@@ -240,6 +328,63 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 
     this.replaceAll = function(str, find, replace) {
         return str.replace(new RegExp(this.escapeRegExp(find), 'g'), replace);
+    };
+
+    this.truncateString = function(str, max, add) {
+        add = add || '...';
+        return (typeof str === 'string' && str.length > max ? str.substring(0,max)+add : str);
+    };
+})
+
+.service('utilityService', function() {
+    var self = this;
+
+    self.removeMatchFromArray = function(key, array) {
+        for(var i = 0; i < array.length; i++) {
+            if(key === array[i][key]) {
+                array.splice(i, 1);
+            }
+        }
+        return array;
+    };
+
+    self.arrayOfObjValues = function(key, arrayOfObjects) {
+        var newArray = [];
+        for(var i = 0; i < arrayOfObjects.length; i++) {
+            newArray.push(arrayOfObjects[i][key]);
+        }
+        return newArray;
+    };
+
+    self.dedupe = function(array) {
+        return uniqueArray = array.filter(function(item, pos) {
+            return array.indexOf(item) == pos;
+        });
+    };
+
+    self.getUniqueArray = function(key, array) {
+        return self.dedupe(self.arrayOfObjValues(key, array));
+    };
+
+    self.mergeObjects = function(obj1, obj2) {
+        for(var key in obj2) {
+            obj1[key] = obj2[key];
+        }
+        return obj1;
+    };
+
+    //Base array as in main loop, arrayToCompare as in inner loop
+    self.compareAndMergeObjectsByKey = function(keyToCompare, baseArray, arrayToCompare) {
+        var mergedObjects = [];
+        for(var i = 0; i < baseArray.length; i++) {
+            for(var j = 0; j < arrayToCompare.length; j++) {
+                if(baseArray[i][keyToCompare] === arrayToCompare[j][keyToCompare]) {
+                    var mergedObject = self.mergeObjects(baseArray[i], arrayToCompare[j]);
+                    mergedObjects.push(mergedObject);
+                }
+            }
+        }
+        return mergedObjects;
     };
 })
 

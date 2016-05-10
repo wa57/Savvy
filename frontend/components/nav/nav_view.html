@@ -26,30 +26,29 @@
                 <li ng-show="nav.isAuthenticated">
                     <a ui-sref="submit">Submit Price</a>
                 </li>
+                <li ng-show="nav.isAuthenticated">
+                    <a ui-sref="receipt">Upload Receipt</a>
+                </li>
                 <li>
                     <a ui-sref="faq">FAQs</a>
                 </li>
             </ul>
             <ul class="pull-right">
                 <li ng-if="!nav.isAuthenticated">
-                    <a class="btn btn-sm btn-default" ui-sref="signup">Sign Up</a>
+                    <a class="btn btn-sm btn-primary" ui-sref="signup">Sign Up</a>
                 </li>
                 <li ng-if="!nav.isAuthenticated">
                     <a class="btn btn-sm btn-success" ui-sref="login">Log In</a>
                 </li>
                 <li ng-if="nav.isAuthenticated" style="color: #fff;">
-                    <a ui-sref="profile">Hello, <span ng-bind="nav.userData.first_name"></span></a>
+                    <a ui-sref="profile({username: '{{nav.userData.username}}'})">Hello, <span ng-bind="nav.userData.first_name"></span></a>
+                </li>
+                <li ng-if="nav.isAuthenticated && nav.isAdmin">
+                    <a ui-sref="userInfo">User Information</a>
                 </li>
                 <li ng-if="nav.isAuthenticated">
                     <a class="btn btn-sm btn-danger" ng-click="logout()">Logout</a>
                 </li>
-                <!--<li>
-                    <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
-                </li>-->
-                <!--<li>
-                    <a style="margin-right: 10px;">Hello Taylor!</a>
-                    <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
-                </li>-->
             </ul>
         </div>
         <div id="mobile-nav-wrapper">
@@ -66,16 +65,12 @@
                         <a ui-sref="about">About</a>
                     </li>
                 </ul>
-                <ul ng-if=""
                 <ul id="nav-right">
                     <li>
                         <a ui-sref="login">Login</a>
                     </li>
                     <li>
                         <a ui-sref="signup">Sign Up</a>
-                    </li>
-                    <li>
-                        <img id="user-avatar" src="https://towson.givecorps.com/assets/user-icon-silhouette-08553e35ff46c59f99c559bf4fa47e34.png">
                     </li>
                 </ul>
             </div>

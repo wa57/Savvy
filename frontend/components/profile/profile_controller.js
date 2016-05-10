@@ -1,16 +1,25 @@
 angular.module('savvy').controller('profileCtrl',
-['$scope', 'User', '$stateParams', 'productService', '$q', 'User', 'userData',
-function($scope, User, $stateParams, productService, $q, userData) {
-    console.log(userData.userData);
+['$scope', 'User', '$stateParams', 'productService', '$q', 'adminService',
+function($scope, User, $stateParams, productService, $q, adminService) {
     var self = this;
     self.user = null;
     self.status = {};
 
-    /*array.sort(function(a,b){
-        // Turn your strings into dates, and then subtract them
-        // to get a value that is either negative, positive, or zero.
-        return new Date(b.date) - new Date(a.date);
-    });*/
+    function init() {
+        getUserByUsername($stateParams.username);
+    }
+
+    function getUserByUsername(username) {
+        adminService.getUserByUsername(username).then(function(response) {
+            if(response.status && response.status === 403) {
+                User.getCurrentUser().then(function(user) {
+                    self.user = user;
+                });
+            } else {
+                self.user = response;
+            }
+        });
+    }
 
     User.getCurrentUser()
         .then(function(user) {
@@ -43,13 +52,11 @@ function($scope, User, $stateParams, productService, $q, userData) {
             });
         });
 
-    self.getProductIds = function() {
-
-    };
-
     self.dedupeArray = function(productIds) {
         return uniqueArray = productIds.filter(function(item, pos) {
             return productIds.indexOf(item) == pos;
         });
-    }
+    };
+
+    init();
 }]);

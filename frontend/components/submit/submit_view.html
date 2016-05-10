@@ -2,10 +2,6 @@
     <div class="content-header">
         <h4><i class="fa fa-share-square-o"></i> Submit a Price</h4>
     </div>
-    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-        <li role="presentation" class="active"><a href="#">Submit a Single Price</a></li>
-        <li role="presentation"><a href="#">Upload a Receipt</a></li>
-    </ul>
     <form ng-submit="submitPrice()" ng-hide="message === 'success'" name="submitForm">
     	<div class="instructions alert alert-success" style="width: 75%;">
             <i class="fa fa-info-circle"></i>
@@ -137,4 +133,6 @@
             <button ng-click="clearProduct(product)" class="btn btn-link" style="padding: 0">Submit Another Price</button>
         </div>
     </div>
+
+    <div></div>
 </div>
