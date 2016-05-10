@@ -389,3 +389,60 @@ def api_change_password(user_id):
     user = user_db.get_user(user_id=user_id)
     user_db.change_password(user, new_password=new_password)
     return json_success("Password changed for user '{}'.".format(user.username))
+
+
+@user_blueprint.route("/alter", methods=["POST"])
+@admin_required
+def api_alter_user():
+    """Alters a user.
+
+    Example Request:
+        HTTP POST /api/v1/users/alter
+        {
+            "user_id": "56cf848722e7c01d0466e533",
+            "roles": ["user", "admin"],         // Optional, only options are "user" and "admin"
+            "first_name": "John",               // Optional
+            "email": "john.doe@example.com",    // Optional
+            "username": "johndoe",              // Optional
+            "active": true                      // Optional
+        }
+
+    Example Response:
+        {
+          "success": "User updated successfully!"
+        }
+    """
+    data = request.get_json()
+
+    user_id = data.get("user_id", None)
+    if user_id is None:
+        return json_error("user_id is required.")
+
+    update = {}
+
+    roles = data.get("roles", None)
+    if roles is not None:
+        for role in roles:
+            if role not in UserDB.AVAILABLE_ROLES:
+                return json_error("'{}' is not a valid role.".format(role))
+        update["roles"] = roles
+
+    first_name = data.get("first_name", None)
+    if first_name is not None:
+        update["first_name"] = first_name
+
+    email = data.get("email", None)
+    if email is not None:
+        update["email"] = email
+
+    username = data.get("username", None)
+    if username is not None:
+        update["username"] = username
+
+    is_active = data.get("active", None)
+    if is_active is not None:
+        update["active"] = bool(is_active)
+
+    UserDB().alter_user(user_id=user_id, changes=update)
+
+    return json_success("User altered successfully!")
