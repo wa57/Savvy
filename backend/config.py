@@ -9,6 +9,3 @@ MONGO_USER = "savvy"
 MONGO_PASSWORD = "dwSKylqFVGSrICss6ekH"
 
 GOOGLE_CLOUD_VISION_KEY = "backend/keys/Savvy-b2da75b3a5c5.json"
-
-GMAIL_USERNAME = "besavvyxyz@gmail.com"
-GMAIL_PASSWORD = "Rowing12345"
