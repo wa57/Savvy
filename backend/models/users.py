@@ -109,6 +109,8 @@ class AnonymousUser(object):
 class UserDB(DB):
     """Provides controls for User Database."""
 
+    AVAILABLE_ROLES = ["user", "admin"]
+
     def activate_user(self, user):
         """Enables a user account.
 
@@ -338,8 +340,20 @@ class UserDB(DB):
         if hashed_password == user.hashed_password:
             return user
         logger.debug("Passwords do not match for user '{}'.".format(username))
-        logger.debug(hashed_password)
-        logger.debug(user.hashed_password)
         return False
+
+    def alter_user(self, user_id, changes):
+        """Returns True if the username and password combo is correct."""
+        logger.debug("Altering user '{}'.".format(user_id))
+        update_result = self.db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {
+                "$set": changes
+            }
+        )
+        if update_result.modified_count != 1:
+            msg = "Unable to alter user '{}'.".format(user_id)
+            logger.error(msg)
+            raise Exception(msg)
 
 user_db = UserDB()
