@@ -13,7 +13,14 @@ logger = logging.getLogger("savvy.utils")
 def json_error(msg, status_code=200, **data):
     import json
     import pprint
-    logger.debug(pprint.pformat(vars(request)))
+    try:
+        request_dump = pprint.pformat(vars(request))
+        if len(request_dump) > 4096:
+            request_dump = "{}<truncated to 4096 bytes>".format(request_dump[:4096])
+        logger.debug(request_dump)
+    except Exception as e:
+        logger.error("Unable to log request dump: {}".format(e))
+
     if isinstance(msg, Exception):
         msg = str(msg)
     response_data = {"error": msg}
