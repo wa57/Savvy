@@ -1,0 +1,68 @@
+#userInfo {
+    table {
+        width: 100%;
+        border-radius: 1px;
+    }
+    input[type=text] {
+        padding: 5px;
+        width: 100%;
+    }
+
+    table tr td, table button {
+        font-size: 14px;
+    }
+
+    table th {
+        font-size: 14px;
+    }
+
+    .table-hover tbody tr:hover, .selected {
+        background-color: #E8E8E8;
+        cursor: pointer;
+    }
+
+    .table tbody>tr>td.center-align {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    #usage-instructions {
+        margin: 15px 0;
+    }
+
+    #usage-instructions .panel-body {
+        padding: 5px 0;
+        margin-top: 10px;
+    }
+
+    .input-group input, .input-group-addon {
+        border-radius: 1px;
+    }
+
+    #detailed-user-info {
+        .panel-body label p {
+            margin-bottom: 5px;
+        }
+
+        label {
+            margin-right: 15px;
+        }
+
+        input {
+            width: 200px;
+        }
+    }
+
+    #edit-user {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .toggle {
+        padding: 0;
+    }
+}
