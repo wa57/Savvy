@@ -1,4 +1,5 @@
 import base64
+import binascii
 import logging
 import re
 
@@ -41,8 +42,37 @@ def api_get_products_from_image():
     image_binary = requests.get(image_url).content or ""
     if not image_binary:
         return json_error("Unable to get image.")
-
     image_base64 = base64.b64encode(image_binary)
+
+    text = get_text_from_image(image_base64)
+
+    text = text.lower()     # Set everything to lower-case
+    logger.debug("Start text: '{}'.".format(text))
+    text = re.sub("\s+", " ", text)   # Remove new-lines and tabs. Set adjacent spacing to a single space
+    text = re.sub("\s\d+\s", "", text)    # Remove anything that's only a digit
+    text = re.sub("sub ?total.+$", "", text)  # Remove everything from the words "sub total" to the end of the receipt
+    logger.debug("Final text: '{}'.".format(text))
+    matches = re.findall("([a-z][a-z0-9 ]+?)\$?(\d{1,5}\.\d{1,5})", text)
+    if matches:
+        return json_success("OK", products=matches)
+    return json_error("Unable to automatically read products from receipt.")
+
+
+@ocr_blueprint.route("/get-products-from-upload", methods=["POST"])
+@crossdomain(origin="*")
+@login_required
+def api_get_products_from_image_upload():
+    """Run OCR on an image."""
+    data = request.get_json()
+
+    image_upload = data.get("image", None)
+    if image_upload is None:
+        return json_error("A base64 encoded image is required.")
+
+    try:
+        image_base64 = base64.b64encode(base64.b64decode(image_upload))
+    except binascii.Error as e:
+        return json_error("The image provided is not valid base64 encoding.")
 
     text = get_text_from_image(image_base64)
 
