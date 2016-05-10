@@ -3,7 +3,7 @@
         width: 100%;
         border-radius: 1px;
     }
-    table input[type=text] {
+    input[type=text] {
         padding: 5px;
         width: 100%;
     }
@@ -18,9 +18,6 @@
 
     .table-hover tbody tr:hover, .selected {
         background-color: #E8E8E8;
-    }
-
-    .table tbody:hover {
         cursor: pointer;
     }
 
@@ -31,12 +28,6 @@
 
     .full-width {
         width: 100%;
-    }
-
-    .alert-sm {
-        padding: 5px;
-        margin-bottom: 5px;
-        border-radius: 1px;
     }
 
     #usage-instructions {
@@ -53,8 +44,25 @@
     }
 
     #detailed-user-info {
-        .panel-body label input p {
+        .panel-body label p {
             margin-bottom: 5px;
         }
+
+        label {
+            margin-right: 15px;
+        }
+
+        input {
+            width: 200px;
+        }
+    }
+
+    #edit-user {
+        margin-top: 15px;
+        margin-bottom: 15px;
+    }
+
+    .toggle {
+        padding: 0;
     }
 }

@@ -24,6 +24,11 @@ h4 { font-size: 1.12em; }
 h5 { font-size: .83em; }
 h6 { font-size: .75em; }
 
+.heading-green {
+    color: #00A388;
+    margin-bottom: 20px;
+}
+
 [ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
     display: none !important;
 }
@@ -47,6 +52,11 @@ button:active:focus {
     padding: 8px;
     margin: 0 -15px 15px -15px;
     background-color: $primary_color;
+}
+
+.content-centered {
+    width: 50%;
+    margin: 20px auto;
 }
 
 #content {
@@ -112,8 +122,27 @@ input, select {
     border-radius: 2px;
 }
 
+.input-sm {
+    padding: 5px;
+}
+
 .instructions {
 
+}
+
+.logo-heading {
+    display: block;
+    margin: 0 auto;
+    width: 10%;
+    margin-top: 20px;
+}
+
+.logo-divider {
+    border-bottom: 1px solid #ebebeb;
+    height: 1px;
+    margin-top: 20px;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 
 .divider {
@@ -174,7 +203,7 @@ h1, h2, h3, h4, h5 {
 
 .btn-primary {
     background-color: #6283AD;
-    color: #fff;
+    color: #fff !important;
     border: none;
     border-radius: 2px;
 
@@ -211,6 +240,12 @@ h1, h2, h3, h4, h5 {
     background-color: #f1f9f7;
     border-color: #e0f1e9;
     color: $primary_color;
+}
+
+.alert-sm {
+    padding: 5px;
+    margin-bottom: 5px;
+    border-radius: 1px;
 }
 
 .panel {
