@@ -69,6 +69,10 @@ def api_get_products_from_image_upload():
     if image_upload is None:
         return json_error("A base64 encoded image is required.")
 
+    image_upload = image_upload.rsplit(",")
+    if len(image_upload) > 1:
+        image_upload = image_upload[1]
+
     try:
         image_base64 = base64.b64encode(base64.b64decode(image_upload))
     except binascii.Error as e:
