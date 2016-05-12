@@ -140,6 +140,8 @@ angular.module('savvy').config(
             url: '/receipt',
             templateUrl: 'frontend/components/receipt/receipt_view.html',
             title: 'Upload Receipt',
+            controller: 'receiptCtrl',
+            controllerAs: 'receipt',
             requiresAuth: true,
             authorizedRoles: ['user', 'admin'],
         })

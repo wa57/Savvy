@@ -5,18 +5,21 @@ function submitCtrl($scope, productService, $filter) {
     function init() {
         initData();
         initGooglePlaces();
+        $scope.product = initProduct();
+        setMessages();
     }
 
     function initData() {
-        $scope.product = {
-            tags: []
-        };
+        $scope.price = '';
+        document.getElementById('product-place').value = "";
+    }
+
+    function setMessages() {
         $scope.message = "";
         $scope.messages = {
             tag_message: "",
             save_message: ""
-        }
-        document.getElementById('product-place').value = "";
+        };
     }
 
     function initGooglePlaces() {
@@ -45,15 +48,19 @@ function submitCtrl($scope, productService, $filter) {
         console.log($scope.product);
         productService.saveProduct($scope.product).then(function(response){
             $scope.message = "success";
+            $scope.product = initProduct();
+            initData();
         },
         function(){
             $scope.message = "error";
         });
     };
 
-    $scope.clearProduct = function(product) {
-        product = {};
-    };
+    function initProduct() {
+        var product = {};
+        product.tags = [];
+        return product;
+    }
 
     $scope.addTag = function() {
         var exists_in_array = $scope.product.tags.indexOf($scope.tag);
@@ -70,9 +77,9 @@ function submitCtrl($scope, productService, $filter) {
         $scope.messages.tag_message = "";
     };
 
-    $scope.searchProducts = function() {
-        if($scope.product.description) {
-            productService.getProductsByDesc($scope.product.description).then(function(response){
+    $scope.searchProducts = function(productDesc) {
+        if(productDesc && productDesc.length > 3) {
+            productService.getProductsByDesc(productDesc).then(function(response){
                 $scope.products = response;
             });
         } else {

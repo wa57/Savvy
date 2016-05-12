@@ -26,12 +26,16 @@ angular.module('savvy')
         });
     };
 
-    self.getUniqueProductsByIds = function(baseArray) {
+    self.getUniqueProductsByIds = function(baseArray, limit) {
+        if(typeof limit !== 'undefined' && baseArray.length > limit) {
+            baseArray.reverse();
+            baseArray.length = limit;
+        }
         var uniqueProductIds = utilityService.getUniqueArray('product_id', baseArray);
         return self.getProductsByIds(uniqueProductIds).then(function(products) {
             return utilityService.compareAndMergeObjectsByKey('product_id', baseArray, products);
         });
-    }
+    };
 
     this.getProductsByDesc = function(description) {
         if(description !== "") {
@@ -71,6 +75,16 @@ angular.module('savvy')
                 return response;
             });
         }
+    };
+
+    this.getProductsFromBase64Image = function(base64Image) {
+        return $http({
+            method: "POST",
+            url: "/api/v1/ocr/get-products-from-upload",
+            data: {'image': base64Image}
+        }).then(function(response){
+            return response.data.products;
+        });
     };
 }])
 
@@ -189,7 +203,6 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
         };
 
         self.isAdmin = function(user) {
-            //return self.userData.roles.indexOf('admin') !== -1;
             return user.roles.indexOf('admin') !== -1;
         };
 
@@ -237,7 +250,7 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 url: '/api/v1/users/reset-password',
                 data: {'reset_code': reset_code, 'new_password': new_password},
             }).then(function(response) {
-                console.log(response);
+                return response;
             });
         }
 
@@ -247,8 +260,23 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
                 url: '/api/v1/users/' + user_id + '/change-password',
                 data: {'new_password': new_password},
             }).then(function(response) {
-                console.log(response);
+                return response;
             });
+        };
+
+        self.alterUser = function(user) {
+            return $http({
+                method: 'POST',
+                url: '/api/v1/users/alter',
+                data: {
+                    'user_id': user.user_id,
+                    'first_name': user.first_name,
+                    'email': user.email,
+                    'roles': user.roles
+                }
+            }).then(function(response) {
+                return response;
+            })
         };
     }
 
@@ -339,9 +367,14 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
 .service('utilityService', function() {
     var self = this;
 
+    self.resizeArray = function(array, newLength) {
+        //array = array.splice(5, )
+        //return array;
+    };
+
     self.removeMatchFromArray = function(key, array) {
         for(var i = 0; i < array.length; i++) {
-            if(key === array[i][key]) {
+            if(key === array[i][key]) { //this doesn't make sense, need to pass in value not key
                 array.splice(i, 1);
             }
         }
@@ -385,6 +418,25 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             }
         }
         return mergedObjects;
+    };
+
+    self.filterOCRArray = function(ocrArray) {
+        var newArray = []
+        var keys = ['description', 'price'];
+        for(var i = 0; i < ocrArray.length; i++) {
+            var ocrObj = self.toObject(ocrArray[i], keys);
+            newArray.push(ocrObj);
+        }
+        console.log(newArray);
+        return newArray;
+    };
+
+    self.toObject = function(array, keys) {
+        var obj = {};
+        for(var i = 0; i < array.length; ++i) {
+            obj[keys[i]] = array[i];
+        }
+        return obj;
     };
 })
 
