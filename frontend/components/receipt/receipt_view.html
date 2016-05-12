@@ -2,9 +2,14 @@
     <h4><i class="fa fa-cloud-upload"></i> Upload a Receipt</h4>
 </header>
 <div>
-    <label for="receipt-upload">Upload a photo of your receipt</label><input type="file" id="receipt-upload">
     <div>
-        <button class="btn btn-primary">Upload</button>
+        <label>
+            <span>Upload a picture of the product</span>
+            <input type="file" fileread="receipt.image">
+        </label>
+    </div>
+    <div>
+        <button ng-click="receipt.getProductsFromBase64Image(receipt.image)">Upload</button>
     </div>
     <div class="row">
         <div class="col-sm-6">
@@ -13,7 +18,17 @@
         </div>
         <div class="col-sm-6">
             <p>Here is your receipt</p>
-            <img alt="Picture of User Uploaded Receipt"
+            <div ng-show="receipt.image">
+                <img ng-src="{{receipt.image}}" alt="Picture of User Uploaded Receipt">
+            </div>
         </div>
+    </div>
+    <div>
+        <input type="text" ng-model="receipt.gPlaceAutocomplete" details="receipt.googlePlace" googleplace>
+        <button ng-click="receipt.test(receipt.googlePlace)">Test</button>
+    </div>
+    <div ng-repeat="product in receipt.productsFromImage">
+        <input type="text" ng-model="product.description">
+        <input type="text" ng-model="product.price">
     </div>
 </div>

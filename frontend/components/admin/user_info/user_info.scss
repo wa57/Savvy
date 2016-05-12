@@ -50,19 +50,23 @@
 
         label {
             margin-right: 15px;
+            //width: 100%;
         }
 
-        input {
-            width: 200px;
+        input[type=text] {
+            width: 100%;
         }
     }
 
     #edit-user {
-        margin-top: 15px;
         margin-bottom: 15px;
     }
 
     .toggle {
         padding: 0;
+    }
+
+    #save-changes {
+        margin-top: 10px;
     }
 }

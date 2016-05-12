@@ -2,7 +2,7 @@
     <div class="content-header">
         <h4><i class="fa fa-share-square-o"></i> Submit a Price</h4>
     </div>
-    <form ng-submit="submitPrice()" ng-hide="message === 'success'" name="submitForm">
+    <form ng-submit="submitPrice()" name="submitForm">
     	<div class="instructions alert alert-success" style="width: 75%;">
             <i class="fa fa-info-circle"></i>
             Complete the required (*) fields below then click Submit to add your product or service.
@@ -18,7 +18,7 @@
             <input type="text"
                     ng-model="product.description"
                     ng-model-options="{ debounce: 300 }"
-                    ng-change="searchProducts()"
+                    ng-change="searchProducts(product.description)"
                     ng-blur="products = []"
                     ng-required="true"
                     id="product-description"
@@ -66,11 +66,11 @@
         <hr>
 
         <!--Optional Section-->
-        <div class="alert alert-success" style="width: 75%;">
+        <!--<div class="alert alert-success" style="width: 75%;">
             <i class="fa fa-info-circle"></i>
             You can add tags here. Click add after entering each tag. You may
             submit more than one.
-        </div>
+        </div>-->
 
         <!--Add Tags-->
         <section class="add-tag form-section">
@@ -116,7 +116,7 @@
     </form>
 
     <!--Show Receipt-->
-    <div ng-show="message === 'success'">
+    <!--<div ng-show="message === 'success'">
         <div class="alert alert-success">
             <i class="fa fa-check-circle primary-color"></i>
             Price successfully added!
@@ -132,7 +132,5 @@
         <div>
             <button ng-click="clearProduct(product)" class="btn btn-link" style="padding: 0">Submit Another Price</button>
         </div>
-    </div>
-
-    <div></div>
+    </div>-->
 </div>

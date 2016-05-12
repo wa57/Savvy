@@ -37,6 +37,14 @@ h6 { font-size: .75em; }
     box-shadow: none;
 }
 
+.full-width {
+    width: 100%;
+}
+
+.margin-bottom {
+    margin-bottom: 15px;
+}
+
 button {
     border-color: none;
     &:hover {
@@ -128,6 +136,11 @@ input, select {
 
 .instructions {
 
+}
+
+.center-loader {
+    margin: auto;
+    display: block;
 }
 
 .logo-heading {
