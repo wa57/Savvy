@@ -71,6 +71,7 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
     };
 
     self.getDataTable = function(selectedUser) {
+        displayLoader('saveChanges', false);
         switch(selectedUser.dataTableOption) {
             case 'priceHistory':
                 if(!('price_history' in selectedUser)) {
@@ -120,7 +121,7 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
         User.alterUser(selectedUser).then(function(response) {
             console.log(response);
             displayLoader('saveChanges', false);
-            self.message.detailedUserInfo = setMessage('Changes Saved!', 'success', true);
+            self.message.detailedUserInfo = setMessage('Changes Saved', 'success', true);
         });
     };
 

@@ -20,198 +20,201 @@
             </ul>
         </div>
     </div>-->
-    <div id="user-options" class="row">
-        <div class="col-sm-4">
-            <form>
-                <div class="form-group">
-                    <div class="input-group">
-                        <div class="input-group-addon"><i class="fa fa-search"></i></div>
-                        <input type="text" ng-model="searchUsers" class="form-control" placeholder="Search for a user">
+    <img ng-show="!userInfo.allUsers" src="/frontend/assets/images/loader.gif" class="center-loader">
+    <div ng-show="userInfo.allUsers">
+        <div id="user-options" class="row">
+            <div class="col-sm-4">
+                <form>
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon"><i class="fa fa-search"></i></div>
+                            <input type="text" ng-model="searchUsers" class="form-control" placeholder="Search for a user">
+                        </div>
                     </div>
-                </div>
-            </form>
+                </form>
+            </div>
+            <div class="col-sm-4">
+                <button ng-click="userInfo.displayNewUserFields()" class="btn btn-{{userInfo.newUserButton.status}}">{{userInfo.newUserButton.text}}</button>
+            </div>
+            <div class="col-sm-4 pull-right">
+                <button class="btn btn-primary">
+                    <i class="fa fa-refresh" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
-        <div class="col-sm-4">
-            <button ng-click="userInfo.displayNewUserFields()" class="btn btn-{{userInfo.newUserButton.status}}">{{userInfo.newUserButton.text}}</button>
+        <div ng-show="userInfo.message.table.show" id="message" class="alert alert-{{userInfo.message.table.status}} alert-sm">
+            <i ng-show="userInfo.message.table.status === 'danger'" class="fa fa-exclamation-triangle"></i>
+            <i ng-show="userInfo.message.table.status === 'success'" class="fa fa-check"></i>
+            <span ng-bind="userInfo.message.table.text"><span>
         </div>
-        <div class="col-sm-4 pull-right">
-            <button class="btn btn-primary">
-                <i class="fa fa-refresh" aria-hidden="true"></i>
-            </button>
-        </div>
-    </div>
-    <div ng-show="userInfo.message.table.show" id="message" class="alert alert-{{userInfo.message.table.status}} alert-sm">
-        <i ng-show="userInfo.message.table.status === 'danger'" class="fa fa-exclamation-triangle"></i>
-        <i ng-show="userInfo.message.table.status === 'success'" class="fa fa-check"></i>
-        <span ng-bind="userInfo.message.table.text"><span>
-    </div>
-    <table id="user-info-table" class="table table-striped table-bordered table-condensed table-hover">
-        <thead>
-            <tr>
-                <th>User ID</th>
-                <th>First Name</th>
-                <th>Email Address</th>
-                <th>Username</th>
-                <th>Password</th>
-                <th>Admin</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr ng-show="userInfo.showNewUser">
-                <td></td>
-                <td>
-                    <input type="text" ng-model="userInfo.newUser.first_name" placeholder="First Name">
-                </td>
-                <td>
-                    <input type="text" ng-model="userInfo.newUser.email" placeholder="Email">
-                </td>
-                <td>
-                    <input type="text" ng-model="userInfo.newUser.username" placeholder="Username">
-                </td>
-                <td>
-                    <input type="text" ng-model="userInfo.newUser.password" placeholder="Password">
-                </td>
-                <td class="center-align"></td>
-                <td class="center-align">
-                    <button ng-click="userInfo.createUser(userInfo.newUser)" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
-                </td>
-            </tr>
-            <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers" ng-click="userInfo.displayDetailedUserInfo(user)" ng-class="{selected: user===userInfo.selectedUser}">
-                <td ng-bind="userInfo.truncateString(user.user_id, 10, '...')" title="{{user.user_id}}"></td>
-                <td ng-bind="user.first_name"></td>
-                <td ng-bind="user.email"></td>
-                <td ng-bind="user.username"></td>
-                <td>
-                    <button
-                        ng-click="userInfo.sendResetCode(user.email)"
-                        class="btn btn-warning btn-xs full-width">
-                        Send Reset Code
-                    </button>
-                </td>
-                <td class="center-align"><input type="checkbox" ng-checked="userInfo.isAdmin(user)" disabled="disabled"></td>
-                <td class="center-align">
-                    <button
-                        ng-click="userInfo.deleteUser(user.user_id)"
-                        class="btn btn-danger btn-xs"
-                        alt="Delete">
-                        <i class="fa fa-trash"></i>
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+        <table id="user-info-table" class="table table-striped table-bordered table-condensed table-hover">
+            <thead>
+                <tr>
+                    <th>User ID</th>
+                    <th>First Name</th>
+                    <th>Email Address</th>
+                    <th>Username</th>
+                    <th>Password</th>
+                    <th>Admin</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-show="userInfo.showNewUser">
+                    <td></td>
+                    <td>
+                        <input type="text" ng-model="userInfo.newUser.first_name" placeholder="First Name">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="userInfo.newUser.email" placeholder="Email">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="userInfo.newUser.username" placeholder="Username">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="userInfo.newUser.password" placeholder="Password">
+                    </td>
+                    <td class="center-align"></td>
+                    <td class="center-align">
+                        <button ng-click="userInfo.createUser(userInfo.newUser)" class="btn btn-xs btn-success"><i class="fa fa-check"></i></button>
+                    </td>
+                </tr>
+                <tr ng-repeat="user in userInfo.allUsers | filter:searchUsers" ng-click="userInfo.displayDetailedUserInfo(user)" ng-class="{selected: user===userInfo.selectedUser}">
+                    <td ng-bind="userInfo.truncateString(user.user_id, 10, '...')" title="{{user.user_id}}"></td>
+                    <td ng-bind="user.first_name"></td>
+                    <td ng-bind="user.email"></td>
+                    <td ng-bind="user.username"></td>
+                    <td>
+                        <button
+                            ng-click="userInfo.sendPasswordResetCode(user.email)"
+                            class="btn btn-warning btn-xs full-width">
+                            Send Reset Code
+                        </button>
+                    </td>
+                    <td class="center-align"><input type="checkbox" ng-checked="userInfo.isAdmin(user)" disabled="disabled"></td>
+                    <td class="center-align">
+                        <button
+                            ng-click="userInfo.deleteUser(user.user_id)"
+                            class="btn btn-danger btn-xs"
+                            alt="Delete">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
 
-    <div id="detailed-user-info" class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">
-                Selected User:
-                <strong><span ng-bind="userInfo.selectedUser.username"></span></strong>
-            </h3>
-        </div>
-        <div class="panel-body">
-            <p ng-show="!userInfo.selectedUser">
-                No user selected
-            </p>
-            <div ng-show="userInfo.selectedUser" class="row">
-                <div class="col-sm-6">
-                    <div class="margin-bottom">
-                        <strong>User ID:</strong> <span ng-bind="userInfo.selectedUser.user_id"></span>
-                    </div>
-                    <div class="margin-bottom">
-                        <strong>Username:</strong> <span ng-bind="userInfo.selectedUser.username"></span>
-                    </div>
-                    <div class="margin-bottom">
-                        <label for="is-admin"><span>Is Administrator:</span></label>
-                        <input type="checkbox" ng-model="userInfo.selectedUser.isAdmin" ng-checked="userInfo.isAdmin(userInfo.selectedUser)" ng-change="userInfo.toggleAdmin(userInfo.selectedUser)" id="is-admin">
-                    </div>
-                    <div class="margin-bottom">
-                        <label class="full-width">
-                            <p>First Name</p>
-                            <input type="text" ng-model="userInfo.selectedUser.first_name">
-                        </label>
-                    </div>
-                    <div class="margin-bottom">
-                        <label class="full-width">
-                            <p>Email</p>
-                            <input type="text" ng-model="userInfo.selectedUser.email">
-                        </label>
-                    </div>
-                    <div class="margin-bottom">
-                        <label class="full-width">
-                            <p>Change Password</p>
-                            <input type="text" ng-model="userInfo.selectedUser.new_password" placeholder="New Password">
-                        </label>
-                    </div>
-                    <div id="save-changes">
-                        <button ng-click="userInfo.saveChanges(userInfo.selectedUser)" class="btn btn-success">Save Changes</button>
-                        <img ng-show="userInfo.loaders.saveChanges.show" src="/frontend/assets/images/loader.gif">
-                        <span ng-show="userInfo.message.detailedUserInfo.show" id="message" class="alert alert-{{userInfo.message.detailedUserInfo.status}} alert-sm">
-                            <i ng-show="userInfo.message.detailedUserInfo.status === 'danger'" class="fa fa-exclamation-triangle"></i>
-                            <i ng-show="userInfo.message.detailedUserInfo.status === 'success'" class="fa fa-check"></i>
-                            <span ng-bind="userInfo.message.detailedUserInfo.text"><span>
-                        </span>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <select ng-model="userInfo.selectedUser.dataTableOption" ng-change="userInfo.getDataTable(userInfo.selectedUser)" class="full-width margin-bottom">
-                        <option value="" selected="true" disabled="disabled">Select a table...</option>
-                        <option value="priceHistory">Price Submission History</option>
-                        <option value="voteHistory">Vote History</option>
-                    </select>
-                    <div>
-                        <img ng-show="userInfo.loaders.dataTable.show" src="/frontend/assets/images/loader.gif" class="center-loader">
-                    </div>
-                    <div ng-show="userInfo.selectedUser.price_history && userInfo.selectedUser.dataTableOption === 'priceHistory'" class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>Price Submission History</h3>
+        <div id="detailed-user-info" class="panel panel-default">
+            <div class="panel-heading">
+                <h3 class="panel-title">
+                    Selected User:
+                    <strong><span ng-bind="userInfo.selectedUser.username"></span></strong>
+                </h3>
+            </div>
+            <div class="panel-body">
+                <p ng-show="!userInfo.selectedUser">
+                    No user selected
+                </p>
+                <div ng-show="userInfo.selectedUser" class="row">
+                    <div class="col-sm-6">
+                        <div class="margin-bottom">
+                            <strong>User ID:</strong> <span ng-bind="userInfo.selectedUser.user_id"></span>
                         </div>
-                        <table class="table table-striped table-bordered table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Location</th>
-                                    <th>Price</th>
-                                    <th>Date</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="submission in userInfo.selectedUser.price_history">
-                                    <td ng-bind="submission.description"></td>
-                                    <td>
-                                        <strong><span ng-bind="submission.business_details.google_places.name"></span></strong>
-                                        <div>
-                                            <small ng-bind="submission.business_details.google_places.vicinity"></small>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        $<span ng-bind="submission.price / 100"></span>
-                                    </td>
-                                    <td ng-bind="submission.submitted_timestamp"></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div ng-show="userInfo.selectedUser.detailed_voting_history && userInfo.selectedUser.dataTableOption === 'voteHistory'" class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3>
-                                Vote History
-                            </h3>
+                        <div class="margin-bottom">
+                            <strong>Username:</strong> <span ng-bind="userInfo.selectedUser.username"></span>
                         </div>
-                        <table class="table table-striped table-condensed">
-                            <thead>
-                                <tr>
-                                    <th>Product</th>
-                                    <th>Vote</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="vote in userInfo.selectedUser.detailed_voting_history">
-                                    <td ng-bind="vote.description"></td>
-                                    <td ng-bind="vote.vote"></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class="margin-bottom">
+                            <label for="is-admin"><span>Is Administrator:</span></label>
+                            <input type="checkbox" ng-model="userInfo.selectedUser.isAdmin" ng-checked="userInfo.isAdmin(userInfo.selectedUser)" ng-change="userInfo.toggleAdmin(userInfo.selectedUser)" id="is-admin">
+                        </div>
+                        <div class="margin-bottom">
+                            <label class="full-width">
+                                <p>First Name</p>
+                                <input type="text" ng-model="userInfo.selectedUser.first_name">
+                            </label>
+                        </div>
+                        <div class="margin-bottom">
+                            <label class="full-width">
+                                <p>Email</p>
+                                <input type="text" ng-model="userInfo.selectedUser.email">
+                            </label>
+                        </div>
+                        <div class="margin-bottom">
+                            <label class="full-width">
+                                <p>Change Password</p>
+                                <input type="text" ng-model="userInfo.selectedUser.new_password" placeholder="New Password">
+                            </label>
+                        </div>
+                        <div id="save-changes">
+                            <button ng-click="userInfo.saveChanges(userInfo.selectedUser)" class="btn btn-success">Save Changes</button>
+                            <img ng-show="userInfo.loaders.saveChanges.show" src="/frontend/assets/images/loader.gif">
+                            <span ng-show="userInfo.message.detailedUserInfo.show" id="message" class="alert alert-{{userInfo.message.detailedUserInfo.status}} alert-sm fadeOut">
+                                <i ng-show="userInfo.message.detailedUserInfo.status === 'danger'" class="fa fa-exclamation-triangle"></i>
+                                <i ng-show="userInfo.message.detailedUserInfo.status === 'success'" class="fa fa-check"></i>
+                                <span ng-bind="userInfo.message.detailedUserInfo.text"><span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <select ng-model="userInfo.selectedUser.dataTableOption" ng-change="userInfo.getDataTable(userInfo.selectedUser)" class="full-width margin-bottom">
+                            <option value="" selected="true" disabled="disabled">Select a table...</option>
+                            <option value="priceHistory">Price Submission History</option>
+                            <option value="voteHistory">Vote History</option>
+                        </select>
+                        <div>
+                            <img ng-show="userInfo.loaders.dataTable.show" src="/frontend/assets/images/loader.gif" class="center-loader">
+                        </div>
+                        <div ng-show="userInfo.selectedUser.price_history && userInfo.selectedUser.dataTableOption === 'priceHistory'" class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>Price Submission History</h3>
+                            </div>
+                            <table class="table table-striped table-bordered table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Location</th>
+                                        <th>Price</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="submission in userInfo.selectedUser.price_history">
+                                        <td ng-bind="submission.description"></td>
+                                        <td>
+                                            <strong><span ng-bind="submission.business_details.google_places.name"></span></strong>
+                                            <div>
+                                                <small ng-bind="submission.business_details.google_places.vicinity"></small>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            $<span ng-bind="submission.price / 100"></span>
+                                        </td>
+                                        <td ng-bind="submission.submitted_timestamp"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-show="userInfo.selectedUser.detailed_voting_history && userInfo.selectedUser.dataTableOption === 'voteHistory'" class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3>
+                                    Vote History
+                                </h3>
+                            </div>
+                            <table class="table table-striped table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Vote</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="vote in userInfo.selectedUser.detailed_voting_history">
+                                        <td ng-bind="vote.description"></td>
+                                        <td ng-bind="vote.vote"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

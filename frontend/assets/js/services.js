@@ -56,6 +56,18 @@ angular.module('savvy')
         });
     };
 
+    self.saveProducts = function(products) {
+        var promises = [];
+        for(var i = 0; i < products.length; i++) {
+            var productPromise = self.saveProduct(products[i]);
+            promises.push(productPromise);
+        }
+
+        return $q.all(promises).then(function success(response){
+            return response;
+        });
+    }
+
     this.saveVote = function(vote, product_id) {
         vote = 'up';
         if(vote === -1) {
@@ -427,7 +439,6 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             var ocrObj = self.toObject(ocrArray[i], keys);
             newArray.push(ocrObj);
         }
-        console.log(newArray);
         return newArray;
     };
 
@@ -437,6 +448,22 @@ function($http, $q, $state, $rootScope, EVENTS, $cookies, cookieHandler) {
             obj[keys[i]] = array[i];
         }
         return obj;
+    };
+
+    self.addKeyValueToObjects = function(key, value, arrayOfObjects) {
+        for(var i = 0; i < arrayOfObjects.length; i++) {
+            arrayOfObjects[i][key] = value;
+        }
+        return arrayOfObjects;
+    };
+
+    self.copyObjToObj = function(source, destination) {
+        if (!!destination) {
+            angular.copy(source, destination);
+        } else {
+            destination = angular.copy(source);
+        }
+        return destination;
     };
 })
 

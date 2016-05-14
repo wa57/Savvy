@@ -59,6 +59,8 @@ function submitCtrl($scope, productService, $filter) {
     function initProduct() {
         var product = {};
         product.tags = [];
+        product.image = null;
+        document.getElementById('product-image').value = "";
         return product;
     }
 
