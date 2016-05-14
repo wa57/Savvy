@@ -1,34 +1,39 @@
-<header class="content-header">
-    <h4><i class="fa fa-cloud-upload"></i> Upload a Receipt</h4>
-</header>
-<div>
+<div id="receipt-uploader">
+    <header class="content-header">
+        <h4><i class="fa fa-cloud-upload"></i> Upload a Receipt</h4>
+    </header>
     <div>
-        <label>
-            <span>Upload a picture of the product</span>
-            <input type="file" fileread="receipt.image">
-        </label>
-    </div>
-    <div>
-        <button ng-click="receipt.getProductsFromBase64Image(receipt.image)">Upload</button>
-    </div>
-    <div class="row">
-        <div class="col-sm-6">
-            <p>The receipt image should look like this</p>
-            <img alt="Sample Picture of Receipt for Instructional Purposes">
+        <div>
+            <label>
+                <span>Upload a picture of the product</span>
+                <input type="file" fileread="receipt.image">
+            </label>
         </div>
-        <div class="col-sm-6">
-            <p>Here is your receipt</p>
-            <div ng-show="receipt.image">
-                <img ng-src="{{receipt.image}}" alt="Picture of User Uploaded Receipt">
+        <div>
+            <button ng-click="receipt.getProductsFromBase64Image(receipt.image)">Upload</button>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <p>The receipt image should look like this</p>
+                <img src="/frontend/assets/images/sample-receipt.png" alt="Sample Picture of Receipt for Instructional Purposes" class="img-thumbnail" style="width: 50%;">
+            </div>
+            <div class="col-sm-6">
+                <p>Here is your receipt</p>
+                <div ng-show="receipt.image">
+                    <img ng-src="{{receipt.image}}" alt="Picture of User Uploaded Receipt" class="img-thumbnail" id="user-receipt">
+                </div>
             </div>
         </div>
-    </div>
-    <div>
-        <input type="text" ng-model="receipt.gPlaceAutocomplete" details="receipt.googlePlace" googleplace>
-        <button ng-click="receipt.test(receipt.googlePlace)">Test</button>
-    </div>
-    <div ng-repeat="product in receipt.productsFromImage">
-        <input type="text" ng-model="product.description">
-        <input type="text" ng-model="product.price">
+        <div>
+            <input type="text" ng-model="receipt.gPlaceAutocomplete" details="receipt.googlePlace" googleplace>
+            <button ng-click="receipt.test(receipt.googlePlace)">Test</button>
+        </div>
+        <div ng-repeat="product in receipt.productsFromImage">
+            <input type="text" ng-model="product.description">
+            <input type="text" ng-model="product.price">
+        </div>
+        <div>
+            <button ng-click="receipt.saveProducts(receipt.googlePlace, receipt.productsFromImage)" class="btn btn-success">Submit Prices</button>
+        </div>
     </div>
 </div>

@@ -108,9 +108,14 @@ angular.module('savvy').directive('googleplace', function() {
             details: '=?'
         },
         link: function(scope, element, attrs, model) {
+            var defaultBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(39.952584, -75.165222),
+                new google.maps.LatLng(39.952584, -75.165222)
+            );
             var options = {
-                types: [],
-                componentRestrictions: {}
+                types: ['establishment'],
+                componentRestrictions: {},
+                bounds: defaultBounds
             };
             scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
 
