@@ -1,4 +1,4 @@
-require('angular'); //THIS SLOWS IT DOWN SO MUCH
+//require('angular'); //THIS SLOWS IT DOWN SO MUCH
 //require('angular-animate');
 
 angular.module('savvy', [require('angular-ui-router'), require('angular-cookies')])

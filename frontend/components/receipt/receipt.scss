@@ -1,9 +1,19 @@
 #receipt-uploader {
-    #user-receipt {
+    #user-receipt, #sample-receipt {
         display: block;
         max-width:225px;
         max-height:368px;
         width: auto;
         height: auto;
+    }
+
+    #receipt-images {
+        margin: 20px auto;
+        width: 70%;
+    }
+
+    #upload-image {
+        display: inline;
+        margin-right: 5px;
     }
 }

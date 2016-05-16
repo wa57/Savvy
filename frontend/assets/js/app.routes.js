@@ -91,11 +91,17 @@ angular.module('savvy').config(
         })
 
         .state('resetPassword', {
-            url: '/reset_password',
+            url: '/reset_password/:reset_code',
             templateUrl: 'frontend/components/reset_password/reset_password.html',
             controller: 'resetPassCtrl',
             controllerAs: 'resetPass',
             title: "Reset Your Password",
+            params: {
+                reset_code: {
+                    value: null,
+                    squash: true
+                }
+            }
         })
 
         .state('userInfo', {

@@ -351,9 +351,11 @@ class UserDB(DB):
                 "$set": changes
             }
         )
+        """
         if update_result.modified_count != 1:
             msg = "Unable to alter user '{}'.".format(user_id)
             logger.error(msg)
             raise Exception(msg)
+        """
 
 user_db = UserDB()

@@ -68,6 +68,7 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
 
     self.displayDetailedUserInfo = function(user) {
         self.selectedUser = user;
+        displayLoader('dataTable', false);
     };
 
     self.getDataTable = function(selectedUser) {
@@ -119,7 +120,6 @@ function($scope, $state, User, $rootScope, EVENTS, adminService, stringReplace, 
         }
 
         User.alterUser(selectedUser).then(function(response) {
-            console.log(response);
             displayLoader('saveChanges', false);
             self.message.detailedUserInfo = setMessage('Changes Saved', 'success', true);
         });
