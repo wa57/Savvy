@@ -3,37 +3,65 @@
         <h4><i class="fa fa-cloud-upload"></i> Upload a Receipt</h4>
     </header>
     <div>
-        <div>
-            <label>
-                <span>Upload a picture of the product</span>
-                <input type="file" fileread="receipt.image">
-            </label>
-        </div>
-        <div>
-            <button ng-click="receipt.getProductsFromBase64Image(receipt.image)">Upload</button>
-        </div>
         <div class="row">
             <div class="col-sm-6">
-                <p>The receipt image should look like this</p>
-                <img src="/frontend/assets/images/sample-receipt.png" alt="Sample Picture of Receipt for Instructional Purposes" class="img-thumbnail" style="width: 50%;">
+                <label>
+                    <p>Upload a picture of the receipt</p>
+                    <input type="file" fileread="receipt.image" id="upload-image">
+                </label>
             </div>
             <div class="col-sm-6">
-                <p>Here is your receipt</p>
-                <div ng-show="receipt.image">
-                    <img ng-src="{{receipt.image}}" alt="Picture of User Uploaded Receipt" class="img-thumbnail" id="user-receipt">
+                <label style="width: 100%;">
+                    <p>Where you shopped</p>
+                    <input type="text" ng-model="receipt.gPlaceAutocomplete" details="receipt.googlePlace" googleplace style="width: 100%;">
+                </label>
+            </div>
+        </div>
+        <hr>
+        <div id="receipt-images">
+            <div class="row">
+                <div class="col-sm-6">
+                    <p class="margin-bottom">The receipt image should look like this:</p>
+                    <img src="/frontend/assets/images/sample-receipt.png" alt="Sample Picture of Receipt for Instructional Purposes" id="sample-receipt" class="img-thumbnail">
+                </div>
+                <div class="col-sm-4">
+                    <p class="margin-bottom">Here is your receipt:</p>
+                    <div ng-show="receipt.image" class="margin-bottom">
+                        <img ng-src="{{receipt.image}}" alt="Picture of User Uploaded Receipt" class="img-thumbnail" id="user-receipt">
+                    </div>
+                    <div class="btn-centered" ng-show="receipt.image">
+                        <button ng-click="receipt.getProductsFromBase64Image(receipt.image)" class="btn btn-primary">Upload</button>
+                    </div>
                 </div>
             </div>
         </div>
-        <div>
-            <input type="text" ng-model="receipt.gPlaceAutocomplete" details="receipt.googlePlace" googleplace>
-            <button ng-click="receipt.test(receipt.googlePlace)">Test</button>
+        <hr>
+        <div ng-show="receipt.loader.getProducts.show">
+            <img src="/frontend/assets/images/loader.gif" class="center-loader">
         </div>
-        <div ng-repeat="product in receipt.productsFromImage">
-            <input type="text" ng-model="product.description">
-            <input type="text" ng-model="product.price">
-        </div>
+        <table ng-show="receipt.productsFromImage" class="table table-striped">
+            <thead>
+                <th>Product Name</th>
+                <th>Produce Price</th>
+            </thead>
+            <tbody>
+                <tr ng-repeat="product in receipt.productsFromImage">
+                    <td>
+                        <input type="text" ng-model="product.description">
+                    </td>
+                    <td>
+                        <input type="text" ng-model="product.price">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <div>
             <button ng-click="receipt.saveProducts(receipt.googlePlace, receipt.productsFromImage)" class="btn btn-success">Submit Prices</button>
+            <span ng-show="receipt.message.show" id="message" class="alert alert-{{receipt.message.status}} alert-sm">
+                <i ng-show="receipt.message.status === 'danger'" class="fa fa-exclamation-triangle"></i>
+                <i ng-show="receipt.message.status === 'success'" class="fa fa-check"></i>
+                <span ng-bind="receipt.message.text"><span>
+            </span>
         </div>
     </div>
 </div>
