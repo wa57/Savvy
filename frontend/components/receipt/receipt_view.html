@@ -36,8 +36,9 @@
             </div>
         </div>
         <hr>
-        <div ng-show="receipt.loader.getProducts.show">
-            <img src="/frontend/assets/images/loader.gif" class="center-loader">
+        <div ng-show="receipt.loader.getProducts.show" class="center-loader" style="width: 50%;">
+            <img src="/frontend/assets/images/loader.gif">
+            The Savvy sloths are processing your receipt...
         </div>
         <table ng-show="receipt.productsFromImage" class="table table-striped">
             <thead>
