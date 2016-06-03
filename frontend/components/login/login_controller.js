@@ -1,13 +1,34 @@
-angular.module('savvy')
-    .controller('login_controller', login_controller)
-    .$inject = ['$scope', '$state', 'authService'];
-
-function login_controller($scope, $state, authService) {
-    $scope.login = function(credentials) {
+angular.module('savvy').controller('loginCtrl',
+['$scope', '$state', 'User', '$rootScope', 'EVENTS', '$stateParams',
+function($scope, $state, User, $rootScope, EVENTS, $stateParams) {
+    var self = this;
+    (function(){
+        self.events = {
+            notAuthenticated: $state.params.event
+        }
+    })()
+    console.log($state.params);
+    self.login = function(credentials) {
         if(credentials.username) {
-            authService.login(credentials).then(function(response) {
-                console.log(response);
+            User.login(credentials).then(function(response) {
+                if(response['error']) {
+                    console.log(response['error']);
+                    self.events.loginFailed = response['error'];
+                }
+                //$state.go($stateParams.redirectUrl);
             });
         }
     };
-}
+
+    $rootScope.$on(EVENTS.logoutSuccess, function() {
+        self.events.logoutSuccess = true;
+    });
+
+    $rootScope.$on(EVENTS.notAuthorized, function() {
+        self.events.notAuthorized = true;
+    });
+
+    $rootScope.$on(EVENTS.notAuthenticated, function() {
+        self.events.notAuthenticated = true;
+    });
+}]);

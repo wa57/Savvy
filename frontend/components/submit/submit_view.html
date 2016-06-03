@@ -2,11 +2,7 @@
     <div class="content-header">
         <h4><i class="fa fa-share-square-o"></i> Submit a Price</h4>
     </div>
-    <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-        <li role="presentation" class="active"><a href="#">Submit a Single Price</a></li>
-        <li role="presentation"><a href="#">Upload a Receipt</a></li>
-    </ul>
-    <form ng-submit="submitPrice()" ng-hide="message === 'success'" name="submitForm">
+    <form ng-submit="submitPrice()" name="submitForm">
     	<div class="instructions alert alert-success" style="width: 75%;">
             <i class="fa fa-info-circle"></i>
             Complete the required (*) fields below then click Submit to add your product or service.
@@ -22,7 +18,7 @@
             <input type="text"
                     ng-model="product.description"
                     ng-model-options="{ debounce: 300 }"
-                    ng-change="searchProducts()"
+                    ng-change="searchProducts(product.description)"
                     ng-blur="products = []"
                     ng-required="true"
                     id="product-description"
@@ -30,7 +26,7 @@
                     style="width: 50%;">
             <div class="product-list" ng-show="products.length > 0">
                 <div ng-repeat="product in products" ng-mousedown="selectProduct(product)" class="product-result">
-                    {{product.description}}
+                    <span ng-bind="product.description"></span>
                 </div>
             </div>
         </div>
@@ -100,7 +96,11 @@
         <div class="form-section">
             <label>
                 <span>Upload a picture of the product</span>
-                <input type="file" ng-model="product.product_image" fileread="product_image">
+                <input type="file" fileread="product.image" id="product-image">
+                <div ng-show="product.image">
+                    <p>Image Preview</p>
+                    <img ng-src="{{product.image}}" style="width: 20%;">
+                </div>
             </label>
         </div>
 
@@ -108,7 +108,7 @@
         <section>
             <button type="submit" ng-disabled="" class="btn btn-success btn-md">Submit</button>
             <span ng-show="message === 'processing'"><img src="/frontend/assets/images/loader.gif"></span>
-            <span ng-show="message === 'success'" class="text-success">Price Saved!</span>
+            <span ng-show="message === 'success'" class="text-success">Price Added!</span>
             <span ng-show="message === 'error'" class="alert alert-danger">
                 <i class="fa fa-exclamation-triangle"></i> Submission Error. Please try again later.
             </span>
@@ -116,7 +116,7 @@
     </form>
 
     <!--Show Receipt-->
-    <div ng-show="message === 'success'">
+    <!--<div ng-show="message === 'success'">
         <div class="alert alert-success">
             <i class="fa fa-check-circle primary-color"></i>
             Price successfully added!
@@ -124,13 +124,13 @@
         <h4><i class="fa fa-paste primary-color"></i> Receipt For Your Records</h4>
         <span class="note">You can view this receipt and all of your submissions in <a ui-sref="account_settings">Account Settings</a></span>
         <hr>
-        <p>Transaction ID: <strong>{{receipt.id}}</strong></p>
-        <p>Product Name: <strong>{{receipt.description}}</strong></p>
-        <p>Place of Purchase: <strong>{{receipt.business}}</strong></p>
-        <p>Price Paid: <strong>${{receipt.price}}</strong></p>
-        <p>Tags: <strong>{{receipt.tags}}</strong></p>
+        <p>Product Name: <strong>{{product.description}}</strong></p>
+        <p>Place of Purchase: <strong>{{product.business_name}}</strong></p>
+        <p>Price Paid: <strong>${{product.price / 100}}</strong></p>
+        <p>Tags: <strong>{{product.tags}}</strong></p>
+        <p>Product Image: <img ng-src="{{product.image}}" style="width: 20%;"></p>
         <div>
-            <button ng-click="initializeData()" class="btn btn-link" style="padding: 0">Submit Another Price</button>
+            <button ng-click="clearProduct(product)" class="btn btn-link" style="padding: 0">Submit Another Price</button>
         </div>
-    </div>
+    </div>-->
 </div>

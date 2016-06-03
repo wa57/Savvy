@@ -1,20 +1,26 @@
 import logging
+from functools import partial
 from logging.handlers import RotatingFileHandler
 
 from flask import Flask
 from flask import request
-from flask import Response, session
+from flask import session
 
 
 from backend.views.users import user_blueprint
 from backend.views.products import product_blueprint
 from backend.views.prices import price_blueprint
 from backend.views.businesses import business_blueprint
+from backend.views.ocr import ocr_blueprint
+from backend.utils import json_error
 
 
 app = Flask(__name__, static_folder="frontend")
 app.config["PROPAGATE_EXCEPTIONS"] = False
 app.config["SECRET_KEY"] = '\x85\xe7\x98?L\xfaKa2\xbdQ\xef\xa5&\x03\x17\x9bj\x17 \xbc\xc8j\xbb'
+
+json_error_500 = partial(json_error, status_code=500)
+app.register_error_handler(500, json_error_500)
 
 
 # Configure logging
@@ -45,7 +51,7 @@ wsgi_app = app.wsgi_app
 @app.before_request
 def load_user_from_request():
     from datetime import datetime
-    from backend.models.users import UserDB, AnonymousUser
+    from backend.models.users import UserDB
 
     logger.debug("Attempting to authenticate client.")
 
@@ -61,27 +67,19 @@ def load_user_from_request():
     user_db = UserDB()
     user = user_db.get_user(username=username)
 
+    if not user:
+        logger.debug("Invalid username '{}'".format(username))
+        return None
+
     if user.auth_token:
         token, expires = user.auth_token
         if client_token == token and expires > datetime.utcnow():
             logger.debug("Accepted user token: {}/{}".format(client_token, username))
-            session["current_user"] = user.user_id
+            setattr(request, "current_user", user)
             return None
 
     logger.debug("Failed token: {}/{}".format(client_token, username))
     return None
-
-
-@app.errorhandler(500)
-def json_error(msg, **data):
-    import json
-    import pprint
-    logger.debug(pprint.pformat(vars(request)))
-    if isinstance(msg, Exception):
-        msg = str(msg)
-    response = {"error": msg}
-    response.update(data)
-    return Response(json.dumps(response), mimetype="application/json"), 500
 
 
 @app.route("/")
@@ -102,6 +100,7 @@ app.register_blueprint(user_blueprint)
 app.register_blueprint(product_blueprint)
 app.register_blueprint(price_blueprint)
 app.register_blueprint(business_blueprint)
+app.register_blueprint(ocr_blueprint)
 
 
 if __name__ == '__main__':

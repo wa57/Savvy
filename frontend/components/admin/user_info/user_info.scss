@@ -1,0 +1,80 @@
+#userInfo {
+    table {
+        width: 100%;
+        border-radius: 1px;
+    }
+    input[type=text] {
+        padding: 5px;
+        width: 100%;
+    }
+
+    table tr td, table button {
+        font-size: 14px;
+    }
+
+    table th {
+        font-size: 14px;
+    }
+
+    .table-hover tbody tr:hover, .selected {
+        background-color: #E8E8E8;
+        cursor: pointer;
+    }
+
+    .table tbody>tr>td.center-align {
+        vertical-align: middle;
+        text-align: center;
+    }
+
+    .full-width {
+        width: 100%;
+    }
+
+    #usage-instructions {
+        margin: 15px 0;
+    }
+
+    #usage-instructions .panel-body {
+        padding: 5px 0;
+        margin-top: 10px;
+    }
+
+    .input-group input, .input-group-addon {
+        border-radius: 1px;
+    }
+
+    #detailed-user-info {
+        .panel-body label p {
+            margin-bottom: 5px;
+        }
+
+        label {
+            margin-right: 15px;
+            //width: 100%;
+        }
+
+        input[type=text] {
+            width: 100%;
+        }
+    }
+
+    #edit-user {
+        margin-bottom: 15px;
+    }
+
+    .toggle {
+        padding: 0;
+    }
+
+    #save-changes {
+        margin-top: 10px;
+    }
+
+    .fadeOut {
+        -webkit-transition: opacity 3s ease-in-out;
+        -moz-transition: opacity 3s ease-in-out;
+        -ms-transition: opacity 3s ease-in-out;
+        -o-transition: opacity 3s ease-in-out;
+         opacity: 1;
+    }
+}

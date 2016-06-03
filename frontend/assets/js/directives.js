@@ -98,3 +98,33 @@ angular.module('savvy').directive('googleChart', ['googleService', function(goog
         template: '<div>'
     }
 });*/
+
+//gist.github.com/kirschbaum/fcac2ff50f707dae75dc
+angular.module('savvy').directive('googleplace', function() {
+    return {
+        require: 'ngModel',
+        scope: {
+            ngModel: '=',
+            details: '=?'
+        },
+        link: function(scope, element, attrs, model) {
+            var defaultBounds = new google.maps.LatLngBounds(
+                new google.maps.LatLng(39.952584, -75.165222),
+                new google.maps.LatLng(39.952584, -75.165222)
+            );
+            var options = {
+                types: ['establishment'],
+                componentRestrictions: {},
+                bounds: defaultBounds
+            };
+            scope.gPlace = new google.maps.places.Autocomplete(element[0], options);
+
+            google.maps.event.addListener(scope.gPlace, 'place_changed', function() {
+                scope.$apply(function() {
+                    scope.details = scope.gPlace.getPlace();
+                    model.$setViewValue(element.val());
+                });
+            });
+        }
+    };
+});

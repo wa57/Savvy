@@ -1,4 +1,6 @@
-angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider', function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
+angular.module('savvy').config(
+    ['$stateProvider', '$urlRouterProvider', '$locationProvider', '$urlMatcherFactoryProvider',
+    function($stateProvider, $urlRouterProvider, $locationProvider, $urlMatcherFactoryProvider) {
 
     $urlRouterProvider.otherwise('/');
     $urlMatcherFactoryProvider.strictMode(false);
@@ -17,6 +19,7 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
             controller: 'home_controller',
             title: "Home"
         })
+
         .state('search', {
             url: '/search/:search_term',
             templateUrl: 'frontend/components/search/search_view.html',
@@ -29,20 +32,26 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
                 }
             }
         })
+
         .state('submit', {
             url: '/submit',
+            name: 'submit',
             templateUrl: 'frontend/components/submit/submit_view.html',
-            controller: 'submit_controller',
+            controller: 'submitCtrl',
+            controllerAs: 'submit',
             title: "Submit Price",
-            data: {
-                requireLogin: true
-            }
+            authorizedRoles: ['user', 'admin'],
+            requiresAuth: true,
         })
+
         .state('product', {
             url: '/product/:product_id',
             templateUrl: 'frontend/components/product/product_view.html',
             controller: 'product_controller',
+            controllerAs: 'product',
             title: "Product Page",
+            requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
             params: {
                 product_id: {
                     value: null,
@@ -50,27 +59,96 @@ angular.module('savvy').config(['$stateProvider', '$urlRouterProvider', '$locati
                 }
             }
         })
+
         .state('signup', {
             url: '/signup',
             templateUrl: 'frontend/components/signup/signup_view.html',
-            controller: 'signup_controller',
+            controller: 'signupCtrl',
+            controllerAs: 'signup',
             title: "Sign Up"
         })
+
         .state('login', {
             url: '/login',
             templateUrl: 'frontend/components/login/login_view.html',
-            controller: 'login_controller',
+            controller: 'loginCtrl',
+            controllerAs: 'login',
+            requiresAuth: false,
+            params: {
+                event: "",
+                returnUrl: "",
+                redirect: false,
+            },
             title: "Login"
         })
+
         .state('admin', {
-            url: '/',
-            templateUrl: 'frontend/components/admin/admin_view.html',
-            controller: 'admin_controller',
-            title: "Admin"
+            url: '/admin/dashboard',
+            templateUrl: 'frontend/components/admin/dash/dash_view.html',
+            title: "Admin Dashboard",
+            //requiresAuth: true,
+            //authorizedRoles: ['admin']
         })
+
+        .state('resetPassword', {
+            url: '/reset_password/:reset_code',
+            templateUrl: 'frontend/components/reset_password/reset_password.html',
+            controller: 'resetPassCtrl',
+            controllerAs: 'resetPass',
+            title: "Reset Your Password",
+            params: {
+                reset_code: {
+                    value: null,
+                    squash: true
+                }
+            }
+        })
+
+        .state('userInfo', {
+            url: '/admin/user-info',
+            templateUrl: 'frontend/components/admin/user_info/user_info_view.html',
+            controller: 'userInfoCtrl',
+            controllerAs: 'userInfo',
+            title: 'User Information',
+            //requiresAuth: true,
+            //authorizedRoles: ['admin']
+        })
+
+        .state('profile', {
+            url: '/profile/:username',
+            templateUrl: 'frontend/components/profile/profile_view.html',
+            controller: 'profileCtrl',
+            controllerAs: 'profile',
+            requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
+            title: "Profile",
+            params: {
+                username: {
+                    value: null,
+                    squash: true
+                }
+            }
+        })
+
         .state('faq', {
             url: '/faq',
             templateUrl: 'frontend/components/faq/faq_view.html',
             title: "FAQs"
+        })
+
+        .state('demo', {
+            url: '/demo',
+            templateUrl: 'frontend/components/demo/demo_view.html',
+            title: 'Demo'
+        })
+
+        .state('receipt', {
+            url: '/receipt',
+            templateUrl: 'frontend/components/receipt/receipt_view.html',
+            title: 'Upload Receipt',
+            controller: 'receiptCtrl',
+            controllerAs: 'receipt',
+            requiresAuth: true,
+            authorizedRoles: ['user', 'admin'],
         })
 }]);
