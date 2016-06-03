@@ -5,12 +5,13 @@
 
     </div>
     <form style="width: 50%; margin: 0 auto; margin-top: 20px;">
-        <h3 style="color: #00A079; margin-bottom: 20px; font-weight: bold;">Sign Up</h3>
+        <h2 style="color: #00A079; margin-bottom: 20px; font-weight: bold;">Sign Up</h2>
         <div>
-            <p>
+            <p class="alert alert-success">
+                <i class="fa fa-info-circle"></i>
     			Complete all fields below to create your Savvy account.
             </p>
-            <p>
+            <p style="margin-bottom: 15px;">
     			Creating a Savvy account will allow you to submit prices
                 for products and services as well as adding products and
                 services to a price watch list.
@@ -29,16 +30,8 @@
             <input type="text" ng-model="userData.email" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <label>
-            <p>Confirm Email Address</p>
-            <input type="text" style="display: block; width: 100%; margin-bottom: 20px;">
-        </label>
-        <label>
             <p>Password</p>
-            <input type="text" ng-model="userData.password" style="display: block; width: 100%; margin-bottom: 20px;">
-        </label>
-        <label>
-            <p>Confirm Password</p>
-            <input type="text" style="width: 100%; margin-bottom: 20px;">
+            <input type="password" ng-model="userData.password" style="display: block; width: 100%; margin-bottom: 20px;">
         </label>
         <button
             ng-click="createUser(userData);"
@@ -48,8 +41,7 @@
         Sign Up
         </button>
         <div class="center">
-            <p style="margin-bottom: 20px;">Already have an account? <a ui-sref="signup">Login</a></p>
-            <p><a ui-sref="account-recovery">Forgot your password?</a></p>
+            <p style="margin-bottom: 20px;">Already have an account? <a ui-sref="login">Login</a></p>
         </div>
     </form>
 </div>

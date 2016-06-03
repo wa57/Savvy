@@ -4,39 +4,50 @@
     <div style="border-bottom: 1px solid #ebebeb; height: 1px; margin-top: 20px; margin-left: -15px; margin-right: -15px;">
 
     </div>
-    <form ng-submit="login(credentials)" name="loginForm" style="width: 50%; margin: 0 auto; margin-top: 20px;">
-        <h2>Login</h2>
+    <form ng-submit="login.login(login.credentials)" name="loginForm" style="width: 50%; margin: 0 auto; margin-top: 20px;">
+        <h2>Log In</h2>
         <div ng-show="status.submit" ng-switch on="status.submit" class="alert alert-danger">
             <span ng-switch-when="status.submit === 'auth-failed'">Login Failed</span>
             <span>Invalid Credentials</span>
         </div>
+        <div ng-show="login.events.logoutSuccess" class="alert alert-warning">
+            <i class="fa fa-exclamation-triangle"></i>
+            You are now logged out.
+        </div>
+        <div ng-show="login.events.notAuthenticated" class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle"></i>
+            Please log in to use that feature.
+        </div>
+        <div ng-show="login.events.loginFailed" class="alert alert-danger">
+            <i class="fa fa-exclamation-triangle"></i>
+            {{login.events.loginFailed}}
+        </div>
 		<div class="alert alert-success">
             <i class="fa fa-info-circle"></i>
-			Enter the email address and password you used to sign up for Savvy.
+			Enter the username and password you used to sign up for Savvy.
 		</div>
         <div>
-            <label for="email">
-                <span>Email Address</span>
+            <label for="username">
+                <span>Username</span>
             </label>
-            <input type="text" ng-model="credentials.username" id="email" style="width: 100%; margin-bottom: 20px;">
+            <input type="text" ng-model="login.credentials.username" id="username" style="width: 100%; margin-bottom: 20px;">
         </div>
         <div>
             <label for="password">
                 <span>Password</span>
             </label>
-            <input type="password" ng-model="credentials.password" id="password" style="width: 100%; margin-bottom: 20px;">
+            <input type="password" ng-model="login.credentials.password" id="password" style="width: 100%;">
+            <p style="margin-bottom: 20px; margin-top: 5px; text-align: right;"><a ui-sref="resetPassword">Forgot your password?</a></p>
         </div>
 
-        {{credentials}}
         <button
             class="btn btn-success btn-lg btn-block"
             style="margin-bottom: 20px;">
         <i class="fa fa-lock"></i>
-        Login
+        Log In
         </button>
         <div class="center">
             <p style="margin-bottom: 20px;">Don't have an account? <a ui-sref="signup">Sign Up</a></p>
-            <p><a ui-sref="account-recovery">Forgot your password?</a></p>
         </div>
     </form>
 </div>

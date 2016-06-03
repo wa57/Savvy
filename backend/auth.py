@@ -13,18 +13,9 @@ current_user = LocalProxy(lambda: _get_user())
 
 
 def _get_user():
-    from flask import session
-    from backend.models.users import UserDB, AnonymousUser
-    user_id = session.get("current_user", None)
-    if not user_id:
-        logger.debug("No user_id in session.")
-        return AnonymousUser()
-    user = UserDB().get_user(user_id=user_id)
-    if not user:
-        logger.debug("No user matching ID '{}'.".format(user_id))
-        return AnonymousUser()
-    logger.debug("Matched user '{}'".format(user.username))
-    return user
+    from flask import request
+    from backend.models.users import AnonymousUser
+    return getattr(request, "current_user", None) or AnonymousUser()
 
 
 def login_required(view):
@@ -33,5 +24,23 @@ def login_required(view):
         if current_user.is_authenticated:
             return view(*args, **kwargs)
         else:
-            return json_error("Unauthorized"), 403
+            return json_error("Unauthorized", status_code=403)
     return wrapper
+
+
+def admin_required(view):
+    @wraps(view)
+    def wrapper(*args, **kwargs):
+        if current_user.is_admin:
+            return view(*args, **kwargs)
+        else:
+            return json_error("Unauthorized", status_code=403)
+    return wrapper
+
+
+def user_is_authenticated(user_id, allow_admin=True):
+    if allow_admin and current_user.is_admin:
+        return True
+    if current_user.is_authenticated and current_user.user_id == user_id:
+        return True
+    return False

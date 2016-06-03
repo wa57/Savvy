@@ -1,82 +1,68 @@
-angular.module('savvy')
-    .controller('submit_controller', submit_controller)
-    .$inject = ['$scope', '$state', 'ProductService', 'stringReplace', '$filter'];
+angular.module('savvy').controller('submitCtrl', submitCtrl)
+.$inject = ['$scope', 'productService', '$filter'];
 
-function submit_controller($scope, $state, productService, stringReplace, $filter) {
-    $scope.initialize = function() {
-        $scope.initializeData();
-        $scope.initializeGooglePlaces();
+function submitCtrl($scope, productService, $filter) {
+    function init() {
+        initData();
+        initGooglePlaces();
+        $scope.product = initProduct();
+        setMessages();
     }
 
-    $scope.submitPrice = function() {
-        $scope.message = "processing";
-        $scope.product.price = parseInt($scope.price.toFixed(2)*100);
-        $scope.product.user = makeid();
-
-        productService.saveProduct($scope.product).then(function(response){
-            $scope.createReceipt($scope.product);
-            $scope.product = {};
-            $scope.message = "success";
-        },
-        function(){
-            $scope.message = "error";
-        });
+    function initData() {
+        $scope.price = '';
+        document.getElementById('product-place').value = "";
     }
 
-    $scope.initializeGooglePlaces = function() {
+    function setMessages() {
+        $scope.message = "";
+        $scope.messages = {
+            tag_message: "",
+            save_message: ""
+        };
+    }
+
+    function initGooglePlaces() {
         var defaultBounds = new google.maps.LatLngBounds(
             new google.maps.LatLng(39.952584, -75.165222),
             new google.maps.LatLng(39.952584, -75.165222)
         );
 
-        var input = document.getElementById('product-place');
-        var options = {
-          bounds: defaultBounds,
-          types: ['establishment']
-        };
-
-        autocomplete = new google.maps.places.Autocomplete(input, options);
+        autocomplete = new google.maps.places.Autocomplete(document.getElementById('product-place'), {
+            bounds: defaultBounds,
+            types: ['establishment']
+        });
 
         google.maps.event.addListener(autocomplete, 'place_changed', function() {
+            console.log(autocomplete.getPlace());
             $scope.product.place_id = autocomplete.getPlace().place_id;
+            $scope.product.business_name = autocomplete.getPlace().name;
             $scope.$apply();
         });
     }
 
-    function makeid() {
-        var text = "testuser";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-        for( var i=0; i < 5; i++ ) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-        }
-
-        return text;
-    }
-
-    $scope.initializeData = function() {
-        $scope.product = {
-            tags: []
-        };
-        $scope.receipt = {};
-        $scope.message = "";
-        $scope.messages = {
-            tag_message: "",
-            save_message: ""
-        }
-        $scope.price = "";
-        document.getElementById('product-place').value = "";
-    }
-
-    $scope.createReceipt = function(api_response) {
-        $scope.receipt = {
-            id: api_response.id,
-            business: $scope.google_places.formatted_address,
-            tags: $scope.product.tags,
-            price: $scope.price,
-            description: $scope.product.description
-        };
+    $scope.submitPrice = function() {
+        $scope.message = "processing";
+        $scope.product.price = parseInt($scope.price.toFixed(2)*100);
+        $scope.product.user = '1';
+        console.log($scope.product);
+        productService.saveProduct($scope.product).then(function(response){
+            $scope.message = "success";
+            $scope.product = initProduct();
+            initData();
+        },
+        function(){
+            $scope.message = "error";
+        });
     };
+
+    function initProduct() {
+        var product = {};
+        product.tags = [];
+        product.image = null;
+        document.getElementById('product-image').value = "";
+        return product;
+    }
 
     $scope.addTag = function() {
         var exists_in_array = $scope.product.tags.indexOf($scope.tag);
@@ -93,9 +79,9 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
         $scope.messages.tag_message = "";
     };
 
-    $scope.searchProducts = function() {
-        if($scope.product.description) {
-            productService.getProductsByDesc($scope.product.description).then(function(response){
+    $scope.searchProducts = function(productDesc) {
+        if(productDesc && productDesc.length > 3) {
+            productService.getProductsByDesc(productDesc).then(function(response){
                 $scope.products = response;
             });
         } else {
@@ -107,5 +93,5 @@ function submit_controller($scope, $state, productService, stringReplace, $filte
         $scope.product.description = selectedProduct.description;
     }
 
-    $scope.initialize();
+    init();
 }

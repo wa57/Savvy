@@ -1,5 +1,7 @@
 import logging
 
+from bson.objectid import ObjectId
+
 from backend.database import DB
 from backend.utils import hash_password
 
@@ -12,7 +14,7 @@ class User(object):
 
     def __init__(self, username=None, email=None, hashed_password=None,
                  password_salt=None, active=False, first_name=None, roles=None, user_id=None, created_timestamp=None,
-                 auth_token=None):
+                 auth_token=None, voting_history=None, **kwargs):
         self.username = username
         self.id = self.user_id = user_id
         self.email = email
@@ -23,15 +25,20 @@ class User(object):
         self.roles = roles or []
         self.created_timestamp = created_timestamp
         self.auth_token = auth_token
+        self.voting_history = voting_history or []
 
     def has_role(self, role_name):
         """Returns True is a User has a specific role."""
         for role in self.roles:
-            if role_name == role.name:
+            if role_name == role:
                 return True
 
     def get_id(self):
         return self.user_id
+
+    @property
+    def is_admin(self):
+        return self.has_role("admin")
 
     @property
     def is_active(self):
@@ -65,21 +72,29 @@ class User(object):
         else:
             token, expires = None, None
         user_data = {
+            "user_id": self.user_id,
             "username": self.username,
             "email": self.email,
             "first_name": self.first_name,
             "user_token": token,
             "user_token_expires": expires,
-            "roles": self.roles
+            "roles": self.roles,
+            "voting_history": self.voting_history
         }
         return user_data
 
 
 class AnonymousUser(object):
 
+    def has_role(self):
+        return False
+
     @property
     def is_active(self):
-        """Returns True if the user is active."""
+        return False
+
+    @property
+    def is_admin(self):
         return False
 
     @property
@@ -93,6 +108,8 @@ class AnonymousUser(object):
 
 class UserDB(DB):
     """Provides controls for User Database."""
+
+    AVAILABLE_ROLES = ["user", "admin"]
 
     def activate_user(self, user):
         """Enables a user account.
@@ -163,15 +180,17 @@ class UserDB(DB):
         """Disables the user account."""
         pass
 
-    def get_user(self, username=None, email=None, user_id=None):
+    def get_user(self, username=None, email=None, user_id=None, password_reset_token=None):
         """Returns a user object for a matching user."""
-        from bson.objectid import ObjectId
+        from backend.models.voting import VotingDB
         if user_id:
             result = self.db.users.find_one({"_id": ObjectId(user_id)})
         elif username:
             result = self.db.users.find_one({"username": username})
-        elif username:
+        elif email:
             result = self.db.users.find_one({"email": email})
+        elif password_reset_token:
+            result = self.db.users.find_one({"password_reset_token.0": password_reset_token})
         else:
             raise Exception("Missing username, email, or user_id.")
         if not result:
@@ -181,7 +200,23 @@ class UserDB(DB):
             token, expires = result["auth_token"]
             if token and expires:
                 result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
-        return User(**result)
+        voting_history = VotingDB().get_user_history(user_id=result["user_id"])
+        return User(voting_history=voting_history, **result)
+
+    def get_all_users(self):
+        """Returns a user object for a matching user."""
+        from backend.models.voting import VotingDB
+        users = []
+        results = self.db.users.find({})
+        for result in results:
+            result["user_id"] = str(result.pop("_id"))
+            if result.get("auth_token", None):
+                token, expires = result["auth_token"]
+                if token and expires:
+                    result["auth_token"] = (token, expires.as_datetime().replace(tzinfo=None))
+            voting_history = VotingDB().get_user_history(user_id=result["user_id"])
+            users.append(User(voting_history=voting_history, **result))
+        return users
 
     def get_auth_token(self, user):
         from datetime import datetime
@@ -209,6 +244,22 @@ class UserDB(DB):
                                  })
         return token, expires.as_datetime()
 
+    def create_password_reset_token(self, user):
+        import os
+        from bson.timestamp import Timestamp
+        from datetime import datetime
+        from hashlib import md5
+        from backend.config import SAVVY_LOGIN_EXPIRATION
+        expires = Timestamp(datetime.now() + SAVVY_LOGIN_EXPIRATION, 1)
+        token = md5(os.urandom(512)).hexdigest()[-8:].upper()
+        self.db.users.update_one({"username": user.username},
+                                 {
+                                     "$set": {
+                                         "password_reset_token": (token, expires)
+                                     }
+                                 })
+        return token, expires.as_datetime()
+
     def clear_auth_token(self, user):
         self.db.users.update_one({"username": user.username},
                                  {
@@ -220,11 +271,63 @@ class UserDB(DB):
 
     def delete_user(self, user):
         """Deletes the specified user."""
-        pass
+        logger.debug("Deleting user '{}'.".format(user.username))
+        result = self.db.users.delete_one({"_id": ObjectId(user.id)})
+        if result.deleted_count != 1:
+            logger.error("Unable to delete user '{}' with user_id '{}'.".format(user.username, user.id))
+            raise Exception("Unable to delete user '{}'.".format(user.username))
+        logger.info("Deleted user '{}'.".format(user.username))
 
-    def change_password(self, new_password):
+    def change_password(self, user, new_password):
         """Changes the password to the new password."""
-        pass
+        logger.debug("Changing password for user '{}'.".format(user.username))
+        hashed_new_password, salt = hash_password(new_password)
+        result = self.db.users.update_one(
+            {"username": user.username},
+            {
+                "$set": {
+                    "hashed_password": hashed_new_password,
+                    "password_salt": salt
+                }
+            }
+        )
+        if result.modified_count != 1:
+            msg = "Unable to change password for user '{}'.".format(user.username)
+            logger.error(msg)
+            raise Exception(msg)
+        logger.info("Changed password for user '{}'.".format(user.username))
+
+    def reset_password(self, reset_code, new_password):
+        """Changes the password for a user with the reset_code to the new password."""
+        from datetime import datetime
+        logger.debug("Changing password for reset code '{}'.".format(reset_code))
+        hashed_new_password, salt = hash_password(new_password)
+
+        result = self.db.users.find_one({"password_reset_token.0": reset_code})
+        if not result:
+            raise Exception("No user with matching password reset token.")
+
+        token, expires = result["password_reset_token"]
+        if expires.as_datetime().replace(tzinfo=None) <= datetime.now():
+            raise Exception("Password reset token has expired.")
+
+        username = result["username"]
+
+        result = self.db.users.update_one(
+            {"username": username},
+            {
+                "$set": {
+                    "hashed_password": hashed_new_password,
+                    "password_salt": salt
+                },
+                "$unset": {"password_reset_token": ""}
+            }
+        )
+        if result.modified_count != 1:
+            msg = "Unable to change password for user '{}'.".format(username)
+            logger.error(msg)
+            raise Exception(msg)
+        logger.info("Changed password for user '{}' with reset_code.".format(username))
 
     def authenticate_user(self, username, password):
         """Returns True if the username and password combo is correct."""
@@ -237,8 +340,22 @@ class UserDB(DB):
         if hashed_password == user.hashed_password:
             return user
         logger.debug("Passwords do not match for user '{}'.".format(username))
-        logger.debug(hashed_password)
-        logger.debug(user.hashed_password)
         return False
+
+    def alter_user(self, user_id, changes):
+        """Returns True if the username and password combo is correct."""
+        logger.debug("Altering user '{}'.".format(user_id))
+        update_result = self.db.users.update_one(
+            {"_id": ObjectId(user_id)},
+            {
+                "$set": changes
+            }
+        )
+        """
+        if update_result.modified_count != 1:
+            msg = "Unable to alter user '{}'.".format(user_id)
+            logger.error(msg)
+            raise Exception(msg)
+        """
 
 user_db = UserDB()

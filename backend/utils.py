@@ -10,20 +10,34 @@ from flask import Response
 logger = logging.getLogger("savvy.utils")
 
 
-def json_error(msg, **data):
+def json_error(msg, status_code=200, **data):
     import json
-    response = {"error": msg}
-    response.update(data)
-    logger.warning("JSON Error Msg: {}".format(response))
-    return Response(json.dumps(response), mimetype="application/json")
+    import pprint
+    try:
+        request_dump = pprint.pformat(vars(request))
+        if len(request_dump) > 4096:
+            request_dump = "{}<truncated to 4096 bytes>".format(request_dump[:4096])
+        logger.debug(request_dump)
+    except Exception as e:
+        logger.error("Unable to log request dump: {}".format(e))
+
+    if isinstance(msg, Exception):
+        msg = str(msg)
+    response_data = {"error": msg}
+    response_data.update(data)
+    response = Response(json.dumps(response_data), mimetype="application/json")
+    response.status_code = status_code
+    return response
 
 
-def json_success(msg, **data):
+def json_success(msg, status_code=200, **data):
     import json
-    response = {"success": msg}
-    response.update(data)
-    logger.debug("JSON Success Msg: {}".format(response))
-    return Response(json.dumps(response), mimetype="application/json")
+    response_data = {"success": msg}
+    response_data.update(data)
+    logger.debug("JSON Success Msg: {}".format(response_data))
+    response = Response(json.dumps(response_data), mimetype="application/json")
+    response.status_code = status_code
+    return response
 
 
 def hash_password(passwd, salt=None):

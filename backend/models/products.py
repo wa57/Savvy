@@ -23,22 +23,15 @@ class ProductDB(DB):
 
     def get(self, id):
         from bson.objectid import ObjectId
+        from backend.models.voting import VotingDB
         try:
             product = dict(self.db.products.find({"_id": ObjectId(id)}).next())
         except StopIteration:
             raise Exception("Product with ID '{}' not found.".format(id))
-        product["product_id"] = str(product.pop("_id"))
+        product_id = product["product_id"] = str(product.pop("_id"))
+        product["image"] = self.get_image(product_id=product_id)
+        product["score"] = VotingDB().get_product_score(product_id=product_id)
         return product
-
-    def thumbs_up(self, product_id):
-        from bson.objectid import ObjectId
-        self.db.products.update_one({"_id": ObjectId(product_id)},
-                                    {"$inc": {"thumbs_up": 1}})
-
-    def thumbs_down(self, product_id):
-        from bson.objectid import ObjectId
-        self.db.products.update_one({"_id": ObjectId(product_id)},
-                                    {"$inc": {"thumbs_down": 1}})
 
     def search(self, query):
         """Returns a list of matching products."""
@@ -46,7 +39,8 @@ class ProductDB(DB):
         results = []
         for result in self.db.products.find({"$or": [{"description": re.compile(".*{}.*".format(query), re.IGNORECASE)}, {"tags": re.compile(".*{}.*".format(query), re.IGNORECASE)}]}):
             result = dict(result)
-            result["product_id"] = str(result.pop("_id"))
+            product_id = result["product_id"] = str(result.pop("_id"))
+            result["image"] = self.get_image(product_id=product_id)
             results.append(result)
         return results
 
@@ -71,3 +65,12 @@ class ProductDB(DB):
         if result.matched_count > 0:
             return True
         return False
+
+    def get_image(self, product_id):
+        result = self.db.prices.find_one({
+            "product_id": product_id,
+            "image": {"$exists": True, "$ne": None}
+        })
+        if not result:
+            return None
+        return result["image"]

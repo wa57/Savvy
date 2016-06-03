@@ -1,17 +1,43 @@
-angular.module('savvy')
-    .controller('nav_controller', nav_controller)
-    .$inject = ['$scope', '$state', 'authService'];
+angular.module('savvy').controller('navCtrl',
+['$scope', '$state', 'User', '$rootScope', 'EVENTS',
+function($scope, $state, User, $rootScope, EVENTS) {
+    var self = this;
 
-function nav_controller($scope, $state, authService) {
-    $scope.state = $state;
-    $scope.show_mobile_nav = false;
-
-    console.log($scope);
-    $scope.search = function() {
-        if($scope.search_term !== "" && $scope.search_term) {
-            $state.go('search', {search_term: $scope.search_term});
-        }
+    function init() {
+        $scope.state = $state;
+        $scope.show_mobile_nav = false;
+        self.isAuthenticated = false;
+        self.userData = null;
+        User.getCurrentUser().then(function(user) {
+            self.userData = user;
+            self.isAuthenticated = User.isAuthenticated();
+            self.isAdmin = User.isAdmin(user);
+        });
     }
+
+    $rootScope.$on(EVENTS.logoutSuccess, function() {
+        self.isAuthenticated = false;
+        self.isAdmin = false;
+        self.userData = null;
+    });
+
+    $rootScope.$on(EVENTS.loginFailure, function() {
+
+    })
+
+    $rootScope.$on(EVENTS.loginSuccess, function() {
+        User.getCurrentUser().then(function(user) {
+            self.userData = user;
+            self.isAuthenticated = User.isAuthenticated();
+            self.isAdmin = User.isAdmin(user);
+        });
+    });
+
+    self.search = function() {
+        if(self.search_term !== "" && self.search_term) {
+            $state.go('search', {search_term: self.search_term});
+        }
+    };
 
     $scope.showMobileNav = function() {
         if(!$scope.show_mobile_nav) {
@@ -19,10 +45,11 @@ function nav_controller($scope, $state, authService) {
         } else {
             $scope.show_mobile_nav = false;
         }
-    }
+    };
 
     $scope.logout = function() {
-        authService.logout();
-    }
+        User.logout();
+    };
 
-}
+    init();
+}]);

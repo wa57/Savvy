@@ -47,7 +47,7 @@
                     <p>Average Price: <strong>${{product.average_price / 100 | number:2}}</strong></p>
                     <p>Highest Price: <strong>${{product.highest_price / 100 | number:2}}</strong></p>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-5">
                     <h5 style="margin-bottom: 10px;">Tags</h5>
                     <div>
                         <span ng-repeat="tag in product.tags track by $index" ng-if="$index < 8" class="tag label label-success">
@@ -55,9 +55,9 @@
                         </span>
                     </div>
                 </div>
-                <div class="col-md-2">
-                    <a ui-sref="product({product_id: '{{product.path}}'})">
-                        <img src="" alt="Product Image">
+                <div class="col-md-3">
+                    <a ui-sref="product({product_id: '{{product.product_id}}'})">
+                        <img ng-show="product.image" ng-src="{{product.image}}" alt="Product Image" class="img-thumbnail" style="width: 40%;">
                     </a>
                 </div>
             </div>
